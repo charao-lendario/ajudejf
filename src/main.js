@@ -253,6 +253,12 @@ window.submitForm = async function (event, tipo) {
 
     const summary = buildSummary(state.city, tipo, formRaw)
     document.getElementById('summary-text').textContent = summary
+
+    // Limpa o formulário após envio bem-sucedido
+    form.reset()
+    document.querySelectorAll('.pix-preview').forEach(p => { p.style.display = 'none' })
+    document.querySelectorAll('.pix-upload-label').forEach(l => { l.style.display = 'flex' })
+
     goStep(4)
 
   } catch (err) {
