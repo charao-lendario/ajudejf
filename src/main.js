@@ -9,7 +9,7 @@ import {
   Droplet, Droplets, Shirt, Baby, Coffee, Moon, Sandwich,
   Car, ChefHat, Dumbbell, Brain, Smartphone,
   Pill, Cross, PawPrint, Cake, FileText, Brush, Wheat,
-  Stethoscope,
+  Stethoscope, Heart, Gift,
 } from 'lucide'
 
 const ICONS = {
@@ -20,7 +20,7 @@ const ICONS = {
   Droplet, Droplets, Shirt, Baby, Coffee, Moon, Sandwich,
   Car, ChefHat, Dumbbell, Brain, Smartphone,
   Pill, Cross, PawPrint, Cake, FileText, Brush, Wheat,
-  Stethoscope,
+  Stethoscope, Heart, Gift,
 }
 
 function initIcons (el = document) {
@@ -31,7 +31,8 @@ function initIcons (el = document) {
 const state = {
   city: '',
   type: '',
-  data: {}
+  data: {},
+  pendingModeration: false
 }
 
 const typeLabels = {
@@ -40,7 +41,9 @@ const typeLabels = {
   desaparecido: 'Pessoa Desaparecida',
   alimentacao:  'Ponto de Alimentação',
   comunidade:   'Comunidade / Bairro',
-  voluntario:   'Oferecer Ajuda'
+  voluntario:   'Oferecer Ajuda',
+  vaquinha:     'Vaquinha',
+  doador:       'Quero Doar'
 }
 
 // ── NAVIGATION ──
@@ -75,12 +78,14 @@ const TIPO_TABELA = {
   desaparecido: 'desaparecidos',
   alimentacao:  'pontos_alimentacao',
   comunidade:   'comunidades',
-  voluntario:   'voluntarios'
+  voluntario:   'voluntarios',
+  vaquinha:     'vaquinhas',
+  doador:       'doadores'
 }
 
 // Campos que devem virar arrays (checkboxes múltiplos)
 const CAMPOS_ARRAY = new Set([
-  'recursos', 'aceita', 'refeicao', 'necessidades', 'habilidade'
+  'recursos', 'aceita', 'refeicao', 'necessidades', 'habilidade', 'oferece'
 ])
 
 // Mapa de nomes de campo do form → coluna da tabela
@@ -123,25 +128,66 @@ window.submitForm = async function (event, tipo) {
   const existingError = form.querySelector('.form-error')
   if (existingError) existingError.remove()
 
+  const PIX_SKIP = new Set(['— Não recebe PIX —', '— Não informar PIX —'])
+
   try {
     const cidade_id = await getCidadeId(state.city)
     const formRaw = collectFormData(form)
     state.data = formRaw
 
-    // Monta payload para a tabela correta
-    const payload = { cidade_id }
-    for (const [key, val] of Object.entries(formRaw)) {
-      if (!val || val === '' || val === '— Não recebe PIX —') continue
-      const coluna = CAMPO_COLUNA[key] || key
-      payload[coluna] = CAMPOS_ARRAY.has(key)
-        ? (Array.isArray(val) ? val : [val])
-        : val
+    // Monta payload limpo
+    function buildPayload (base) {
+      const p = { ...base }
+      for (const [key, val] of Object.entries(formRaw)) {
+        if (val === null || val === undefined || val === '' || PIX_SKIP.has(val)) continue
+        const coluna = CAMPO_COLUNA[key] || key
+        p[coluna] = CAMPOS_ARRAY.has(key)
+          ? (Array.isArray(val) ? val : [val])
+          : val
+      }
+      return p
     }
 
-    const tabela = TIPO_TABELA[tipo]
-    const { error } = await supabase.from(tabela).insert(payload)
+    // Detecta se precisa de moderação
+    const hasPix = formRaw.pix_chave && formRaw.pix_chave.trim() !== ''
+    const needsModeration = tipo === 'vaquinha' || (tipo === 'doacao' && hasPix)
 
-    if (error) throw error
+    if (needsModeration) {
+      // ── Envia para API (Resend + insert pendente) ──
+      const apiTipo = tipo === 'vaquinha' ? 'vaquinha' : 'doacao_pix'
+      const payload = buildPayload({ cidade_id })
+
+      const resp = await fetch('/api/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tipo: apiTipo, payload })
+      })
+
+      if (!resp.ok) {
+        const errBody = await resp.json().catch(() => ({}))
+        throw new Error(errBody.error || `Erro ${resp.status} ao enviar para moderação`)
+      }
+
+      state.pendingModeration = true
+    } else {
+      // ── Insert direto no Supabase ──
+      const payload = buildPayload({ cidade_id })
+      const tabela = TIPO_TABELA[tipo]
+      const { error } = await supabase.from(tabela).insert(payload)
+      if (error) throw error
+      state.pendingModeration = false
+    }
+
+    // Atualiza mensagem do step-4 conforme moderação
+    const titleEl = document.getElementById('success-title')
+    const descEl  = document.getElementById('success-desc')
+    if (state.pendingModeration) {
+      if (titleEl) titleEl.textContent = 'Enviado para aprovação!'
+      if (descEl)  descEl.textContent  = 'Seus dados foram enviados e estão aguardando moderação. A equipe será notificada por e-mail e o cadastro aparecerá em Consultar após aprovação.'
+    } else {
+      if (titleEl) titleEl.textContent = 'Cadastro registrado!'
+      if (descEl)  descEl.textContent  = 'Seus dados foram salvos com sucesso. Compartilhe pelo WhatsApp para ampliar o alcance e facilitar a coordenação.'
+    }
 
     const summary = buildSummary(state.city, tipo, formRaw)
     document.getElementById('summary-text').textContent = summary
@@ -153,8 +199,9 @@ window.submitForm = async function (event, tipo) {
     const errEl = document.createElement('div')
     errEl.className = 'alert alert-warning form-error'
     errEl.style.marginTop = '16px'
-    errEl.innerHTML = `<span>⚠️</span><span>Erro ao salvar: ${err.message}. Tente novamente.</span>`
+    errEl.innerHTML = `<span><i data-lucide="alert-triangle" class="icon-sm"></i></span><span>Erro ao salvar: ${err.message}. Tente novamente.</span>`
     form.appendChild(errEl)
+    initIcons(errEl)
   }
 }
 
@@ -185,6 +232,7 @@ function buildSummary(city, type, data) {
   const labelMap = {
     nome_local:       'Local',
     nome_pessoa:      'Nome da pessoa',
+    nome_campanha:    'Nome da campanha',
     nome:             'Nome',
     responsavel:      'Responsável',
     telefone:         'Telefone/WhatsApp',
@@ -204,7 +252,7 @@ function buildSummary(city, type, data) {
     voluntarios:      'Precisa voluntários',
     capacidade:       'Capacidade',
     familias:         'Famílias afetadas',
-    descricao:        'Descrição física',
+    descricao:        'Descrição',
     ultima_vez:       'Última vez visto',
     local_visto:      'Local visto',
     saude:            'Condição de saúde',
@@ -216,6 +264,8 @@ function buildSummary(city, type, data) {
     veiculo:          'Veículo',
     habilidade:       'Habilidades',
     disponibilidade:  'Disponibilidade',
+    link_vakinha:     'Link da vaquinha',
+    oferece:          'O que deseja doar',
     obs:              'Observações'
   }
 
@@ -262,6 +312,7 @@ window.newEntry = function () {
   state.city = ''
   state.type = ''
   state.data = {}
+  state.pendingModeration = false
   goStep(1)
 }
 
@@ -427,6 +478,39 @@ function cardVoluntario (item, cidade) {
     </div>`
 }
 
+function cardVaquinha (item, cidade) {
+  return `
+    <div class="result-card">
+      <div class="rc-header">
+        <div class="rc-title">${esc(item.nome_campanha)}</div>
+        <span class="badge badge-blue">Vaquinha</span>
+      </div>
+      <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)}</div>
+      <div class="rc-body">
+        ${item.descricao ? `<div class="rc-row">${esc(item.descricao)}</div>` : ''}
+        ${item.pix_chave ? `<div class="rc-row rc-pix"><i data-lucide="banknote" class="icon-xs"></i> PIX (${esc(item.pix_tipo)}): <strong>${esc(item.pix_chave)}</strong>${item.pix_titular ? ` — ${esc(item.pix_titular)}` : ''}</div>` : ''}
+      </div>
+      <a href="${esc(item.link_vakinha)}" target="_blank" rel="noopener noreferrer" class="rc-wpp">🔗 Acessar Vaquinha</a>
+      ${wppBtn(item.telefone)}
+    </div>`
+}
+
+function cardDoador (item, cidade) {
+  return `
+    <div class="result-card result-card-voluntario">
+      <div class="rc-header">
+        <div class="rc-title">${esc(item.nome)}</div>
+        <span class="badge badge-green">Quero Doar</span>
+      </div>
+      <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)}${item.bairro ? ` — ${esc(item.bairro)}` : ''}</div>
+      <div class="rc-body">
+        ${chips(item.oferece)}
+        ${item.obs ? `<div class="rc-row">${esc(item.obs)}</div>` : ''}
+      </div>
+      ${wppBtn(item.telefone)}
+    </div>`
+}
+
 const TABELA_CONFIG = {
   abrigos:            { icon: 'home',        label: 'Abrigos',           card: cardAbrigo },
   pontos_doacao:      { icon: 'package',     label: 'Pontos de Doação',  card: cardDoacao },
@@ -434,6 +518,8 @@ const TABELA_CONFIG = {
   pontos_alimentacao: { icon: 'utensils',    label: 'Alimentação',       card: cardAlimentacao },
   comunidades:        { icon: 'building-2',  label: 'Comunidades',       card: cardComunidade },
   voluntarios:        { icon: 'hand-heart',  label: 'Voluntários',       card: cardVoluntario },
+  vaquinhas:          { icon: 'heart',       label: 'Vaquinhas',         card: cardVaquinha },
+  doadores:           { icon: 'gift',        label: 'Quero Doar',        card: cardDoador },
 }
 
 // ═══════════════════════════════════════════════════════
@@ -481,7 +567,7 @@ window.loadConsulta = async function () {
       html += `
         <div class="consulta-section">
           <div class="consulta-section-header">
-            <span>${config.icon} ${config.label}</span>
+            <span><i data-lucide="${config.icon}" class="icon-sm"></i> ${config.label}</span>
             <span class="consulta-section-count">${items.length}</span>
           </div>
           <div class="result-cards-grid">

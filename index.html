@@ -76,7 +76,7 @@
         <button class="home-option-card" onclick="showView('cadastrar')">
           <span class="home-option-icon"><i data-lucide="pen-line"></i></span>
           <div class="home-option-title">Cadastrar</div>
-          <div class="home-option-desc">Registrar abrigo, ponto de doação, pessoa desaparecida, alimentação, comunidade ou voluntário</div>
+          <div class="home-option-desc">Registrar abrigo, ponto de doação, vaquinha, desaparecido, alimentação, comunidade, voluntário ou quero doar</div>
         </button>
         <button class="home-option-card" onclick="showView('consultar')">
           <span class="home-option-icon"><i data-lucide="search"></i></span>
@@ -210,6 +210,16 @@
         <span class="card-icon"><i data-lucide="hand-heart"></i></span>
         <div class="card-label">Oferecer Ajuda</div>
         <div class="card-desc">Me disponho a ajudar como voluntário</div>
+      </button>
+      <button class="card-btn" onclick="selectType('vaquinha')">
+        <span class="card-icon"><i data-lucide="heart"></i></span>
+        <div class="card-label">Vaquinha</div>
+        <div class="card-desc">Cadastrar campanha de arrecadação online (vakinha, catarse, etc.)</div>
+      </button>
+      <button class="card-btn" onclick="selectType('doador')">
+        <span class="card-icon"><i data-lucide="gift"></i></span>
+        <div class="card-label">Quero Doar</div>
+        <div class="card-desc">Me disponho a doar alimentos, roupas, água ou dinheiro</div>
       </button>
     </div>
 
@@ -647,6 +657,109 @@
         </div>
       </form>
 
+      <!-- FORM: VAQUINHA -->
+      <form id="form-vaquinha" class="form-type" style="display:none" onsubmit="submitForm(event,'vaquinha')">
+        <p class="section-title">Dados da Campanha</p>
+        <div class="alert alert-warning">
+          <span><i data-lucide="alert-triangle" class="icon-sm"></i></span>
+          <span>Vaquinhas passam por <strong>moderação</strong> antes de aparecerem no site. Os administradores serão notificados por e-mail para aprovação.</span>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nome da campanha <span class="req">*</span></label>
+            <input type="text" name="nome_campanha" placeholder="Ex: Ajuda para família Silva" required />
+          </div>
+          <div class="form-group">
+            <label>Responsável <span class="req">*</span></label>
+            <input type="text" name="responsavel" placeholder="Nome do responsável pela campanha" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Link da Vaquinha <span class="req">*</span></label>
+          <input type="url" name="link_vakinha" placeholder="https://www.vakinha.com.br/..." required />
+        </div>
+        <div class="form-group">
+          <label>Descrição da campanha <span class="req">*</span></label>
+          <textarea name="descricao" placeholder="Descreva o objetivo da vaquinha e quem será beneficiado..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label>Telefone / WhatsApp</label>
+          <input type="tel" name="telefone" placeholder="(32) 99999-0000" />
+        </div>
+        <hr class="divider"/>
+        <p class="section-title">Chave PIX (opcional)</p>
+        <div class="alert alert-info">
+          <span><i data-lucide="info" class="icon-sm"></i></span>
+          <span>Se a campanha também aceita PIX direto, informe aqui. Caso contrário, deixe em branco.</span>
+        </div>
+        <div class="pix-box">
+          <div class="pix-title">💰 Dados da Chave PIX</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Tipo da chave PIX</label>
+              <select name="pix_tipo">
+                <option value="">— Não informar PIX —</option>
+                <option value="CPF">CPF</option>
+                <option value="CNPJ">CNPJ</option>
+                <option value="E-mail">E-mail</option>
+                <option value="Telefone">Telefone</option>
+                <option value="Chave aleatória">Chave aleatória</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Chave PIX <span class="tip">(copie e cole exata)</span></label>
+              <input type="text" name="pix_chave" placeholder="Ex: (32) 99999-0000 ou CPF" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Nome do titular da conta PIX</label>
+            <input type="text" name="pix_titular" placeholder="Nome completo ou razão social" />
+          </div>
+        </div>
+        <div class="btn-row">
+          <button type="button" class="btn btn-secondary" onclick="goStep(2)">← Voltar</button>
+          <button type="submit" class="btn btn-primary">Enviar para Aprovação →</button>
+        </div>
+      </form>
+
+      <!-- FORM: DOADOR (Quero Doar) -->
+      <form id="form-doador" class="form-type" style="display:none" onsubmit="submitForm(event,'doador')">
+        <p class="section-title">Seus Dados</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Seu nome <span class="req">*</span></label>
+            <input type="text" name="nome" placeholder="Nome completo" required />
+          </div>
+          <div class="form-group">
+            <label>Telefone / WhatsApp <span class="req">*</span></label>
+            <input type="tel" name="telefone" placeholder="(32) 99999-0000" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Bairro / Localização</label>
+          <input type="text" name="bairro" placeholder="Ex: Centro, Cascatinha..." />
+        </div>
+        <hr class="divider"/>
+        <p class="section-title">O que desejo doar</p>
+        <div class="form-group">
+          <label>Selecione o que deseja ofertar <span class="req">*</span></label>
+          <div class="checkbox-group">
+            <label class="checkbox-item"><input type="checkbox" name="oferece" value="Alimentos" /><span><i data-lucide="wheat" class="icon-xs"></i> Alimentos</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="oferece" value="Roupas" /><span><i data-lucide="shirt" class="icon-xs"></i> Roupas</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="oferece" value="Água" /><span><i data-lucide="droplet" class="icon-xs"></i> Água</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="oferece" value="Dinheiro" /><span><i data-lucide="banknote" class="icon-xs"></i> Dinheiro</span></label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Observações</label>
+          <textarea name="obs" placeholder="Quantidade disponível, condições para retirada, horários..."></textarea>
+        </div>
+        <div class="btn-row">
+          <button type="button" class="btn btn-secondary" onclick="goStep(2)">← Voltar</button>
+          <button type="submit" class="btn btn-green">Quero Doar →</button>
+        </div>
+      </form>
+
     </div><!-- .form-card -->
   </div><!-- #step-3 -->
 
@@ -665,8 +778,8 @@
 
     <div class="success-card">
       <div class="success-icon"><i data-lucide="check-circle-2"></i></div>
-      <h2>Cadastro registrado!</h2>
-      <p>Seus dados foram salvos com sucesso. Compartilhe pelo WhatsApp para ampliar o alcance e facilitar a coordenação.</p>
+      <h2 id="success-title">Cadastro registrado!</h2>
+      <p id="success-desc">Seus dados foram salvos com sucesso. Compartilhe pelo WhatsApp para ampliar o alcance e facilitar a coordenação.</p>
 
       <div class="summary-box" id="summary-text">—</div>
 
@@ -704,6 +817,8 @@
         <option value="pontos_alimentacao">🍽️ Alimentação</option>
         <option value="comunidades">🏘️ Comunidades / Bairros</option>
         <option value="voluntarios">🙋 Voluntários</option>
+        <option value="vaquinhas">💛 Vaquinhas</option>
+        <option value="doadores">🤲 Quero Doar</option>
       </select>
     </div>
 
