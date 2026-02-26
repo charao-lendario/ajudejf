@@ -1,5 +1,31 @@
 import './style.css'
 import { supabase } from './supabase.js'
+import {
+  createIcons,
+  Home, Package, Search, Utensils, Building2, HandHeart,
+  PenLine, Shield, Flame, HeartPulse,
+  AlertTriangle, Info, CheckCircle2, Clipboard,
+  Bed, Clock, Users, Banknote, MapPin,
+  Droplet, Droplets, Shirt, Baby, Coffee, Moon, Sandwich,
+  Car, ChefHat, Dumbbell, Brain, Smartphone,
+  Pill, Cross, PawPrint, Cake, FileText, Brush, Wheat,
+  Stethoscope,
+} from 'lucide'
+
+const ICONS = {
+  Home, Package, Search, Utensils, Building2, HandHeart,
+  PenLine, Shield, Flame, HeartPulse,
+  AlertTriangle, Info, CheckCircle2, Clipboard,
+  Bed, Clock, Users, Banknote, MapPin,
+  Droplet, Droplets, Shirt, Baby, Coffee, Moon, Sandwich,
+  Car, ChefHat, Dumbbell, Brain, Smartphone,
+  Pill, Cross, PawPrint, Cake, FileText, Brush, Wheat,
+  Stethoscope,
+}
+
+function initIcons (el = document) {
+  createIcons({ icons: ICONS, el })
+}
 
 // ── STATE ──
 const state = {
@@ -9,12 +35,12 @@ const state = {
 }
 
 const typeLabels = {
-  abrigo:       '🏠 Abrigo',
-  doacao:       '📦 Ponto de Doação',
-  desaparecido: '🔍 Pessoa Desaparecida',
-  alimentacao:  '🍽️ Ponto de Alimentação',
-  comunidade:   '🏘️ Comunidade / Bairro',
-  voluntario:   '🙋 Oferecer Ajuda'
+  abrigo:       'Abrigo',
+  doacao:       'Ponto de Doação',
+  desaparecido: 'Pessoa Desaparecida',
+  alimentacao:  'Ponto de Alimentação',
+  comunidade:   'Comunidade / Bairro',
+  voluntario:   'Oferecer Ajuda'
 }
 
 // ── NAVIGATION ──
@@ -248,8 +274,11 @@ window.showView = function (view) {
   document.getElementById('view-' + view).classList.add('active')
   window.scrollTo({ top: 0, behavior: 'smooth' })
   if (view === 'consultar') loadConsulta()
-  if (view === 'cadastrar') goStep(1)
+  if (view === 'cadastrar') window.goStep(1)
 }
+
+// Inicializa ícones no carregamento
+initIcons()
 
 // ═══════════════════════════════════════════════════════
 // CONSULTA — HELPERS
@@ -301,11 +330,11 @@ function cardAbrigo (item, cidade) {
         <div class="rc-title">${esc(item.nome_local)}</div>
         ${prioBadge(item.prioridade)}
       </div>
-      <div class="rc-city">📍 ${esc(cidade)} — ${esc(item.endereco)}</div>
+      <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)} — ${esc(item.endereco)}</div>
       <div class="rc-body">
-        <div class="rc-row">🛏️ <strong>${item.vagas ?? '—'}</strong> vagas disponíveis</div>
-        ${item.aceita_animais ? `<div class="rc-row">🐾 Animais: ${esc(item.aceita_animais)}</div>` : ''}
-        ${item.necessidades ? `<div class="rc-row rc-needs">⚠️ Precisa agora: ${esc(item.necessidades)}</div>` : ''}
+        <div class="rc-row"><i data-lucide="bed" class="icon-xs"></i> <strong>${item.vagas ?? '—'}</strong> vagas disponíveis</div>
+        ${item.aceita_animais ? `<div class="rc-row"><i data-lucide="paw-print" class="icon-xs"></i> Animais: ${esc(item.aceita_animais)}</div>` : ''}
+        ${item.necessidades ? `<div class="rc-row rc-needs"><i data-lucide="alert-triangle" class="icon-xs"></i> Precisa agora: ${esc(item.necessidades)}</div>` : ''}
         ${chips(item.recursos)}
       </div>
       ${wppBtn(item.telefone)}
@@ -318,11 +347,11 @@ function cardDoacao (item, cidade) {
       <div class="rc-header">
         <div class="rc-title">${esc(item.nome_local)}</div>
       </div>
-      <div class="rc-city">📍 ${esc(cidade)} — ${esc(item.endereco)}</div>
+      <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)} — ${esc(item.endereco)}</div>
       <div class="rc-body">
-        ${item.horario ? `<div class="rc-row">🕐 ${esc(item.horario)}</div>` : ''}
+        ${item.horario ? `<div class="rc-row"><i data-lucide="clock" class="icon-xs"></i> ${esc(item.horario)}</div>` : ''}
         ${chips(item.aceita)}
-        ${item.pix_chave ? `<div class="rc-row rc-pix">💰 PIX (${esc(item.pix_tipo)}): <strong>${esc(item.pix_chave)}</strong>${item.pix_titular ? ` — ${esc(item.pix_titular)}` : ''}</div>` : ''}
+        ${item.pix_chave ? `<div class="rc-row rc-pix"><i data-lucide="banknote" class="icon-xs"></i> PIX (${esc(item.pix_tipo)}): <strong>${esc(item.pix_chave)}</strong>${item.pix_titular ? ` — ${esc(item.pix_titular)}` : ''}</div>` : ''}
       </div>
       ${wppBtn(item.telefone)}
     </div>`
@@ -335,12 +364,12 @@ function cardDesaparecido (item, cidade) {
         <div class="rc-title">${esc(item.nome_pessoa)}</div>
         <span class="badge badge-red">Desaparecido</span>
       </div>
-      <div class="rc-city">📍 ${esc(cidade)}</div>
+      <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)}</div>
       <div class="rc-body">
-        ${item.idade ? `<div class="rc-row">🎂 ${item.idade} anos</div>` : ''}
-        <div class="rc-row">📝 ${esc(item.descricao)}</div>
-        ${item.ultima_vez_visto ? `<div class="rc-row">🕐 Última vez: ${formatDate(item.ultima_vez_visto)}${item.local_visto ? ` — ${esc(item.local_visto)}` : ''}</div>` : ''}
-        ${item.condicao_saude ? `<div class="rc-row rc-needs">🏥 Saúde: ${esc(item.condicao_saude)}</div>` : ''}
+        ${item.idade ? `<div class="rc-row"><i data-lucide="cake" class="icon-xs"></i> ${item.idade} anos</div>` : ''}
+        <div class="rc-row"><i data-lucide="file-text" class="icon-xs"></i> ${esc(item.descricao)}</div>
+        ${item.ultima_vez_visto ? `<div class="rc-row"><i data-lucide="clock" class="icon-xs"></i> Última vez: ${formatDate(item.ultima_vez_visto)}${item.local_visto ? ` — ${esc(item.local_visto)}` : ''}</div>` : ''}
+        ${item.condicao_saude ? `<div class="rc-row rc-needs"><i data-lucide="stethoscope" class="icon-xs"></i> Saúde: ${esc(item.condicao_saude)}</div>` : ''}
       </div>
       <div class="rc-footer-info">Informante: ${esc(item.informante_nome)}</div>
       ${wppBtn(item.informante_tel, 'Contatar informante')}
@@ -354,12 +383,12 @@ function cardAlimentacao (item, cidade) {
         <div class="rc-title">${esc(item.nome_local)}</div>
         ${item.precisa_voluntarios === 'Sim, urgente' ? '<span class="badge badge-red">Voluntários urgente</span>' : ''}
       </div>
-      <div class="rc-city">📍 ${esc(cidade)} — ${esc(item.endereco)}</div>
+      <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)} — ${esc(item.endereco)}</div>
       <div class="rc-body">
-        ${item.horario ? `<div class="rc-row">🕐 ${esc(item.horario)}</div>` : ''}
-        ${item.capacidade ? `<div class="rc-row">👥 ${esc(item.capacidade)}</div>` : ''}
+        ${item.horario ? `<div class="rc-row"><i data-lucide="clock" class="icon-xs"></i> ${esc(item.horario)}</div>` : ''}
+        ${item.capacidade ? `<div class="rc-row"><i data-lucide="users" class="icon-xs"></i> ${esc(item.capacidade)}</div>` : ''}
         ${chips(item.refeicoes)}
-        ${item.necessidades ? `<div class="rc-row rc-needs">⚠️ Precisa: ${esc(item.necessidades)}</div>` : ''}
+        ${item.necessidades ? `<div class="rc-row rc-needs"><i data-lucide="alert-triangle" class="icon-xs"></i> Precisa: ${esc(item.necessidades)}</div>` : ''}
       </div>
       ${wppBtn(item.telefone)}
     </div>`
@@ -372,9 +401,9 @@ function cardComunidade (item, cidade) {
         <div class="rc-title">${esc(item.nome_local)}</div>
         ${prioBadge(item.prioridade)}
       </div>
-      <div class="rc-city">📍 ${esc(cidade)} — ${esc(item.endereco)}</div>
+      <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)} — ${esc(item.endereco)}</div>
       <div class="rc-body">
-        ${item.familias ? `<div class="rc-row">👨‍👩‍👧 ~${item.familias} famílias afetadas</div>` : ''}
+        ${item.familias ? `<div class="rc-row"><i data-lucide="users" class="icon-xs"></i> ~${item.familias} famílias afetadas</div>` : ''}
         ${chips(item.necessidades)}
         ${item.obs ? `<div class="rc-row">${esc(item.obs)}</div>` : ''}
       </div>
@@ -389,22 +418,22 @@ function cardVoluntario (item, cidade) {
         <div class="rc-title">${esc(item.nome)}</div>
         ${item.veiculo && item.veiculo !== 'Não' ? `<span class="badge badge-blue">${esc(item.veiculo)}</span>` : ''}
       </div>
-      <div class="rc-city">📍 ${esc(cidade)}${item.bairro ? ` — ${esc(item.bairro)}` : ''}</div>
+      <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)}${item.bairro ? ` — ${esc(item.bairro)}` : ''}</div>
       <div class="rc-body">
         ${chips(item.habilidades)}
-        ${item.disponibilidade ? `<div class="rc-row">🕐 ${esc(item.disponibilidade)}</div>` : ''}
+        ${item.disponibilidade ? `<div class="rc-row"><i data-lucide="clock" class="icon-xs"></i> ${esc(item.disponibilidade)}</div>` : ''}
       </div>
       ${wppBtn(item.telefone)}
     </div>`
 }
 
 const TABELA_CONFIG = {
-  abrigos:            { icon: '🏠', label: 'Abrigos',           card: cardAbrigo },
-  pontos_doacao:      { icon: '📦', label: 'Pontos de Doação',  card: cardDoacao },
-  desaparecidos:      { icon: '🔍', label: 'Desaparecidos',     card: cardDesaparecido },
-  pontos_alimentacao: { icon: '🍽️', label: 'Alimentação',       card: cardAlimentacao },
-  comunidades:        { icon: '🏘️', label: 'Comunidades',       card: cardComunidade },
-  voluntarios:        { icon: '🙋', label: 'Voluntários',       card: cardVoluntario },
+  abrigos:            { icon: 'home',        label: 'Abrigos',           card: cardAbrigo },
+  pontos_doacao:      { icon: 'package',     label: 'Pontos de Doação',  card: cardDoacao },
+  desaparecidos:      { icon: 'search',      label: 'Desaparecidos',     card: cardDesaparecido },
+  pontos_alimentacao: { icon: 'utensils',    label: 'Alimentação',       card: cardAlimentacao },
+  comunidades:        { icon: 'building-2',  label: 'Comunidades',       card: cardComunidade },
+  voluntarios:        { icon: 'hand-heart',  label: 'Voluntários',       card: cardVoluntario },
 }
 
 // ═══════════════════════════════════════════════════════
@@ -469,6 +498,7 @@ window.loadConsulta = async function () {
     }
 
     elResults.innerHTML = html
+    initIcons(elResults)
 
   } catch (err) {
     elLoading.style.display = 'none'

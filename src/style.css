@@ -293,9 +293,11 @@
       background: #eef5fb;
     }
     .card-icon {
-      font-size: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       margin-bottom: 10px;
-      display: block;
+      min-height: 36px;
     }
     .card-flag {
       width: 72px;
@@ -551,6 +553,17 @@
     .alert-warning { background: #fff3cd; border-left: 4px solid var(--gold); color: #7d5a00; }
     .alert-info    { background: #d1ecf1; border-left: 4px solid #17a2b8; color: #0c5460; }
 
+    /* ── LUCIDE ICONS ── */
+    svg.icon-xs  { width: 14px; height: 14px; vertical-align: -0.15em; flex-shrink: 0; }
+    svg.icon-sm  { width: 16px; height: 16px; vertical-align: -0.15em; flex-shrink: 0; }
+    svg.icon-md  { width: 20px; height: 20px; vertical-align: -0.15em; flex-shrink: 0; }
+    svg.icon-lg  { width: 24px; height: 24px; vertical-align: -0.15em; flex-shrink: 0; }
+
+    .sidebar-num-icon svg { width: 20px; height: 20px; color: var(--blue-main); }
+    .card-icon svg        { width: 36px; height: 36px; color: var(--blue-main); display: block; margin: 0 auto 10px; }
+    .home-option-icon svg { width: 52px; height: 52px; color: var(--blue-main); }
+    .success-icon svg     { width: 64px; height: 64px; color: var(--green); }
+
     /* ── VIEW SYSTEM ── */
     .view-section { display: none; }
     .view-section.active { display: block; }
@@ -603,7 +616,7 @@
       box-shadow: var(--shadow-md);
       transform: translateY(-3px);
     }
-    .home-option-icon { font-size: 48px; }
+    .home-option-icon { display: flex; align-items: center; justify-content: center; min-height: 52px; }
     .home-option-title {
       font-size: 22px;
       font-weight: 700;

@@ -40,21 +40,21 @@
   <hr class="sidebar-divider" />
   <div class="sidebar-nums">
     <div class="sidebar-num">
-      <span class="sidebar-num-icon">🚒</span>
+      <span class="sidebar-num-icon"><i data-lucide="flame"></i></span>
       <div>
         <div class="sidebar-num-label">Bombeiros</div>
         <div class="sidebar-num-value">193</div>
       </div>
     </div>
     <div class="sidebar-num">
-      <span class="sidebar-num-icon">🚑</span>
+      <span class="sidebar-num-icon"><i data-lucide="heart-pulse"></i></span>
       <div>
         <div class="sidebar-num-label">SAMU</div>
         <div class="sidebar-num-value">192</div>
       </div>
     </div>
     <div class="sidebar-num">
-      <span class="sidebar-num-icon">🛡️</span>
+      <span class="sidebar-num-icon"><i data-lucide="shield"></i></span>
       <div>
         <div class="sidebar-num-label">Defesa Civil</div>
         <div class="sidebar-num-value">199</div>
@@ -74,12 +74,12 @@
       <p>O que você deseja fazer?</p>
       <div class="home-options">
         <button class="home-option-card" onclick="showView('cadastrar')">
-          <span class="home-option-icon">✍️</span>
+          <span class="home-option-icon"><i data-lucide="pen-line"></i></span>
           <div class="home-option-title">Cadastrar</div>
           <div class="home-option-desc">Registrar abrigo, ponto de doação, pessoa desaparecida, alimentação, comunidade ou voluntário</div>
         </button>
         <button class="home-option-card" onclick="showView('consultar')">
-          <span class="home-option-icon">🔎</span>
+          <span class="home-option-icon"><i data-lucide="search"></i></span>
           <div class="home-option-title">Consultar</div>
           <div class="home-option-desc">Buscar abrigos, pontos de doação, desaparecidos, alimentação, comunidades e voluntários</div>
         </button>
@@ -117,7 +117,7 @@
     </div>
 
     <div class="alert alert-warning">
-      <span>⚠️</span>
+      <span><i data-lucide="alert-triangle" class="icon-sm"></i></span>
       <span>Este formulário é para registro de informações emergenciais. Para situações de risco imediato ligue <strong>193 (Bombeiros)</strong> ou <strong>199 (Defesa Civil)</strong>.</span>
     </div>
 
@@ -182,32 +182,32 @@
 
     <div class="cards-grid" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));">
       <button class="card-btn" onclick="selectType('abrigo')">
-        <span class="card-icon">🏠</span>
+        <span class="card-icon"><i data-lucide="home"></i></span>
         <div class="card-label">Abrigo</div>
         <div class="card-desc">Cadastrar local disponível para acolher desabrigados</div>
       </button>
       <button class="card-btn" onclick="selectType('doacao')">
-        <span class="card-icon">📦</span>
+        <span class="card-icon"><i data-lucide="package"></i></span>
         <div class="card-label">Ponto de Doação</div>
         <div class="card-desc">Local de coleta física + informar chave PIX</div>
       </button>
       <button class="card-btn" onclick="selectType('desaparecido')">
-        <span class="card-icon">🔍</span>
+        <span class="card-icon"><i data-lucide="search"></i></span>
         <div class="card-label">Pessoa Desaparecida</div>
         <div class="card-desc">Informar pessoa desaparecida ou encontrada</div>
       </button>
       <button class="card-btn" onclick="selectType('alimentacao')">
-        <span class="card-icon">🍽️</span>
+        <span class="card-icon"><i data-lucide="utensils"></i></span>
         <div class="card-label">Ponto de Alimentação</div>
         <div class="card-desc">Local que distribui refeições ou lanches</div>
       </button>
       <button class="card-btn" onclick="selectType('comunidade')">
-        <span class="card-icon">🏘️</span>
+        <span class="card-icon"><i data-lucide="building-2"></i></span>
         <div class="card-label">Comunidade / Bairro</div>
         <div class="card-desc">Bairro ou comunidade com necessidades urgentes</div>
       </button>
       <button class="card-btn" onclick="selectType('voluntario')">
-        <span class="card-icon">🙋</span>
+        <span class="card-icon"><i data-lucide="hand-heart"></i></span>
         <div class="card-label">Oferecer Ajuda</div>
         <div class="card-desc">Me disponho a ajudar como voluntário</div>
       </button>
@@ -357,20 +357,20 @@
         <div class="form-group">
           <label>O que aceita <span class="tip">(marque todos que se aplicam)</span></label>
           <div class="checkbox-group">
-            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Roupas adulto" /><span>👕 Roupas adulto</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Roupas infantil" /><span>👶 Roupas infantil</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Alimentos não perecíveis" /><span>🍞 Alimentos não perecíveis</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Higiene pessoal" /><span>🧴 Higiene pessoal</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Material de limpeza" /><span>🧹 Material de limpeza</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Colchões / cobertores" /><span>🛏️ Colchões / cobertores</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Medicamentos" /><span>💊 Medicamentos (verificar validade)</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Dinheiro / PIX" /><span>💰 Dinheiro / PIX</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Roupas adulto" /><span><i data-lucide="shirt" class="icon-xs"></i> Roupas adulto</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Roupas infantil" /><span><i data-lucide="baby" class="icon-xs"></i> Roupas infantil</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Alimentos não perecíveis" /><span><i data-lucide="wheat" class="icon-xs"></i> Alimentos não perecíveis</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Higiene pessoal" /><span><i data-lucide="droplets" class="icon-xs"></i> Higiene pessoal</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Material de limpeza" /><span><i data-lucide="brush" class="icon-xs"></i> Material de limpeza</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Colchões / cobertores" /><span><i data-lucide="bed" class="icon-xs"></i> Colchões / cobertores</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Medicamentos" /><span><i data-lucide="pill" class="icon-xs"></i> Medicamentos (verificar validade)</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Dinheiro / PIX" /><span><i data-lucide="banknote" class="icon-xs"></i> Dinheiro / PIX</span></label>
           </div>
         </div>
         <hr class="divider"/>
         <p class="section-title">Chave PIX para Doações Financeiras</p>
         <div class="alert alert-info">
-          <span>ℹ️</span>
+          <span><i data-lucide="info" class="icon-sm"></i></span>
           <span>Preencha somente se este ponto também recebe doações financeiras. A chave PIX será exibida publicamente.</span>
         </div>
         <div class="pix-box">
@@ -499,11 +499,11 @@
         <div class="form-group">
           <label>Tipo de refeição <span class="tip">(marque todos que se aplicam)</span></label>
           <div class="checkbox-group">
-            <label class="checkbox-item"><input type="checkbox" name="refeicao" value="Café da manhã" /><span>☕ Café da manhã</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="refeicao" value="Almoço" /><span>🍽️ Almoço</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="refeicao" value="Jantar" /><span>🌙 Jantar</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="refeicao" value="Lanche" /><span>🥪 Lanche</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="refeicao" value="Alimentação para bebês" /><span>🍼 Alimentação para bebês</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="refeicao" value="Café da manhã" /><span><i data-lucide="coffee" class="icon-xs"></i> Café da manhã</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="refeicao" value="Almoço" /><span><i data-lucide="utensils" class="icon-xs"></i> Almoço</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="refeicao" value="Jantar" /><span><i data-lucide="moon" class="icon-xs"></i> Jantar</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="refeicao" value="Lanche" /><span><i data-lucide="sandwich" class="icon-xs"></i> Lanche</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="refeicao" value="Alimentação para bebês" /><span><i data-lucide="baby" class="icon-xs"></i> Alimentação para bebês</span></label>
           </div>
         </div>
         <div class="form-group">
@@ -559,16 +559,16 @@
         <div class="form-group">
           <label>Necessidades urgentes <span class="tip">(marque todas)</span></label>
           <div class="checkbox-group">
-            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Água potável" /><span>💧 Água potável</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Alimentos" /><span>🍞 Alimentos</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Roupas e agasalhos" /><span>👕 Roupas e agasalhos</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Cobertores e colchões" /><span>🛏️ Cobertores e colchões</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Higiene pessoal" /><span>🧴 Higiene pessoal</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Material de limpeza" /><span>🧹 Material de limpeza</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Atendimento médico" /><span>🏥 Atendimento médico</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Resgate / remoção" /><span>🚒 Resgate / remoção</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Abrigo temporário" /><span>🏠 Abrigo temporário</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Voluntários" /><span>🙋 Voluntários</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Água potável" /><span><i data-lucide="droplet" class="icon-xs"></i> Água potável</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Alimentos" /><span><i data-lucide="wheat" class="icon-xs"></i> Alimentos</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Roupas e agasalhos" /><span><i data-lucide="shirt" class="icon-xs"></i> Roupas e agasalhos</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Cobertores e colchões" /><span><i data-lucide="bed" class="icon-xs"></i> Cobertores e colchões</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Higiene pessoal" /><span><i data-lucide="droplets" class="icon-xs"></i> Higiene pessoal</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Material de limpeza" /><span><i data-lucide="brush" class="icon-xs"></i> Material de limpeza</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Atendimento médico" /><span><i data-lucide="stethoscope" class="icon-xs"></i> Atendimento médico</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Resgate / remoção" /><span><i data-lucide="flame" class="icon-xs"></i> Resgate / remoção</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Abrigo temporário" /><span><i data-lucide="home" class="icon-xs"></i> Abrigo temporário</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Voluntários" /><span><i data-lucide="hand-heart" class="icon-xs"></i> Voluntários</span></label>
           </div>
         </div>
         <div class="form-group">
@@ -623,14 +623,14 @@
         <div class="form-group">
           <label>Habilidades / disponibilidade <span class="tip">(marque tudo que puder)</span></label>
           <div class="checkbox-group">
-            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Transporte de doações" /><span>🚗 Transporte de doações</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Cozinhar / preparar alimentos" /><span>🍳 Cozinhar / preparar alimentos</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Trabalho físico (limpeza, carga)" /><span>💪 Trabalho físico (limpeza, carga)</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Saúde / primeiros socorros" /><span>🏥 Saúde / primeiros socorros</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Apoio psicológico" /><span>🧠 Apoio psicológico</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Organização de doações" /><span>📦 Organização de doações</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Divulgação / redes sociais" /><span>📱 Divulgação / redes sociais</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Hospedagem na minha casa" /><span>🏠 Hospedar pessoas na minha casa</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Transporte de doações" /><span><i data-lucide="car" class="icon-xs"></i> Transporte de doações</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Cozinhar / preparar alimentos" /><span><i data-lucide="chef-hat" class="icon-xs"></i> Cozinhar / preparar alimentos</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Trabalho físico (limpeza, carga)" /><span><i data-lucide="dumbbell" class="icon-xs"></i> Trabalho físico (limpeza, carga)</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Saúde / primeiros socorros" /><span><i data-lucide="stethoscope" class="icon-xs"></i> Saúde / primeiros socorros</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Apoio psicológico" /><span><i data-lucide="brain" class="icon-xs"></i> Apoio psicológico</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Organização de doações" /><span><i data-lucide="package" class="icon-xs"></i> Organização de doações</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Divulgação / redes sociais" /><span><i data-lucide="smartphone" class="icon-xs"></i> Divulgação / redes sociais</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Hospedagem na minha casa" /><span><i data-lucide="home" class="icon-xs"></i> Hospedar pessoas na minha casa</span></label>
           </div>
         </div>
         <div class="form-group">
@@ -664,7 +664,7 @@
     </div>
 
     <div class="success-card">
-      <div class="success-icon">✅</div>
+      <div class="success-icon"><i data-lucide="check-circle-2"></i></div>
       <h2>Cadastro registrado!</h2>
       <p>Seus dados foram salvos com sucesso. Compartilhe pelo WhatsApp para ampliar o alcance e facilitar a coordenação.</p>
 
@@ -675,7 +675,7 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.122.558 4.112 1.524 5.84L.057 23.273a.5.5 0 0 0 .67.67l5.433-1.467A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.95 0-3.78-.526-5.354-1.44l-.381-.228-3.954 1.068 1.068-3.954-.228-.381A9.96 9.96 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
           Compartilhar no WhatsApp
         </button>
-        <button class="btn btn-secondary" onclick="copyText()">📋 Copiar texto</button>
+        <button class="btn btn-secondary" onclick="copyText()"><i data-lucide="clipboard" class="icon-sm"></i> Copiar texto</button>
         <button class="btn btn-primary" onclick="newEntry()">+ Novo Cadastro</button>
       </div>
     </div>
@@ -714,7 +714,7 @@
       <span>📭</span><p>Nenhum resultado encontrado para os filtros selecionados.</p>
     </div>
     <div id="consulta-error" style="display:none" class="consulta-state consulta-error-state">
-      <span>⚠️</span><p id="consulta-error-msg">Erro ao carregar dados.</p>
+      <span><i data-lucide="alert-triangle" class="icon-sm"></i></span><p id="consulta-error-msg">Erro ao carregar dados.</p>
     </div>
 
     <div id="consulta-results"></div>
