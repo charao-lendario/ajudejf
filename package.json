@@ -1,7 +1,7 @@
 {
-  "name": "ajude-jf",
+  "name": "ajude-pet",
   "version": "1.0.0",
-  "description": "Central de Apoio Emergencial — Juiz de Fora e Região",
+  "description": "Central de Apoio Animal — Juiz de Fora e Região",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

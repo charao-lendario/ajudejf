@@ -78,8 +78,8 @@ function buildHtml (tipo, data, id, pixQrcodeUrl) {
 <body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f5;padding:24px;margin:0">
   <div style="max-width:600px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.1)">
     <div style="background:#1a3a5c;padding:20px 24px;color:#fff">
-      <div style="font-size:13px;opacity:.8;margin-bottom:4px">AJUDE JF — Moderação</div>
-      <div style="font-size:20px;font-weight:700">⚠️ Nova ${tipoLabel} aguarda aprovação</div>
+      <div style="font-size:13px;opacity:.8;margin-bottom:4px">AJUDEPET — Moderação</div>
+      <div style="font-size:20px;font-weight:700">🐾 Nova ${tipoLabel} aguarda aprovação</div>
     </div>
     <div style="padding:24px">
       <p style="margin:0 0 16px;color:#444">Um novo cadastro do tipo <strong>${tipoLabel}</strong> foi enviado e aguarda sua revisão:</p>
@@ -165,9 +165,9 @@ module.exports = async function handler (req, res) {
     const nome = payload.nome_campanha || payload.nome_local || 'Sem nome'
 
     await resend.emails.send({
-      from: 'Ajude JF <noreply@ajudejf.com.br>',
+      from: 'AjudePet <noreply@ajudejf.com.br>',
       to: ADMINS,
-      subject: `[Ajude JF] Moderar ${tipoLabel}: ${nome}`,
+      subject: `[AjudePet] Moderar ${tipoLabel}: ${nome}`,
       html: buildHtml(tipo, payload, id, pixQrcodeUrl),
     })
 
