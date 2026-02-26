@@ -456,7 +456,7 @@ function cardAbrigo (item, cidade) {
       </div>
       <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)} — ${esc(item.endereco)}</div>
       <div class="rc-body">
-        <div class="rc-row"><i data-lucide="bed" class="icon-xs"></i> <strong>${item.vagas ?? '—'}</strong> vagas disponíveis</div>
+        ${item.vagas ? `<div class="rc-row"><i data-lucide="bed" class="icon-xs"></i> <strong>${item.vagas}</strong> vagas disponíveis</div>` : ''}
         ${item.aceita_animais ? `<div class="rc-row"><i data-lucide="paw-print" class="icon-xs"></i> Animais: ${esc(item.aceita_animais)}</div>` : ''}
         ${item.necessidades ? `<div class="rc-row rc-needs"><i data-lucide="alert-triangle" class="icon-xs"></i> Precisa agora: ${esc(item.necessidades)}</div>` : ''}
         ${chips(item.recursos)}
