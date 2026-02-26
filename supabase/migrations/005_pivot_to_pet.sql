@@ -17,25 +17,29 @@
 -- [ROLLBACK] ALTER TABLE abrigos RENAME COLUMN capacidade TO vagas;
 -- [ROLLBACK] DROP COLUMN especies_aceitas, aceita_resgate, veterinario_disponivel;
 
--- Remover coluna aceita_animais (não faz mais sentido)
-ALTER TABLE abrigos DROP COLUMN IF EXISTS aceita_animais;
-
--- Renomear vagas para capacidade
 DO $$
 BEGIN
-  IF EXISTS (
-    SELECT 1 FROM information_schema.columns
-    WHERE table_name = 'abrigos' AND column_name = 'vagas'
-  ) THEN
-    ALTER TABLE abrigos RENAME COLUMN vagas TO capacidade;
+  IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'abrigos') THEN
+    -- Remover coluna aceita_animais (não faz mais sentido)
+    ALTER TABLE abrigos DROP COLUMN IF EXISTS aceita_animais;
+
+    -- Renomear vagas para capacidade
+    IF EXISTS (
+      SELECT 1 FROM information_schema.columns
+      WHERE table_name = 'abrigos' AND column_name = 'vagas'
+    ) THEN
+      ALTER TABLE abrigos RENAME COLUMN vagas TO capacidade;
+    END IF;
+
+    -- Adicionar novas colunas pet
+    ALTER TABLE abrigos ADD COLUMN IF NOT EXISTS especies_aceitas text[] DEFAULT '{}';
+    ALTER TABLE abrigos ADD COLUMN IF NOT EXISTS aceita_resgate boolean DEFAULT true;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'abrigos' AND column_name = 'veterinario_disponivel') THEN
+      ALTER TABLE abrigos ADD COLUMN veterinario_disponivel text
+        CHECK (veterinario_disponivel IN ('Sim', 'Não', 'Parceiro'));
+    END IF;
   END IF;
 END $$;
-
--- Adicionar novas colunas pet
-ALTER TABLE abrigos ADD COLUMN IF NOT EXISTS especies_aceitas text[] DEFAULT '{}';
-ALTER TABLE abrigos ADD COLUMN IF NOT EXISTS aceita_resgate boolean DEFAULT true;
-ALTER TABLE abrigos ADD COLUMN IF NOT EXISTS veterinario_disponivel text
-  CHECK (veterinario_disponivel IN ('Sim', 'Não', 'Parceiro'));
 
 
 -- ── 1.2 PONTOS DE ALIMENTAÇÃO: adaptar para comedouros pet ────
@@ -43,14 +47,17 @@ ALTER TABLE abrigos ADD COLUMN IF NOT EXISTS veterinario_disponivel text
 -- [ROLLBACK] ALTER TABLE pontos_alimentacao ADD COLUMN IF NOT EXISTS refeicoes text[] DEFAULT '{}';
 -- [ROLLBACK] DROP COLUMN tipo_alimento, atende_especies, frequencia_reposicao;
 
--- Remover colunas humanas
-ALTER TABLE pontos_alimentacao DROP COLUMN IF EXISTS capacidade;
-ALTER TABLE pontos_alimentacao DROP COLUMN IF EXISTS refeicoes;
+DO $$
+BEGIN
+  IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'pontos_alimentacao') THEN
+    ALTER TABLE pontos_alimentacao DROP COLUMN IF EXISTS capacidade;
+    ALTER TABLE pontos_alimentacao DROP COLUMN IF EXISTS refeicoes;
 
--- Adicionar colunas pet
-ALTER TABLE pontos_alimentacao ADD COLUMN IF NOT EXISTS tipo_alimento text[] DEFAULT '{}';
-ALTER TABLE pontos_alimentacao ADD COLUMN IF NOT EXISTS atende_especies text[] DEFAULT '{}';
-ALTER TABLE pontos_alimentacao ADD COLUMN IF NOT EXISTS frequencia_reposicao text;
+    ALTER TABLE pontos_alimentacao ADD COLUMN IF NOT EXISTS tipo_alimento text[] DEFAULT '{}';
+    ALTER TABLE pontos_alimentacao ADD COLUMN IF NOT EXISTS atende_especies text[] DEFAULT '{}';
+    ALTER TABLE pontos_alimentacao ADD COLUMN IF NOT EXISTS frequencia_reposicao text;
+  END IF;
+END $$;
 
 
 -- ════════════════════════════════════════════════════════════════
@@ -62,70 +69,109 @@ ALTER TABLE pontos_alimentacao ADD COLUMN IF NOT EXISTS frequencia_reposicao tex
 -- [ROLLBACK] ALTER TABLE pets_perdidos RENAME TO desaparecidos;
 -- [ROLLBACK] Restaurar colunas removidas e renomear de volta
 
+-- Se desaparecidos existe, renomeia para pets_perdidos e adapta colunas
+-- Se nenhuma das duas existe, cria pets_perdidos do zero
 DO $$
 BEGIN
-  IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'desaparecidos') THEN
+  -- Renomear se tabela antiga existe
+  IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'desaparecidos') THEN
     ALTER TABLE desaparecidos RENAME TO pets_perdidos;
   END IF;
-END $$;
 
--- Remover colunas humanas
-ALTER TABLE pets_perdidos DROP COLUMN IF EXISTS idade;
-ALTER TABLE pets_perdidos DROP COLUMN IF EXISTS condicao_saude;
-ALTER TABLE pets_perdidos DROP COLUMN IF EXISTS informante_nome;
-ALTER TABLE pets_perdidos DROP COLUMN IF EXISTS informante_tel;
-ALTER TABLE pets_perdidos DROP COLUMN IF EXISTS relacao;
+  -- Se pets_perdidos ainda não existe (banco sem desaparecidos), criar do zero
+  IF NOT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'pets_perdidos') THEN
+    CREATE TABLE pets_perdidos (
+      id                uuid        DEFAULT gen_random_uuid() PRIMARY KEY,
+      created_at        timestamptz DEFAULT now() NOT NULL,
+      updated_at        timestamptz DEFAULT now() NOT NULL,
+      cidade_id         smallint    NOT NULL REFERENCES cidades(id),
+      nome_pet          text        NOT NULL,
+      especie           text        NOT NULL,
+      raca              text,
+      cor               text,
+      porte             text        CHECK (porte IN ('Pequeno', 'Médio', 'Grande')),
+      sexo              text        CHECK (sexo IN ('Macho', 'Fêmea', 'Não sei')),
+      microchip         text,
+      castrado          text        CHECK (castrado IN ('Sim', 'Não', 'Não sei')),
+      descricao         text,
+      ultima_vez_visto  timestamptz,
+      local_visto       text,
+      foto_url          text,
+      tutor_nome        text        NOT NULL,
+      tutor_tel         text,
+      obs               text,
+      status            text        DEFAULT 'perdido' CHECK (status IN ('perdido', 'encontrado', 'arquivado'))
+    );
+  ELSE
+    -- Tabela existe (veio do RENAME ou já existia) — adaptar colunas
+    -- Remover colunas humanas
+    ALTER TABLE pets_perdidos DROP COLUMN IF EXISTS idade;
+    ALTER TABLE pets_perdidos DROP COLUMN IF EXISTS condicao_saude;
+    ALTER TABLE pets_perdidos DROP COLUMN IF EXISTS informante_nome;
+    ALTER TABLE pets_perdidos DROP COLUMN IF EXISTS informante_tel;
+    ALTER TABLE pets_perdidos DROP COLUMN IF EXISTS relacao;
 
--- Renomear nome_pessoa → nome_pet
-DO $$
-BEGIN
-  IF EXISTS (
-    SELECT 1 FROM information_schema.columns
-    WHERE table_name = 'pets_perdidos' AND column_name = 'nome_pessoa'
-  ) THEN
-    ALTER TABLE pets_perdidos RENAME COLUMN nome_pessoa TO nome_pet;
+    -- Renomear nome_pessoa → nome_pet
+    IF EXISTS (
+      SELECT 1 FROM information_schema.columns
+      WHERE table_name = 'pets_perdidos' AND column_name = 'nome_pessoa'
+    ) THEN
+      ALTER TABLE pets_perdidos RENAME COLUMN nome_pessoa TO nome_pet;
+    END IF;
+
+    -- Adicionar colunas pet
+    ALTER TABLE pets_perdidos ADD COLUMN IF NOT EXISTS especie text;
+    ALTER TABLE pets_perdidos ADD COLUMN IF NOT EXISTS raca text;
+    ALTER TABLE pets_perdidos ADD COLUMN IF NOT EXISTS cor text;
+    ALTER TABLE pets_perdidos ADD COLUMN IF NOT EXISTS foto_url text;
+    ALTER TABLE pets_perdidos ADD COLUMN IF NOT EXISTS tutor_nome text;
+    ALTER TABLE pets_perdidos ADD COLUMN IF NOT EXISTS tutor_tel text;
+    ALTER TABLE pets_perdidos ADD COLUMN IF NOT EXISTS microchip text;
+
+    -- Colunas com CHECK — só adicionar se não existem
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'pets_perdidos' AND column_name = 'porte') THEN
+      ALTER TABLE pets_perdidos ADD COLUMN porte text CHECK (porte IN ('Pequeno', 'Médio', 'Grande'));
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'pets_perdidos' AND column_name = 'sexo') THEN
+      ALTER TABLE pets_perdidos ADD COLUMN sexo text CHECK (sexo IN ('Macho', 'Fêmea', 'Não sei'));
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'pets_perdidos' AND column_name = 'castrado') THEN
+      ALTER TABLE pets_perdidos ADD COLUMN castrado text CHECK (castrado IN ('Sim', 'Não', 'Não sei'));
+    END IF;
+
+    -- Tornar especie NOT NULL
+    UPDATE pets_perdidos SET especie = 'Não informado' WHERE especie IS NULL;
+    ALTER TABLE pets_perdidos ALTER COLUMN especie SET NOT NULL;
+
+    -- Tornar tutor_nome NOT NULL
+    UPDATE pets_perdidos SET tutor_nome = 'Não informado' WHERE tutor_nome IS NULL;
+    ALTER TABLE pets_perdidos ALTER COLUMN tutor_nome SET NOT NULL;
+
+    -- Atualizar CHECK constraint de status
+    ALTER TABLE pets_perdidos DROP CONSTRAINT IF EXISTS desaparecidos_status_check;
+    ALTER TABLE pets_perdidos DROP CONSTRAINT IF EXISTS pets_perdidos_status_check;
+    ALTER TABLE pets_perdidos ADD CONSTRAINT pets_perdidos_status_check
+      CHECK (status IN ('perdido', 'encontrado', 'arquivado'));
+
+    -- Mapear status antigos
+    UPDATE pets_perdidos SET status = 'perdido' WHERE status = 'desaparecido';
   END IF;
 END $$;
 
--- Adicionar colunas pet
-ALTER TABLE pets_perdidos ADD COLUMN IF NOT EXISTS especie text;
-ALTER TABLE pets_perdidos ADD COLUMN IF NOT EXISTS raca text;
-ALTER TABLE pets_perdidos ADD COLUMN IF NOT EXISTS cor text;
-ALTER TABLE pets_perdidos ADD COLUMN IF NOT EXISTS porte text
-  CHECK (porte IN ('Pequeno', 'Médio', 'Grande'));
-ALTER TABLE pets_perdidos ADD COLUMN IF NOT EXISTS sexo text
-  CHECK (sexo IN ('Macho', 'Fêmea', 'Não sei'));
-ALTER TABLE pets_perdidos ADD COLUMN IF NOT EXISTS microchip text;
-ALTER TABLE pets_perdidos ADD COLUMN IF NOT EXISTS castrado text
-  CHECK (castrado IN ('Sim', 'Não', 'Não sei'));
-ALTER TABLE pets_perdidos ADD COLUMN IF NOT EXISTS foto_url text;
-ALTER TABLE pets_perdidos ADD COLUMN IF NOT EXISTS tutor_nome text;
-ALTER TABLE pets_perdidos ADD COLUMN IF NOT EXISTS tutor_tel text;
-
--- Tornar especie NOT NULL (para registros existentes, preencher com default)
-UPDATE pets_perdidos SET especie = 'Não informado' WHERE especie IS NULL;
-ALTER TABLE pets_perdidos ALTER COLUMN especie SET NOT NULL;
-
--- Tornar tutor_nome NOT NULL (para registros existentes, migrar de nome_pet)
-UPDATE pets_perdidos SET tutor_nome = 'Não informado' WHERE tutor_nome IS NULL;
-ALTER TABLE pets_perdidos ALTER COLUMN tutor_nome SET NOT NULL;
-
--- Atualizar CHECK constraint de status
-ALTER TABLE pets_perdidos DROP CONSTRAINT IF EXISTS desaparecidos_status_check;
-ALTER TABLE pets_perdidos DROP CONSTRAINT IF EXISTS pets_perdidos_status_check;
-ALTER TABLE pets_perdidos ADD CONSTRAINT pets_perdidos_status_check
-  CHECK (status IN ('perdido', 'encontrado', 'arquivado'));
-
--- Atualizar dados existentes: mapear status antigos
-UPDATE pets_perdidos SET status = 'perdido' WHERE status = 'desaparecido';
-
--- Atualizar indexes (renomear para nova tabela)
+-- Indexes (seguros fora do bloco — tabela sempre existe neste ponto)
 DROP INDEX IF EXISTS idx_desaparecidos_cidade;
 DROP INDEX IF EXISTS idx_desaparecidos_status;
 DROP INDEX IF EXISTS idx_desaparecidos_created;
 CREATE INDEX IF NOT EXISTS idx_pets_perdidos_cidade  ON pets_perdidos(cidade_id);
 CREATE INDEX IF NOT EXISTS idx_pets_perdidos_status  ON pets_perdidos(status);
 CREATE INDEX IF NOT EXISTS idx_pets_perdidos_created ON pets_perdidos(created_at DESC);
+
+-- Trigger
+DROP TRIGGER IF EXISTS trg_desaparecidos_updated_at ON pets_perdidos;
+DROP TRIGGER IF EXISTS trg_pets_perdidos_updated_at ON pets_perdidos;
+CREATE TRIGGER trg_pets_perdidos_updated_at
+  BEFORE UPDATE ON pets_perdidos
+  FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 
 
 -- ── 2.2 comunidades → ongs_protetores ─────────────────────────
@@ -134,32 +180,61 @@ CREATE INDEX IF NOT EXISTS idx_pets_perdidos_created ON pets_perdidos(created_at
 
 DO $$
 BEGIN
-  IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'comunidades') THEN
+  -- Renomear se tabela antiga existe
+  IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'comunidades') THEN
     ALTER TABLE comunidades RENAME TO ongs_protetores;
+  END IF;
+
+  -- Se ongs_protetores ainda não existe, criar do zero
+  IF NOT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'ongs_protetores') THEN
+    CREATE TABLE ongs_protetores (
+      id                  uuid        DEFAULT gen_random_uuid() PRIMARY KEY,
+      created_at          timestamptz DEFAULT now() NOT NULL,
+      updated_at          timestamptz DEFAULT now() NOT NULL,
+      cidade_id           smallint    NOT NULL REFERENCES cidades(id),
+      nome_local          text        NOT NULL,
+      tipo                text        NOT NULL CHECK (tipo IN ('ONG', 'Protetor Independente', 'Grupo de Resgate', 'Associação')),
+      responsavel         text,
+      telefone            text,
+      endereco            text        NOT NULL,
+      animais_atendidos   integer     DEFAULT 0,
+      especies            text[]      DEFAULT '{}',
+      necessidades        text[]      DEFAULT '{}',
+      nao_precisa         text,
+      prioridade          text        NOT NULL CHECK (prioridade IN ('Alta', 'Média', 'Baixa')),
+      site                text,
+      instagram           text,
+      cnpj                text,
+      obs                 text,
+      status              text        DEFAULT 'pendente' CHECK (status IN ('pendente', 'em_atendimento', 'resolvido'))
+    );
+  ELSE
+    -- Tabela existe — adaptar colunas
+    ALTER TABLE ongs_protetores DROP COLUMN IF EXISTS familias;
+
+    ALTER TABLE ongs_protetores ADD COLUMN IF NOT EXISTS tipo text;
+    ALTER TABLE ongs_protetores ADD COLUMN IF NOT EXISTS animais_atendidos integer DEFAULT 0;
+    ALTER TABLE ongs_protetores ADD COLUMN IF NOT EXISTS especies text[] DEFAULT '{}';
+    ALTER TABLE ongs_protetores ADD COLUMN IF NOT EXISTS site text;
+    ALTER TABLE ongs_protetores ADD COLUMN IF NOT EXISTS instagram text;
+    ALTER TABLE ongs_protetores ADD COLUMN IF NOT EXISTS cnpj text;
+
+    -- Tornar tipo NOT NULL
+    UPDATE ongs_protetores SET tipo = 'Protetor Independente' WHERE tipo IS NULL;
+    ALTER TABLE ongs_protetores ALTER COLUMN tipo SET NOT NULL;
+
+    -- Adicionar CHECK constraint apenas se não existe
+    IF NOT EXISTS (
+      SELECT 1 FROM information_schema.constraint_column_usage
+      WHERE table_name = 'ongs_protetores' AND constraint_name = 'ongs_protetores_tipo_check'
+    ) THEN
+      ALTER TABLE ongs_protetores ADD CONSTRAINT ongs_protetores_tipo_check
+        CHECK (tipo IN ('ONG', 'Protetor Independente', 'Grupo de Resgate', 'Associação'));
+    END IF;
   END IF;
 END $$;
 
--- Remover colunas humanas
-ALTER TABLE ongs_protetores DROP COLUMN IF EXISTS familias;
-
--- Adicionar colunas pet
-ALTER TABLE ongs_protetores ADD COLUMN IF NOT EXISTS tipo text;
-ALTER TABLE ongs_protetores ADD COLUMN IF NOT EXISTS animais_atendidos integer DEFAULT 0;
-ALTER TABLE ongs_protetores ADD COLUMN IF NOT EXISTS especies text[] DEFAULT '{}';
-ALTER TABLE ongs_protetores ADD COLUMN IF NOT EXISTS site text;
-ALTER TABLE ongs_protetores ADD COLUMN IF NOT EXISTS instagram text;
-ALTER TABLE ongs_protetores ADD COLUMN IF NOT EXISTS cnpj text;
-
--- Tornar tipo NOT NULL (para registros existentes, preencher com default)
-UPDATE ongs_protetores SET tipo = 'Protetor Independente' WHERE tipo IS NULL;
-ALTER TABLE ongs_protetores ALTER COLUMN tipo SET NOT NULL;
-ALTER TABLE ongs_protetores ADD CONSTRAINT ongs_protetores_tipo_check
-  CHECK (tipo IN ('ONG', 'Protetor Independente', 'Grupo de Resgate', 'Associação'));
-
--- Converter necessidades de text para text[] se necessário
--- A coluna original era text[], então mantemos como está
-
--- Atualizar indexes (renomear para nova tabela)
+-- Indexes (seguros fora do bloco — tabela sempre existe neste ponto)
 DROP INDEX IF EXISTS idx_comunidades_cidade;
 DROP INDEX IF EXISTS idx_comunidades_status;
 DROP INDEX IF EXISTS idx_comunidades_prioridade;
@@ -168,6 +243,13 @@ CREATE INDEX IF NOT EXISTS idx_ongs_prot_cidade     ON ongs_protetores(cidade_id
 CREATE INDEX IF NOT EXISTS idx_ongs_prot_status     ON ongs_protetores(status);
 CREATE INDEX IF NOT EXISTS idx_ongs_prot_prioridade ON ongs_protetores(prioridade);
 CREATE INDEX IF NOT EXISTS idx_ongs_prot_created    ON ongs_protetores(created_at DESC);
+
+-- Trigger
+DROP TRIGGER IF EXISTS trg_comunidades_updated_at ON ongs_protetores;
+DROP TRIGGER IF EXISTS trg_ongs_prot_updated_at ON ongs_protetores;
+CREATE TRIGGER trg_ongs_prot_updated_at
+  BEFORE UPDATE ON ongs_protetores
+  FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 
 
 -- ════════════════════════════════════════════════════════════════
