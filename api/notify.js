@@ -5,7 +5,7 @@ const { createClient } = require('@supabase/supabase-js')
 const { Resend } = require('resend')
 const crypto = require('crypto')
 
-const ADMINS = ['lucascharao17@gmail.com', 'agenciagrowia@gmail.com']
+const ADMINS = ['lucascharao17@gmail.com', 'agenciagrowia@gmail.com', 'lucascharao1@hotmail.com']
 const APP_URL = process.env.APP_URL || 'https://ajudejf.com.br'
 
 function makeToken (id, tipo) {
