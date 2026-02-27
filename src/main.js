@@ -255,8 +255,8 @@ const CAMPO_COLUNA = {
   saude:           'condicao_saude',
   informante_nome: 'informante_nome',
   informante_tel:  'informante_tel',
-  contato_nome:    'contato_nome',
-  contato_tel:     'contato_tel',
+  contato_nome:    'tutor_nome',
+  contato_tel:     'tutor_tel',
 }
 
 // Carrega cidade_id a partir do nome (cache simples)
@@ -715,8 +715,8 @@ function cardPetPerdido (item, cidade) {
         <div class="rc-row"><i data-lucide="file-text" class="icon-xs"></i> ${esc(item.descricao)}</div>
         ${item.ultima_vez_visto ? `<div class="rc-row"><i data-lucide="clock" class="icon-xs"></i> Última vez: ${formatDate(item.ultima_vez_visto)}</div>` : ''}
       </div>
-      <div class="rc-footer-info">Contato: ${esc(item.contato_nome)}</div>
-      ${wppBtn(item.contato_tel, 'Contatar')}
+      <div class="rc-footer-info">Contato: ${esc(item.tutor_nome)}</div>
+      ${wppBtn(item.tutor_tel, 'Contatar')}
     </div>`
 }
 
