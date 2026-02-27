@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ajude JF — Central de Apoio Emergencial</title>
-  <meta name="description" content="Plataforma de apoio emergencial para Juiz de Fora e região. Cadastre abrigos, pontos de doação, pessoas desaparecidas e muito mais." />
+  <title>Ajude JF — Central de Apoio Animal</title>
+  <meta name="description" content="Plataforma de apoio animal para Juiz de Fora e região. Cadastre pets perdidos, ONGs, protetores, lares temporários, doações e muito mais." />
 </head>
 <body>
-<!-- EMERGENCY BANNER -->
-<div class="emergency-banner">
-  SITUAÇÃO DE EMERGÊNCIA — Juiz de Fora e Região &nbsp;|&nbsp; Emergências: <strong>193</strong> (Bombeiros) &nbsp;|&nbsp; <strong>192</strong> (SAMU) &nbsp;|&nbsp; <strong>199</strong> (Defesa Civil)
+<!-- PET BANNER -->
+<div class="emergency-banner" style="background:#2e6da4">
+  APOIO ANIMAL — Juiz de Fora e Região &nbsp;|&nbsp; Denúncias: <strong>0800 61 8080</strong> (IBAMA) &nbsp;|&nbsp; <strong>153</strong> (Guarda Municipal) &nbsp;|&nbsp; <strong>(32) 3690-8450</strong> (Zoonoses)
 </div>
 
 <!-- HEADER -->
@@ -17,10 +17,10 @@
   <div class="header-inner">
     <div class="header-title">
       <h1>Ajude JF</h1>
-      <p>Central de Apoio Emergencial — Juiz de Fora e Região</p>
+      <p>Central de Apoio Animal — Juiz de Fora e Região</p>
     </div>
     <div class="header-actions">
-      <span class="header-badge">Emergência</span>
+      <span class="header-badge" style="background:var(--blue-main)">Apoio Animal</span>
       <a href="https://www.instagram.com/ajudejuizdefora2026?igsh=MTNub3BqcHJzdDNkYQ==" target="_blank" rel="noopener noreferrer" class="instagram-link" title="Siga-nos no Instagram">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
       </a>
@@ -40,28 +40,28 @@
   <hr class="sidebar-divider" />
   <div class="sidebar-nums">
     <div class="sidebar-num">
-      <span class="sidebar-num-icon"><i data-lucide="flame"></i></span>
+      <span class="sidebar-num-icon"><i data-lucide="shield"></i></span>
       <div>
-        <div class="sidebar-num-label">Bombeiros</div>
-        <div class="sidebar-num-value">193</div>
+        <div class="sidebar-num-label">IBAMA</div>
+        <div class="sidebar-num-value">0800 61 8080</div>
+      </div>
+    </div>
+    <div class="sidebar-num">
+      <span class="sidebar-num-icon"><i data-lucide="paw-print"></i></span>
+      <div>
+        <div class="sidebar-num-label">Zoonoses JF</div>
+        <div class="sidebar-num-value">(32) 3690-8450</div>
       </div>
     </div>
     <div class="sidebar-num">
       <span class="sidebar-num-icon"><i data-lucide="heart-pulse"></i></span>
       <div>
-        <div class="sidebar-num-label">SAMU</div>
-        <div class="sidebar-num-value">192</div>
-      </div>
-    </div>
-    <div class="sidebar-num">
-      <span class="sidebar-num-icon"><i data-lucide="shield"></i></span>
-      <div>
-        <div class="sidebar-num-label">Defesa Civil</div>
-        <div class="sidebar-num-value">199</div>
+        <div class="sidebar-num-label">Guarda Municipal</div>
+        <div class="sidebar-num-value">153</div>
       </div>
     </div>
   </div>
-  <p class="sidebar-tagline">Plataforma de apoio à comunidade de Juiz de Fora e região</p>
+  <p class="sidebar-tagline">Plataforma de apoio animal para Juiz de Fora e região</p>
 </aside>
 
 <!-- MAIN -->
@@ -70,18 +70,18 @@
   <!-- ─── HOME SELECTION ─── -->
   <div id="view-home" class="view-section active">
     <div class="home-hero">
-      <h2>Central de Apoio Emergencial</h2>
+      <h2>Central de Apoio Animal</h2>
       <p>O que você deseja fazer?</p>
       <div class="home-options">
         <button class="home-option-card" onclick="showView('cadastrar')">
           <span class="home-option-icon"><i data-lucide="pen-line"></i></span>
           <div class="home-option-title">Cadastrar</div>
-          <div class="home-option-desc">Registrar abrigo, doação, desaparecido, alimentação, comunidade, voluntário, vaquinha, quero doar, ONG/protetor ou pet perdido</div>
+          <div class="home-option-desc">Registrar pet perdido, ONG/protetor, lar temporário, ponto de doação de ração, voluntário ou vaquinha</div>
         </button>
         <button class="home-option-card" onclick="showView('consultar')">
           <span class="home-option-icon"><i data-lucide="search"></i></span>
           <div class="home-option-title">Consultar</div>
-          <div class="home-option-desc">Buscar abrigos, doações, desaparecidos, alimentação, comunidades, voluntários, ONGs/protetores e pets perdidos</div>
+          <div class="home-option-desc">Buscar pets perdidos, ONGs/protetores, lares temporários, doações de ração, voluntários e vaquinhas</div>
         </button>
       </div>
     </div>
@@ -116,9 +116,9 @@
       </div>
     </div>
 
-    <div class="alert alert-warning">
-      <span><i data-lucide="alert-triangle" class="icon-sm"></i></span>
-      <span>Este formulário é para registro de informações emergenciais. Para situações de risco imediato ligue <strong>193 (Bombeiros)</strong> ou <strong>199 (Defesa Civil)</strong>.</span>
+    <div class="alert alert-info">
+      <span><i data-lucide="info" class="icon-sm"></i></span>
+      <span>Para denúncias de maus-tratos ligue <strong>0800 61 8080</strong> (IBAMA) ou <strong>153</strong> (Guarda Municipal). Para resgate de animais em risco, acione a <strong>Zoonoses: (32) 3690-8450</strong>.</span>
     </div>
 
     <div class="section-header">
@@ -181,55 +181,35 @@
     </div>
 
     <div class="cards-grid" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));">
-      <button class="card-btn" onclick="selectType('abrigo')">
-        <span class="card-icon"><i data-lucide="home"></i></span>
-        <div class="card-label">Abrigo</div>
-        <div class="card-desc">Cadastrar local disponível para acolher desabrigados</div>
-      </button>
-      <button class="card-btn" onclick="selectType('doacao')">
-        <span class="card-icon"><i data-lucide="package"></i></span>
-        <div class="card-label">Ponto de Doação</div>
-        <div class="card-desc">Local de coleta física + informar chave PIX</div>
-      </button>
-      <button class="card-btn" onclick="selectType('desaparecido')">
+      <button class="card-btn" onclick="selectType('pet_perdido')">
         <span class="card-icon"><i data-lucide="search"></i></span>
-        <div class="card-label">Pessoa Desaparecida</div>
-        <div class="card-desc">Informar pessoa desaparecida ou encontrada</div>
-      </button>
-      <button class="card-btn" onclick="selectType('alimentacao')">
-        <span class="card-icon"><i data-lucide="utensils"></i></span>
-        <div class="card-label">Ponto de Alimentação</div>
-        <div class="card-desc">Local que distribui refeições ou lanches</div>
-      </button>
-      <button class="card-btn" onclick="selectType('comunidade')">
-        <span class="card-icon"><i data-lucide="building-2"></i></span>
-        <div class="card-label">Comunidade / Bairro</div>
-        <div class="card-desc">Bairro ou comunidade com necessidades urgentes</div>
-      </button>
-      <button class="card-btn" onclick="selectType('voluntario')">
-        <span class="card-icon"><i data-lucide="hand-heart"></i></span>
-        <div class="card-label">Oferecer Ajuda</div>
-        <div class="card-desc">Me disponho a ajudar como voluntário</div>
-      </button>
-      <button class="card-btn" onclick="selectType('vaquinha')">
-        <span class="card-icon"><i data-lucide="heart"></i></span>
-        <div class="card-label">Vaquinha</div>
-        <div class="card-desc">Cadastrar campanha de arrecadação online (vakinha, catarse, etc.)</div>
-      </button>
-      <button class="card-btn" onclick="selectType('doador')">
-        <span class="card-icon"><i data-lucide="gift"></i></span>
-        <div class="card-label">Quero Doar</div>
-        <div class="card-desc">Me disponho a doar alimentos, roupas, água ou dinheiro</div>
+        <div class="card-label">Pet Perdido</div>
+        <div class="card-desc">Informar animal perdido ou encontrado</div>
       </button>
       <button class="card-btn" onclick="selectType('ong_protetor')">
         <span class="card-icon"><i data-lucide="paw-print"></i></span>
         <div class="card-label">ONG / Protetor</div>
         <div class="card-desc">Cadastrar ONG ou protetor independente de animais</div>
       </button>
-      <button class="card-btn" onclick="selectType('pet_perdido')">
-        <span class="card-icon"><i data-lucide="search"></i></span>
-        <div class="card-label">Pet Perdido</div>
-        <div class="card-desc">Informar animal perdido ou encontrado</div>
+      <button class="card-btn" onclick="selectType('lar_temporario')">
+        <span class="card-icon"><i data-lucide="home"></i></span>
+        <div class="card-label">Lar Temporário</div>
+        <div class="card-desc">Oferecer lar temporário para acolher animais resgatados</div>
+      </button>
+      <button class="card-btn" onclick="selectType('doacao')">
+        <span class="card-icon"><i data-lucide="package"></i></span>
+        <div class="card-label">Ponto de Doação</div>
+        <div class="card-desc">Local que aceita ração, medicamentos e itens para pets</div>
+      </button>
+      <button class="card-btn" onclick="selectType('voluntario')">
+        <span class="card-icon"><i data-lucide="hand-heart"></i></span>
+        <div class="card-label">Voluntário</div>
+        <div class="card-desc">Me disponho a ajudar com resgate, transporte ou cuidados</div>
+      </button>
+      <button class="card-btn" onclick="selectType('vaquinha')">
+        <span class="card-icon"><i data-lucide="heart"></i></span>
+        <div class="card-label">Vaquinha</div>
+        <div class="card-desc">Campanha de arrecadação para custos veterinários ou resgate</div>
       </button>
     </div>
 
@@ -273,87 +253,60 @@
         <a href="#" onclick="goStep(2);return false;" style="color:rgba(255,255,255,.7);font-size:12px;margin-left:auto;">Trocar tipo</a>
       </div>
 
-      <!-- FORM: ABRIGO -->
-      <form id="form-abrigo" class="form-type" style="display:none" autocomplete="off" onsubmit="submitForm(event,'abrigo')">
-        <p class="section-title">Informações do Abrigo</p>
+      <!-- FORM: LAR TEMPORÁRIO -->
+      <form id="form-lar_temporario" class="form-type" style="display:none" autocomplete="off" onsubmit="submitForm(event,'lar_temporario')">
+        <p class="section-title">Informações do Lar Temporário</p>
         <div class="form-row">
           <div class="form-group">
-            <label>Nome do local <span class="req">*</span></label>
-            <input type="text" name="nome_local" placeholder="Ex: Escola Municipal João Pessoa" required />
+            <label>Seu nome <span class="req">*</span></label>
+            <input type="text" name="nome" placeholder="Nome completo" required />
           </div>
           <div class="form-group">
-            <label>Responsável</label>
-            <input type="text" name="responsavel" placeholder="Nome do responsável" />
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Telefone / WhatsApp</label>
-            <input type="tel" name="telefone" placeholder="(32) 99999-0000" />
-          </div>
-          <div class="form-group">
-            <label>Vagas disponíveis <span class="req">*</span></label>
-            <input type="number" name="vagas" placeholder="Ex: 50" min="0" required />
+            <label>Telefone / WhatsApp <span class="req">*</span></label>
+            <input type="tel" name="telefone" placeholder="(32) 99999-0000" required />
           </div>
         </div>
         <div class="form-group">
-          <label>Endereço completo <span class="req">*</span></label>
-          <input type="text" name="endereco" placeholder="Rua, número, bairro" required />
+          <label>Endereço / Bairro <span class="req">*</span></label>
+          <input type="text" name="endereco" placeholder="Bairro ou endereço aproximado" required />
         </div>
         <div class="form-group">
-          <label>Recursos disponíveis <span class="tip">(marque o que tem)</span></label>
+          <label>Quantos animais pode acolher? <span class="req">*</span></label>
+          <input type="number" name="vagas" placeholder="Ex: 2" min="1" required />
+        </div>
+        <div class="form-group">
+          <label>Quais animais aceita? <span class="tip">(marque todos que se aplicam)</span></label>
           <div class="checkbox-group">
-            <label class="checkbox-item"><input type="checkbox" name="recursos" value="Água potável" /><span>Água potável</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="recursos" value="Alimentação" /><span>Alimentação</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="recursos" value="Banheiros" /><span>Banheiros</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="recursos" value="Colchões / camas" /><span>Colchões / camas</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="recursos" value="Energia elétrica" /><span>Energia elétrica</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="recursos" value="Atendimento médico" /><span>Atendimento médico</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="animais_aceitos" value="Cães pequenos" /><span><i data-lucide="dog" class="icon-xs"></i> Cães pequenos</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="animais_aceitos" value="Cães médios/grandes" /><span><i data-lucide="dog" class="icon-xs"></i> Cães médios/grandes</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="animais_aceitos" value="Gatos" /><span><i data-lucide="paw-print" class="icon-xs"></i> Gatos</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="animais_aceitos" value="Outros" /><span><i data-lucide="heart" class="icon-xs"></i> Outros (coelhos, aves, etc.)</span></label>
           </div>
         </div>
         <div class="form-group">
-          <label>Aceita animais de estimação?</label>
+          <label>Tem experiência com animais?</label>
           <div class="radio-group">
-            <label class="radio-item"><input type="radio" name="animais" value="Sim" /><span>Sim</span></label>
-            <label class="radio-item"><input type="radio" name="animais" value="Não" /><span>Não</span></label>
-            <label class="radio-item"><input type="radio" name="animais" value="Consultar" /><span>Consultar</span></label>
-          </div>
-        </div>
-        <hr class="divider"/>
-        <p class="section-title">Necessidades do Abrigo</p>
-        <div class="form-group">
-          <label>O que precisa AGORA <span class="req">*</span> <span class="tip">(seja específico: quantidade, tipo)</span></label>
-          <textarea name="necessidades" placeholder="Ex: 100 cobertores, 50 colchões, água mineral, fraldas G..." required></textarea>
-        </div>
-        <div class="form-group">
-          <label>O que NÃO precisa <span class="tip">(evita desperdício)</span></label>
-          <textarea name="nao_precisa" placeholder="Ex: Roupas adulto masculino, alimentos perecíveis..."></textarea>
-        </div>
-        <div class="form-group">
-          <label>Prioridade <span class="req">*</span></label>
-          <div class="radio-group">
-            <label class="radio-item"><input type="radio" name="prioridade" value="Alta" required /><span style="color:var(--red);font-weight:700">Alta</span></label>
-            <label class="radio-item"><input type="radio" name="prioridade" value="Média" /><span style="color:var(--gold);font-weight:700">Média</span></label>
-            <label class="radio-item"><input type="radio" name="prioridade" value="Baixa" /><span style="color:var(--green);font-weight:700">Baixa</span></label>
+            <label class="radio-item"><input type="radio" name="experiencia" value="Sim" /><span>Sim</span></label>
+            <label class="radio-item"><input type="radio" name="experiencia" value="Não, mas quero ajudar" /><span>Não, mas quero ajudar</span></label>
           </div>
         </div>
         <div class="form-group">
           <label>Observações</label>
-          <textarea name="obs" placeholder="Informações adicionais importantes..."></textarea>
+          <textarea name="obs" placeholder="Tem outros pets em casa? Quintal? Alguma restrição?"></textarea>
         </div>
         <div class="btn-row">
           <button type="button" class="btn btn-secondary" onclick="goStep(2)">← Voltar</button>
-          <button type="submit" class="btn btn-primary">Enviar Cadastro →</button>
+          <button type="submit" class="btn btn-primary"><i data-lucide="home" class="icon-sm"></i> Cadastrar Lar Temporário →</button>
         </div>
       </form>
 
       <!-- FORM: DOAÇÃO -->
       <form id="form-doacao" class="form-type" style="display:none" autocomplete="off" onsubmit="submitForm(event,'doacao')">
-        <p class="section-title">Informações do Ponto de Doação</p>
+        <p class="section-title">Ponto de Doação para Pets</p>
         <div class="form-row">
           <div class="form-group">
             <label>Nome do ponto <span class="req">*</span></label>
-            <input type="text" name="nome_local" placeholder="Ex: Igreja São João, Mercado Central" required />
+            <input type="text" name="nome_local" placeholder="Ex: Pet Shop Amigo, Clínica Vet Central" required />
           </div>
           <div class="form-group">
             <label>Responsável</label>
@@ -377,13 +330,12 @@
         <div class="form-group">
           <label>O que aceita <span class="tip">(marque todos que se aplicam)</span></label>
           <div class="checkbox-group">
-            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Roupas adulto" /><span><i data-lucide="shirt" class="icon-xs"></i> Roupas adulto</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Roupas infantil" /><span><i data-lucide="baby" class="icon-xs"></i> Roupas infantil</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Alimentos não perecíveis" /><span><i data-lucide="wheat" class="icon-xs"></i> Alimentos não perecíveis</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Higiene pessoal" /><span><i data-lucide="droplets" class="icon-xs"></i> Higiene pessoal</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Material de limpeza" /><span><i data-lucide="brush" class="icon-xs"></i> Material de limpeza</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Colchões / cobertores" /><span><i data-lucide="bed" class="icon-xs"></i> Colchões / cobertores</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Medicamentos" /><span><i data-lucide="pill" class="icon-xs"></i> Medicamentos (verificar validade)</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Ração para cães" /><span><i data-lucide="dog" class="icon-xs"></i> Ração para cães</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Ração para gatos" /><span><i data-lucide="paw-print" class="icon-xs"></i> Ração para gatos</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Medicamentos veterinários" /><span><i data-lucide="pill" class="icon-xs"></i> Medicamentos veterinários</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Cobertores / caminhas" /><span><i data-lucide="bed" class="icon-xs"></i> Cobertores / caminhas</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Coleiras / guias" /><span><i data-lucide="heart" class="icon-xs"></i> Coleiras / guias</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Produtos de higiene pet" /><span><i data-lucide="droplets" class="icon-xs"></i> Produtos de higiene pet</span></label>
             <label class="checkbox-item"><input type="checkbox" name="aceita" value="Dinheiro / PIX" /><span><i data-lucide="banknote" class="icon-xs"></i> Dinheiro / PIX</span></label>
           </div>
         </div>
@@ -394,7 +346,7 @@
           <span>Preencha somente se este ponto também recebe doações financeiras. A chave PIX será exibida publicamente.</span>
         </div>
         <div class="pix-box">
-          <div class="pix-title">💰 Dados da Chave PIX</div>
+          <div class="pix-title">Dados da Chave PIX</div>
           <div class="form-row">
             <div class="form-group">
               <label>Tipo da chave PIX</label>
@@ -445,190 +397,7 @@
         </div>
       </form>
 
-      <!-- FORM: DESAPARECIDO -->
-      <form id="form-desaparecido" class="form-type" style="display:none" autocomplete="off" onsubmit="submitForm(event,'desaparecido')">
-        <p class="section-title">Dados da Pessoa Desaparecida</p>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Nome completo <span class="req">*</span></label>
-            <input type="text" name="nome_pessoa" placeholder="Nome da pessoa desaparecida" required />
-          </div>
-          <div class="form-group">
-            <label>Idade aproximada <span class="req">*</span></label>
-            <input type="number" name="idade" placeholder="Ex: 45" min="0" max="120" required />
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Descrição física <span class="req">*</span></label>
-          <textarea name="descricao" placeholder="Ex: Homem, 1,70m, pele morena, cabelos grisalhos, usando camiseta azul e calça jeans..." required></textarea>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Última vez visto (data/hora)</label>
-            <input type="datetime-local" name="ultima_vez" />
-          </div>
-          <div class="form-group">
-            <label>Local onde foi visto pela última vez</label>
-            <input type="text" name="local_visto" placeholder="Bairro, rua, endereço aproximado" />
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Tem alguma condição de saúde? <span class="tip">(importante para resgate)</span></label>
-          <input type="text" name="saude" placeholder="Ex: Diabético, usa insulina; alzheimer; cadeirante..." />
-        </div>
-        <hr class="divider"/>
-        <p class="section-title">Quem está informando</p>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Seu nome <span class="req">*</span></label>
-            <input type="text" name="informante_nome" placeholder="Nome de quem está reportando" required />
-          </div>
-          <div class="form-group">
-            <label>Seu telefone / WhatsApp <span class="req">*</span></label>
-            <input type="tel" name="informante_tel" placeholder="(32) 99999-0000" required />
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Relação com a pessoa</label>
-          <input type="text" name="relacao" placeholder="Ex: Familiar, vizinho, amigo..." />
-        </div>
-        <div class="form-group">
-          <label>Observações adicionais</label>
-          <textarea name="obs" placeholder="Qualquer informação que ajude a encontrar a pessoa..."></textarea>
-        </div>
-        <div class="btn-row">
-          <button type="button" class="btn btn-secondary" onclick="goStep(2)">← Voltar</button>
-          <button type="submit" class="btn btn-red">Reportar Desaparecido →</button>
-        </div>
-      </form>
-
-      <!-- FORM: ALIMENTAÇÃO -->
-      <form id="form-alimentacao" class="form-type" style="display:none" autocomplete="off" onsubmit="submitForm(event,'alimentacao')">
-        <p class="section-title">Informações do Ponto de Alimentação</p>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Nome do local <span class="req">*</span></label>
-            <input type="text" name="nome_local" placeholder="Ex: Cozinha Comunitária do Bairro X" required />
-          </div>
-          <div class="form-group">
-            <label>Responsável</label>
-            <input type="text" name="responsavel" placeholder="Nome do responsável" />
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Telefone / WhatsApp</label>
-            <input type="tel" name="telefone" placeholder="(32) 99999-0000" />
-          </div>
-          <div class="form-group">
-            <label>Capacidade de atendimento</label>
-            <input type="text" name="capacidade" placeholder="Ex: até 200 refeições/dia" />
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Endereço completo <span class="req">*</span></label>
-          <input type="text" name="endereco" placeholder="Rua, número, bairro, ponto de referência" required />
-        </div>
-        <div class="form-group">
-          <label>Horário de distribuição</label>
-          <input type="text" name="horario" placeholder="Ex: Café 7h, Almoço 11h30-13h, Jantar 18h-19h30" />
-        </div>
-        <div class="form-group">
-          <label>Tipo de refeição <span class="tip">(marque todos que se aplicam)</span></label>
-          <div class="checkbox-group">
-            <label class="checkbox-item"><input type="checkbox" name="refeicao" value="Café da manhã" /><span><i data-lucide="coffee" class="icon-xs"></i> Café da manhã</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="refeicao" value="Almoço" /><span><i data-lucide="utensils" class="icon-xs"></i> Almoço</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="refeicao" value="Jantar" /><span><i data-lucide="moon" class="icon-xs"></i> Jantar</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="refeicao" value="Lanche" /><span><i data-lucide="sandwich" class="icon-xs"></i> Lanche</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="refeicao" value="Alimentação para bebês" /><span><i data-lucide="baby" class="icon-xs"></i> Alimentação para bebês</span></label>
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Precisa de voluntários?</label>
-          <div class="radio-group">
-            <label class="radio-item"><input type="radio" name="voluntarios" value="Sim, urgente" /><span>Sim, urgente</span></label>
-            <label class="radio-item"><input type="radio" name="voluntarios" value="Sim, mas não urgente" /><span>Sim, mas não urgente</span></label>
-            <label class="radio-item"><input type="radio" name="voluntarios" value="Não" /><span>Não</span></label>
-          </div>
-        </div>
-        <hr class="divider"/>
-        <div class="form-group">
-          <label>O que precisa de doação AGORA</label>
-          <textarea name="necessidades" placeholder="Ex: 20kg de arroz, feijão, óleo de cozinha, gás de cozinha..."></textarea>
-        </div>
-        <div class="form-group">
-          <label>Observações</label>
-          <textarea name="obs" placeholder="Informações importantes para doadores e voluntários..."></textarea>
-        </div>
-        <div class="btn-row">
-          <button type="button" class="btn btn-secondary" onclick="goStep(2)">← Voltar</button>
-          <button type="submit" class="btn btn-primary">Enviar Cadastro →</button>
-        </div>
-      </form>
-
-      <!-- FORM: COMUNIDADE -->
-      <form id="form-comunidade" class="form-type" style="display:none" autocomplete="off" onsubmit="submitForm(event,'comunidade')">
-        <p class="section-title">Informações da Comunidade / Bairro</p>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Nome do bairro / comunidade <span class="req">*</span></label>
-            <input type="text" name="nome_local" placeholder="Ex: Bairro Cascatinha, Vila Esperança..." required />
-          </div>
-          <div class="form-group">
-            <label>Liderança / responsável</label>
-            <input type="text" name="responsavel" placeholder="Nome do líder comunitário ou representante" />
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Telefone / WhatsApp</label>
-            <input type="tel" name="telefone" placeholder="(32) 99999-0000" />
-          </div>
-          <div class="form-group">
-            <label>Famílias afetadas (estimativa)</label>
-            <input type="number" name="familias" placeholder="Ex: 150" min="0" />
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Endereço de referência <span class="req">*</span></label>
-          <input type="text" name="endereco" placeholder="Rua principal, praça central ou ponto de referência" required />
-        </div>
-        <div class="form-group">
-          <label>Necessidades urgentes <span class="tip">(marque todas)</span></label>
-          <div class="checkbox-group">
-            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Água potável" /><span><i data-lucide="droplet" class="icon-xs"></i> Água potável</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Alimentos" /><span><i data-lucide="wheat" class="icon-xs"></i> Alimentos</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Roupas e agasalhos" /><span><i data-lucide="shirt" class="icon-xs"></i> Roupas e agasalhos</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Cobertores e colchões" /><span><i data-lucide="bed" class="icon-xs"></i> Cobertores e colchões</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Higiene pessoal" /><span><i data-lucide="droplets" class="icon-xs"></i> Higiene pessoal</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Material de limpeza" /><span><i data-lucide="brush" class="icon-xs"></i> Material de limpeza</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Atendimento médico" /><span><i data-lucide="stethoscope" class="icon-xs"></i> Atendimento médico</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Resgate / remoção" /><span><i data-lucide="flame" class="icon-xs"></i> Resgate / remoção</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Abrigo temporário" /><span><i data-lucide="home" class="icon-xs"></i> Abrigo temporário</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Voluntários" /><span><i data-lucide="hand-heart" class="icon-xs"></i> Voluntários</span></label>
-          </div>
-        </div>
-        <div class="form-group">
-          <label>O que NÃO precisa <span class="tip">(ajuda a direcionar doações)</span></label>
-          <textarea name="nao_precisa" placeholder="Ex: Roupas masculinas adulto, alimentos perecíveis..."></textarea>
-        </div>
-        <div class="form-group">
-          <label>Prioridade <span class="req">*</span></label>
-          <div class="radio-group">
-            <label class="radio-item"><input type="radio" name="prioridade" value="Alta" required /><span style="color:var(--red);font-weight:700">Alta — situação crítica</span></label>
-            <label class="radio-item"><input type="radio" name="prioridade" value="Média" /><span style="color:var(--gold);font-weight:700">Média</span></label>
-            <label class="radio-item"><input type="radio" name="prioridade" value="Baixa" /><span style="color:var(--green);font-weight:700">Baixa</span></label>
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Situação atual e observações <span class="req">*</span></label>
-          <textarea name="obs" placeholder="Descreva a situação: o que aconteceu, quantas pessoas afetadas, o que já foi feito..." required></textarea>
-        </div>
-        <div class="btn-row">
-          <button type="button" class="btn btn-secondary" onclick="goStep(2)">← Voltar</button>
-          <button type="submit" class="btn btn-primary">Enviar Cadastro →</button>
-        </div>
-      </form>
+      <!-- Forms de desaparecido, alimentação e comunidade removidos (foco Pet) -->
 
       <!-- FORM: VOLUNTÁRIO -->
       <form id="form-voluntario" class="form-type" style="display:none" autocomplete="off" onsubmit="submitForm(event,'voluntario')">
@@ -656,18 +425,18 @@
           </div>
         </div>
         <hr class="divider"/>
-        <p class="section-title">Como Posso Ajudar</p>
+        <p class="section-title">Como Posso Ajudar os Animais</p>
         <div class="form-group">
           <label>Habilidades / disponibilidade <span class="tip">(marque tudo que puder)</span></label>
           <div class="checkbox-group">
-            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Transporte de doações" /><span><i data-lucide="car" class="icon-xs"></i> Transporte de doações</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Cozinhar / preparar alimentos" /><span><i data-lucide="chef-hat" class="icon-xs"></i> Cozinhar / preparar alimentos</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Trabalho físico (limpeza, carga)" /><span><i data-lucide="dumbbell" class="icon-xs"></i> Trabalho físico (limpeza, carga)</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Saúde / primeiros socorros" /><span><i data-lucide="stethoscope" class="icon-xs"></i> Saúde / primeiros socorros</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Apoio psicológico" /><span><i data-lucide="brain" class="icon-xs"></i> Apoio psicológico</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Organização de doações" /><span><i data-lucide="package" class="icon-xs"></i> Organização de doações</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Transporte de animais" /><span><i data-lucide="car" class="icon-xs"></i> Transporte de animais</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Resgate de animais" /><span><i data-lucide="hand-heart" class="icon-xs"></i> Resgate de animais</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Lar temporário" /><span><i data-lucide="home" class="icon-xs"></i> Oferecer lar temporário</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Cuidados veterinários" /><span><i data-lucide="stethoscope" class="icon-xs"></i> Cuidados veterinários</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Banho e tosa" /><span><i data-lucide="droplets" class="icon-xs"></i> Banho e tosa</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Passeios / socialização" /><span><i data-lucide="paw-print" class="icon-xs"></i> Passeios / socialização</span></label>
             <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Divulgação / redes sociais" /><span><i data-lucide="smartphone" class="icon-xs"></i> Divulgação / redes sociais</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Hospedagem na minha casa" /><span><i data-lucide="home" class="icon-xs"></i> Hospedar pessoas na minha casa</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Doação de ração / itens" /><span><i data-lucide="package" class="icon-xs"></i> Doação de ração / itens</span></label>
           </div>
         </div>
         <div class="form-group">
@@ -675,12 +444,12 @@
           <input type="text" name="disponibilidade" placeholder="Ex: Manhãs e tarde, final de semana integral..." />
         </div>
         <div class="form-group">
-          <label>Observações / outras habilidades</label>
-          <textarea name="obs" placeholder="Médico, psicólogo, engenheiro, tem barco, fala outro idioma..."></textarea>
+          <label>Observações</label>
+          <textarea name="obs" placeholder="Veterinário(a), experiência com resgate, tem caixas de transporte..."></textarea>
         </div>
         <div class="btn-row">
           <button type="button" class="btn btn-secondary" onclick="goStep(2)">← Voltar</button>
-          <button type="submit" class="btn btn-green">Me Cadastrar como Voluntário →</button>
+          <button type="submit" class="btn btn-green"><i data-lucide="hand-heart" class="icon-sm"></i> Me Cadastrar como Voluntário →</button>
         </div>
       </form>
 
@@ -694,7 +463,7 @@
         <div class="form-row">
           <div class="form-group">
             <label>Nome da campanha <span class="req">*</span></label>
-            <input type="text" name="nome_campanha" placeholder="Ex: Ajuda para família Silva" required />
+            <input type="text" name="nome_campanha" placeholder="Ex: Cirurgia do Rex, Resgate de gatos abandonados" required />
           </div>
           <div class="form-group">
             <label>Responsável</label>
@@ -707,7 +476,7 @@
         </div>
         <div class="form-group">
           <label>Descrição da campanha <span class="req">*</span></label>
-          <textarea name="descricao" placeholder="Descreva o objetivo da vaquinha e quem será beneficiado..." required></textarea>
+          <textarea name="descricao" placeholder="Descreva o objetivo da vaquinha: tratamento veterinário, resgate, castração coletiva..." required></textarea>
         </div>
         <div class="form-group">
           <label>Telefone / WhatsApp</label>
@@ -766,43 +535,7 @@
         </div>
       </form>
 
-      <!-- FORM: DOADOR (Quero Doar) -->
-      <form id="form-doador" class="form-type" style="display:none" autocomplete="off" onsubmit="submitForm(event,'doador')">
-        <p class="section-title">Seus Dados</p>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Seu nome <span class="req">*</span></label>
-            <input type="text" name="nome" placeholder="Nome completo" required />
-          </div>
-          <div class="form-group">
-            <label>Telefone / WhatsApp</label>
-            <input type="tel" name="telefone" placeholder="(32) 99999-0000" />
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Bairro / Localização</label>
-          <input type="text" name="bairro" placeholder="Ex: Centro, Cascatinha..." />
-        </div>
-        <hr class="divider"/>
-        <p class="section-title">O que desejo doar</p>
-        <div class="form-group">
-          <label>Selecione o que deseja ofertar <span class="req">*</span></label>
-          <div class="checkbox-group">
-            <label class="checkbox-item"><input type="checkbox" name="oferece" value="Alimentos" /><span><i data-lucide="wheat" class="icon-xs"></i> Alimentos</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="oferece" value="Roupas" /><span><i data-lucide="shirt" class="icon-xs"></i> Roupas</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="oferece" value="Água" /><span><i data-lucide="droplet" class="icon-xs"></i> Água</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="oferece" value="Dinheiro" /><span><i data-lucide="banknote" class="icon-xs"></i> Dinheiro</span></label>
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Observações</label>
-          <textarea name="obs" placeholder="Quantidade disponível, condições para retirada, horários..."></textarea>
-        </div>
-        <div class="btn-row">
-          <button type="button" class="btn btn-secondary" onclick="goStep(2)">← Voltar</button>
-          <button type="submit" class="btn btn-green">Quero Doar →</button>
-        </div>
-      </form>
+      <!-- Form de doador removido (foco Pet) -->
 
       <!-- FORM: ONG / PROTETOR -->
       <form id="form-ong_protetor" class="form-type" style="display:none" autocomplete="off" onsubmit="submitForm(event,'ong_protetor')">
@@ -1017,16 +750,12 @@
       </select>
       <select id="filter-type" onchange="loadConsulta()">
         <option value="">Todas as categorias</option>
-        <option value="abrigos">🏠 Abrigos</option>
+        <option value="pets_perdidos">🐕 Pets Perdidos</option>
+        <option value="ongs_protetores">🐾 ONGs / Protetores</option>
+        <option value="lares_temporarios">🏠 Lares Temporários</option>
         <option value="pontos_doacao">📦 Pontos de Doação</option>
-        <option value="desaparecidos">🔍 Desaparecidos</option>
-        <option value="pontos_alimentacao">🍽️ Alimentação</option>
-        <option value="comunidades">🏘️ Comunidades / Bairros</option>
         <option value="voluntarios">🙋 Voluntários</option>
         <option value="vaquinhas">💛 Vaquinhas</option>
-        <option value="doadores">🤲 Quero Doar</option>
-        <option value="ongs_protetores">🐾 ONGs / Protetores</option>
-        <option value="pets_perdidos">🐕 Pets Perdidos</option>
       </select>
     </div>
 
@@ -1049,9 +778,9 @@
 
 <!-- FOOTER -->
 <footer>
-  <strong>Ajude JF</strong> — Central de Apoio Emergencial &nbsp;|&nbsp;
-  Emergência: <strong>193</strong> · <strong>192</strong> · <strong>199</strong><br>
-  <small style="opacity:.6">Esta plataforma é uma iniciativa voluntária de apoio à comunidade. Não substitui serviços de emergência oficiais.</small>
+  <strong>Ajude JF</strong> — Central de Apoio Animal &nbsp;|&nbsp;
+  Denúncias: <strong>0800 61 8080</strong> (IBAMA) · <strong>153</strong> (Guarda Municipal) · <strong>(32) 3690-8450</strong> (Zoonoses)<br>
+  <small style="opacity:.6">Esta plataforma é uma iniciativa voluntária de apoio animal. Não substitui órgãos oficiais de proteção animal.</small>
 </footer>
 
   <script type="module" src="/src/main.js"></script>

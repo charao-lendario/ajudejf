@@ -196,16 +196,12 @@ const state = {
 }
 
 const typeLabels = {
-  abrigo:        'Abrigo',
-  doacao:        'Ponto de Doação',
-  desaparecido:  'Pessoa Desaparecida',
-  alimentacao:   'Ponto de Alimentação',
-  comunidade:    'Comunidade / Bairro',
-  voluntario:    'Oferecer Ajuda',
-  vaquinha:      'Vaquinha',
-  doador:        'Quero Doar',
-  ong_protetor:  'ONG / Protetor',
-  pet_perdido:   'Pet Perdido'
+  pet_perdido:     'Pet Perdido',
+  ong_protetor:    'ONG / Protetor',
+  lar_temporario:  'Lar Temporário',
+  doacao:          'Ponto de Doação',
+  voluntario:      'Voluntário',
+  vaquinha:        'Vaquinha'
 }
 
 // ── NAVIGATION ──
@@ -235,16 +231,12 @@ window.selectType = function (type) {
 
 // ── MAPA: tipo → tabela e campos ──
 const TIPO_TABELA = {
-  abrigo:        'abrigos',
-  doacao:        'pontos_doacao',
-  desaparecido:  'desaparecidos',
-  alimentacao:   'pontos_alimentacao',
-  comunidade:    'comunidades',
-  voluntario:    'voluntarios',
-  vaquinha:      'vaquinhas',
-  doador:        'doadores',
-  ong_protetor:  'ongs_protetores',
-  pet_perdido:   'pets_perdidos'
+  pet_perdido:     'pets_perdidos',
+  ong_protetor:    'ongs_protetores',
+  lar_temporario:  'lares_temporarios',
+  doacao:          'pontos_doacao',
+  voluntario:      'voluntarios',
+  vaquinha:        'vaquinhas'
 }
 
 // Campos que devem virar arrays (checkboxes múltiplos)
@@ -559,6 +551,7 @@ setupPixUpload('doacao')
 setupPixUpload('vaquinha')
 setupFotoUpload('ong_protetor')
 setupFotoUpload('pet_perdido')
+setupFotoUpload('lar_temporario')
 
 // ═══════════════════════════════════════════════════════
 // CONSULTA — HELPERS
@@ -603,19 +596,19 @@ function wppBtn (tel, label = 'WhatsApp') {
 // CONSULTA — CARDS POR TABELA
 // ═══════════════════════════════════════════════════════
 
-function cardAbrigo (item, cidade) {
+function cardLarTemporario (item, cidade) {
   return `
-    <div class="result-card">
+    <div class="result-card result-card-voluntario">
       <div class="rc-header">
-        <div class="rc-title">${esc(item.nome_local)}</div>
-        ${prioBadge(item.prioridade)}
+        <div class="rc-title">${esc(item.nome)}</div>
+        <span class="badge badge-green">Lar Temporário</span>
       </div>
-      <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)} — ${esc(item.endereco)}</div>
+      <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)}${item.endereco ? ` — ${esc(item.endereco)}` : ''}</div>
       <div class="rc-body">
-        ${item.vagas ? `<div class="rc-row"><i data-lucide="bed" class="icon-xs"></i> <strong>${item.vagas}</strong> vagas disponíveis</div>` : ''}
-        ${item.aceita_animais ? `<div class="rc-row"><i data-lucide="paw-print" class="icon-xs"></i> Animais: ${esc(item.aceita_animais)}</div>` : ''}
-        ${item.necessidades ? `<div class="rc-row rc-needs"><i data-lucide="alert-triangle" class="icon-xs"></i> Precisa agora: ${esc(item.necessidades)}</div>` : ''}
-        ${chips(item.recursos)}
+        ${item.vagas ? `<div class="rc-row"><i data-lucide="home" class="icon-xs"></i> Pode acolher <strong>${item.vagas}</strong> animal(is)</div>` : ''}
+        ${chips(item.animais_aceitos)}
+        ${item.experiencia ? `<div class="rc-row"><i data-lucide="heart" class="icon-xs"></i> Experiência: ${esc(item.experiencia)}</div>` : ''}
+        ${item.obs ? `<div class="rc-row">${esc(item.obs)}</div>` : ''}
       </div>
       ${wppBtn(item.telefone)}
     </div>`
@@ -638,59 +631,7 @@ function cardDoacao (item, cidade) {
     </div>`
 }
 
-function cardDesaparecido (item, cidade) {
-  return `
-    <div class="result-card result-card-urgente">
-      <div class="rc-header">
-        <div class="rc-title">${esc(item.nome_pessoa)}</div>
-        <span class="badge badge-red">Desaparecido</span>
-      </div>
-      <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)}</div>
-      <div class="rc-body">
-        ${item.idade ? `<div class="rc-row"><i data-lucide="cake" class="icon-xs"></i> ${item.idade} anos</div>` : ''}
-        <div class="rc-row"><i data-lucide="file-text" class="icon-xs"></i> ${esc(item.descricao)}</div>
-        ${item.ultima_vez_visto ? `<div class="rc-row"><i data-lucide="clock" class="icon-xs"></i> Última vez: ${formatDate(item.ultima_vez_visto)}${item.local_visto ? ` — ${esc(item.local_visto)}` : ''}</div>` : ''}
-        ${item.condicao_saude ? `<div class="rc-row rc-needs"><i data-lucide="stethoscope" class="icon-xs"></i> Saúde: ${esc(item.condicao_saude)}</div>` : ''}
-      </div>
-      <div class="rc-footer-info">Informante: ${esc(item.informante_nome)}</div>
-      ${wppBtn(item.informante_tel, 'Contatar informante')}
-    </div>`
-}
-
-function cardAlimentacao (item, cidade) {
-  return `
-    <div class="result-card">
-      <div class="rc-header">
-        <div class="rc-title">${esc(item.nome_local)}</div>
-        ${item.precisa_voluntarios === 'Sim, urgente' ? '<span class="badge badge-red">Voluntários urgente</span>' : ''}
-      </div>
-      <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)} — ${esc(item.endereco)}</div>
-      <div class="rc-body">
-        ${item.horario ? `<div class="rc-row"><i data-lucide="clock" class="icon-xs"></i> ${esc(item.horario)}</div>` : ''}
-        ${item.capacidade ? `<div class="rc-row"><i data-lucide="users" class="icon-xs"></i> ${esc(item.capacidade)}</div>` : ''}
-        ${chips(item.refeicoes)}
-        ${item.necessidades ? `<div class="rc-row rc-needs"><i data-lucide="alert-triangle" class="icon-xs"></i> Precisa: ${esc(item.necessidades)}</div>` : ''}
-      </div>
-      ${wppBtn(item.telefone)}
-    </div>`
-}
-
-function cardComunidade (item, cidade) {
-  return `
-    <div class="result-card">
-      <div class="rc-header">
-        <div class="rc-title">${esc(item.nome_local)}</div>
-        ${prioBadge(item.prioridade)}
-      </div>
-      <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)} — ${esc(item.endereco)}</div>
-      <div class="rc-body">
-        ${item.familias ? `<div class="rc-row"><i data-lucide="users" class="icon-xs"></i> ~${item.familias} famílias afetadas</div>` : ''}
-        ${chips(item.necessidades)}
-        ${item.obs ? `<div class="rc-row">${esc(item.obs)}</div>` : ''}
-      </div>
-      ${wppBtn(item.telefone)}
-    </div>`
-}
+/* Cards de desaparecido, alimentação e comunidade removidos (foco Pet) */
 
 function cardVoluntario (item, cidade) {
   return `
@@ -726,21 +667,7 @@ function cardVaquinha (item, cidade) {
     </div>`
 }
 
-function cardDoador (item, cidade) {
-  return `
-    <div class="result-card result-card-voluntario">
-      <div class="rc-header">
-        <div class="rc-title">${esc(item.nome)}</div>
-        <span class="badge badge-green">Quero Doar</span>
-      </div>
-      <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)}${item.bairro ? ` — ${esc(item.bairro)}` : ''}</div>
-      <div class="rc-body">
-        ${chips(item.oferece)}
-        ${item.obs ? `<div class="rc-row">${esc(item.obs)}</div>` : ''}
-      </div>
-      ${wppBtn(item.telefone)}
-    </div>`
-}
+/* Card de doador removido (foco Pet) */
 
 function cardOngProtetor (item, cidade) {
   const fotoHtml = item.foto_url
@@ -794,16 +721,12 @@ function cardPetPerdido (item, cidade) {
 }
 
 const TABELA_CONFIG = {
-  abrigos:            { icon: 'home',        label: 'Abrigos',           card: cardAbrigo },
+  pets_perdidos:      { icon: 'search',      label: 'Pets Perdidos',     card: cardPetPerdido },
+  ongs_protetores:    { icon: 'paw-print',   label: 'ONGs / Protetores', card: cardOngProtetor },
+  lares_temporarios:  { icon: 'home',        label: 'Lares Temporários', card: cardLarTemporario },
   pontos_doacao:      { icon: 'package',     label: 'Pontos de Doação',  card: cardDoacao },
-  desaparecidos:      { icon: 'search',      label: 'Desaparecidos',     card: cardDesaparecido },
-  pontos_alimentacao: { icon: 'utensils',    label: 'Alimentação',       card: cardAlimentacao },
-  comunidades:        { icon: 'building-2',  label: 'Comunidades',       card: cardComunidade },
   voluntarios:        { icon: 'hand-heart',  label: 'Voluntários',       card: cardVoluntario },
   vaquinhas:          { icon: 'heart',       label: 'Vaquinhas',         card: cardVaquinha },
-  doadores:           { icon: 'gift',        label: 'Quero Doar',        card: cardDoador },
-  ongs_protetores:    { icon: 'paw-print',   label: 'ONGs / Protetores', card: cardOngProtetor },
-  pets_perdidos:      { icon: 'search',      label: 'Pets Perdidos',     card: cardPetPerdido },
 }
 
 // ═══════════════════════════════════════════════════════
