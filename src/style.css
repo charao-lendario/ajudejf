@@ -178,7 +178,7 @@
     }
     .sidebar-num-icon { font-size: 18px; flex-shrink: 0; }
     .sidebar-num-label { font-size: 10px; color: var(--gray-400); font-weight: 600; text-transform: uppercase; letter-spacing: .3px; line-height: 1; }
-    .sidebar-num-value { font-size: 17px; font-weight: 800; color: var(--blue-dark); line-height: 1; margin-top: 2px; }
+    .sidebar-num-value { font-size: 15px; font-weight: 800; color: var(--blue-dark); line-height: 1; margin-top: 2px; white-space: nowrap; }
     .sidebar-tagline {
       margin-top: 28px;
       font-size: 11px;
