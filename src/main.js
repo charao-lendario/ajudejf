@@ -11,6 +11,7 @@ import {
   Pill, Cross, PawPrint, Cake, FileText, Brush, Wheat,
   Stethoscope, Heart, Gift,
   Camera, X, QrCode, ZoomIn, Dog, ImagePlus,
+  Palette, User, Phone,
 } from 'lucide'
 
 const ICONS = {
@@ -23,6 +24,7 @@ const ICONS = {
   Pill, Cross, PawPrint, Cake, FileText, Brush, Wheat,
   Stethoscope, Heart, Gift,
   Camera, X, QrCode, ZoomIn, Dog, ImagePlus,
+  Palette, User, Phone,
 }
 
 function initIcons (root = document) {
@@ -181,6 +183,68 @@ window.openFotoLightbox = function (url, hint) {
 
 window.closeFotoLightbox = function () {
   const overlay = document.getElementById('foto-lightbox')
+  if (overlay) {
+    overlay.classList.remove('active')
+    document.body.style.overflow = ''
+  }
+}
+
+// ── PET DETAIL MODAL ──
+window.openPetDetail = function (itemJson) {
+  const item = JSON.parse(decodeURIComponent(itemJson))
+  let overlay = document.getElementById('pet-detail-modal')
+  if (!overlay) {
+    overlay = document.createElement('div')
+    overlay.id = 'pet-detail-modal'
+    overlay.className = 'pet-detail-overlay'
+    document.body.appendChild(overlay)
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) window.closePetDetail()
+    })
+  }
+
+  const statusClass = item.status === 'encontrado' ? 'badge-green' : 'badge-red'
+  const statusText = item.status === 'encontrado' ? 'Encontrado' : 'Perdido'
+  const fotoHtml = item.foto_url
+    ? `<div class="pet-detail-foto"><img src="${esc(item.foto_url)}" alt="${esc(item.nome_pet)}" /></div>`
+    : '<div class="pet-detail-no-foto"><i data-lucide="paw-print" class="icon-lg"></i><span>Sem foto</span></div>'
+  const wppLink = item.tutor_tel
+    ? `<a href="https://wa.me/${formatWpp(item.tutor_tel)}" target="_blank" rel="noopener" class="rc-wpp" style="margin-top:12px">📱 Contatar via WhatsApp</a>`
+    : ''
+
+  overlay.innerHTML = `
+    <div class="pet-detail-content">
+      <button class="pix-lightbox-close" onclick="window.closePetDetail()">&times;</button>
+      ${fotoHtml}
+      <div class="pet-detail-body">
+        <div class="pet-detail-header">
+          <h3>${esc(item.nome_pet)}</h3>
+          <span class="badge ${statusClass}">${statusText}</span>
+        </div>
+        <div class="pet-detail-info">
+          <div class="pet-detail-row"><i data-lucide="paw-print" class="icon-xs"></i> <strong>Espécie:</strong> ${esc(item.especie)}${item.raca ? ` — ${esc(item.raca)}` : ''}</div>
+          <div class="pet-detail-row"><i data-lucide="palette" class="icon-xs"></i> <strong>Cor:</strong> ${esc(item.cor)}</div>
+          ${item.descricao ? `<div class="pet-detail-row"><i data-lucide="file-text" class="icon-xs"></i> <strong>Descrição:</strong> ${esc(item.descricao)}</div>` : ''}
+          ${item.local_visto ? `<div class="pet-detail-row"><i data-lucide="map-pin" class="icon-xs"></i> <strong>Local:</strong> ${esc(item.local_visto)}</div>` : ''}
+          ${item.ultima_vez_visto ? `<div class="pet-detail-row"><i data-lucide="clock" class="icon-xs"></i> <strong>Última vez visto:</strong> ${formatDate(item.ultima_vez_visto)}</div>` : ''}
+          ${item.condicao_saude ? `<div class="pet-detail-row"><i data-lucide="heart" class="icon-xs"></i> <strong>Saúde:</strong> ${esc(item.condicao_saude)}</div>` : ''}
+          ${item.obs ? `<div class="pet-detail-row"><i data-lucide="info" class="icon-xs"></i> <strong>Obs:</strong> ${esc(item.obs)}</div>` : ''}
+        </div>
+        <hr class="divider" />
+        <div class="pet-detail-contact">
+          <div class="pet-detail-row"><i data-lucide="user" class="icon-xs"></i> <strong>Contato:</strong> ${esc(item.tutor_nome)}</div>
+          ${item.tutor_tel ? `<div class="pet-detail-row"><i data-lucide="phone" class="icon-xs"></i> <strong>Telefone:</strong> ${esc(item.tutor_tel)}</div>` : ''}
+        </div>
+        ${wppLink}
+      </div>
+    </div>`
+  overlay.classList.add('active')
+  document.body.style.overflow = 'hidden'
+  initIcons(overlay)
+}
+
+window.closePetDetail = function () {
+  const overlay = document.getElementById('pet-detail-modal')
   if (overlay) {
     overlay.classList.remove('active')
     document.body.style.overflow = ''
@@ -694,8 +758,9 @@ function cardOngProtetor (item, cidade) {
 }
 
 function cardPetPerdido (item, cidade) {
+  const itemData = encodeURIComponent(JSON.stringify(item))
   const fotoHtml = item.foto_url
-    ? `<div class="rc-foto-pet" onclick="window.openFotoLightbox('${esc(item.foto_url)}', '${esc(item.nome_pet)}')">
+    ? `<div class="rc-foto-pet">
         <img src="${esc(item.foto_url)}" alt="${esc(item.nome_pet)}" />
        </div>`
     : ''
@@ -703,7 +768,7 @@ function cardPetPerdido (item, cidade) {
     ? '<span class="badge badge-green">Encontrado</span>'
     : '<span class="badge badge-red">Perdido</span>'
   return `
-    <div class="result-card result-card-pet">
+    <div class="result-card result-card-pet result-card-clickable" onclick="window.openPetDetail('${itemData}')">
       ${fotoHtml}
       <div class="rc-header">
         <div class="rc-title">${esc(item.nome_pet)}</div>
@@ -716,7 +781,6 @@ function cardPetPerdido (item, cidade) {
         ${item.ultima_vez_visto ? `<div class="rc-row"><i data-lucide="clock" class="icon-xs"></i> Última vez: ${formatDate(item.ultima_vez_visto)}</div>` : ''}
       </div>
       <div class="rc-footer-info">Contato: ${esc(item.tutor_nome)}</div>
-      ${wppBtn(item.tutor_tel, 'Contatar')}
     </div>`
 }
 
