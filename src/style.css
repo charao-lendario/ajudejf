@@ -507,6 +507,110 @@
       gap: 4px;
     }
     .pix-remove-btn:hover { background: #fde8e8; }
+
+    /* ── FOTO UPLOAD (ONG/Protetor e Pet) ── */
+    .foto-file-input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      overflow: hidden;
+    }
+    .foto-upload-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 24px 16px;
+      border: 2px dashed var(--blue-light);
+      border-radius: var(--radius);
+      background: #f0f7ff;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      text-align: center;
+      font-weight: 400 !important;
+      margin-bottom: 0 !important;
+    }
+    .foto-upload-label:hover {
+      border-color: var(--blue-main);
+      background: #e0efff;
+    }
+    .foto-upload-label span { font-size: 13px; color: var(--blue-dark); }
+    .foto-upload-hint { font-size: 11px !important; color: var(--gray-400) !important; }
+    .foto-preview {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: var(--white);
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius);
+      margin-top: 8px;
+    }
+    .foto-preview img {
+      width: 100px; height: 100px;
+      object-fit: cover;
+      border-radius: var(--radius);
+      border: 2px solid var(--blue-light);
+    }
+    .foto-remove-btn {
+      background: none;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 6px 12px;
+      font-size: 12px;
+      color: var(--red);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .foto-remove-btn:hover { background: #fde8e8; }
+
+    /* ── FOTO NOS CARDS DE RESULTADO ── */
+    .rc-foto-avatar {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    .rc-foto-avatar img {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--blue-light);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .rc-foto-avatar img:hover {
+      transform: scale(1.08);
+      box-shadow: 0 4px 16px rgba(46,109,164,.3);
+    }
+    .rc-foto-pet {
+      margin: -18px -18px 10px -18px;
+      cursor: pointer;
+      overflow: hidden;
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    }
+    .rc-foto-pet img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+      transition: transform .3s;
+    }
+    .rc-foto-pet img:hover {
+      transform: scale(1.05);
+    }
+    .result-card-ong {
+      border-color: var(--blue-light);
+      background: #f8fbff;
+    }
+    .result-card-pet {
+      border-color: var(--gold);
+      border-width: 2px;
+      background: #fffdf5;
+    }
     /* Botão QR Code PIX nos cards */
     .rc-pix-qr-btn {
       display: inline-flex;

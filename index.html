@@ -76,12 +76,12 @@
         <button class="home-option-card" onclick="showView('cadastrar')">
           <span class="home-option-icon"><i data-lucide="pen-line"></i></span>
           <div class="home-option-title">Cadastrar</div>
-          <div class="home-option-desc">Registrar abrigo, ponto de doação, vaquinha, desaparecido, alimentação, comunidade, voluntário ou quero doar</div>
+          <div class="home-option-desc">Registrar abrigo, doação, desaparecido, alimentação, comunidade, voluntário, vaquinha, quero doar, ONG/protetor ou pet perdido</div>
         </button>
         <button class="home-option-card" onclick="showView('consultar')">
           <span class="home-option-icon"><i data-lucide="search"></i></span>
           <div class="home-option-title">Consultar</div>
-          <div class="home-option-desc">Buscar abrigos, pontos de doação, desaparecidos, alimentação, comunidades e voluntários</div>
+          <div class="home-option-desc">Buscar abrigos, doações, desaparecidos, alimentação, comunidades, voluntários, ONGs/protetores e pets perdidos</div>
         </button>
       </div>
     </div>
@@ -220,6 +220,16 @@
         <span class="card-icon"><i data-lucide="gift"></i></span>
         <div class="card-label">Quero Doar</div>
         <div class="card-desc">Me disponho a doar alimentos, roupas, água ou dinheiro</div>
+      </button>
+      <button class="card-btn" onclick="selectType('ong_protetor')">
+        <span class="card-icon"><i data-lucide="paw-print"></i></span>
+        <div class="card-label">ONG / Protetor</div>
+        <div class="card-desc">Cadastrar ONG ou protetor independente de animais</div>
+      </button>
+      <button class="card-btn" onclick="selectType('pet_perdido')">
+        <span class="card-icon"><i data-lucide="search"></i></span>
+        <div class="card-label">Pet Perdido</div>
+        <div class="card-desc">Informar animal perdido ou encontrado</div>
       </button>
     </div>
 
@@ -794,6 +804,168 @@
         </div>
       </form>
 
+      <!-- FORM: ONG / PROTETOR -->
+      <form id="form-ong_protetor" class="form-type" style="display:none" autocomplete="off" onsubmit="submitForm(event,'ong_protetor')">
+        <p class="section-title">Dados da ONG / Protetor</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nome <span class="req">*</span></label>
+            <input type="text" name="nome" placeholder="Nome da ONG ou do protetor" required />
+          </div>
+          <div class="form-group">
+            <label>Tipo <span class="req">*</span></label>
+            <div class="radio-group">
+              <label class="radio-item"><input type="radio" name="tipo" value="ONG" required /> ONG</label>
+              <label class="radio-item"><input type="radio" name="tipo" value="Protetor independente" /> Protetor independente</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Telefone / WhatsApp</label>
+            <input type="tel" name="telefone" placeholder="(32) 99999-0000" />
+          </div>
+          <div class="form-group">
+            <label>Endereço</label>
+            <input type="text" name="endereco" placeholder="Rua, número, bairro" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Descrição / Sobre <span class="req">*</span></label>
+          <textarea name="descricao" placeholder="Descreva o trabalho realizado, missão, como ajudar..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label>Animais que aceita <span class="tip">(marque todos que se aplicam)</span></label>
+          <div class="checkbox-group">
+            <label class="checkbox-item"><input type="checkbox" name="animais_aceitos" value="Cães" /><span><i data-lucide="paw-print" class="icon-xs"></i> Cães</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="animais_aceitos" value="Gatos" /><span><i data-lucide="paw-print" class="icon-xs"></i> Gatos</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="animais_aceitos" value="Aves" /><span><i data-lucide="paw-print" class="icon-xs"></i> Aves</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="animais_aceitos" value="Outros" /><span><i data-lucide="paw-print" class="icon-xs"></i> Outros</span></label>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Capacidade</label>
+            <input type="text" name="capacidade" placeholder="Ex: Até 30 animais" />
+          </div>
+          <div class="form-group">
+            <label>Necessidades atuais</label>
+            <input type="text" name="necessidades" placeholder="Ex: Ração, medicamentos, voluntários..." />
+          </div>
+        </div>
+        <hr class="divider"/>
+        <p class="section-title">Foto da ONG / Protetor</p>
+        <div class="form-group">
+          <label>Envie uma foto <span class="tip">(opcional — aparecerá na consulta pública)</span></label>
+          <div class="foto-upload-area">
+            <input type="file" name="foto" accept="image/png,image/jpeg,image/webp" class="foto-file-input" id="foto-file-ong_protetor" />
+            <label for="foto-file-ong_protetor" class="foto-upload-label">
+              <i data-lucide="camera" class="icon-sm"></i>
+              <span>Clique para enviar uma foto</span>
+              <span class="foto-upload-hint">PNG, JPG ou WEBP — Máximo 2MB</span>
+            </label>
+            <div class="foto-preview" id="foto-preview-ong_protetor" style="display:none">
+              <img id="foto-preview-img-ong_protetor" alt="Preview da foto" />
+              <button type="button" class="foto-remove-btn" onclick="removeFotoImage('ong_protetor')">
+                <i data-lucide="x" class="icon-xs"></i> Remover
+              </button>
+            </div>
+          </div>
+        </div>
+        <hr class="divider"/>
+        <div class="form-group">
+          <label>Observações</label>
+          <textarea name="obs" placeholder="Informações adicionais sobre a ONG ou protetor..."></textarea>
+        </div>
+        <div class="btn-row">
+          <button type="button" class="btn btn-secondary" onclick="goStep(2)">← Voltar</button>
+          <button type="submit" class="btn btn-primary">Enviar Cadastro →</button>
+        </div>
+      </form>
+
+      <!-- FORM: PET PERDIDO -->
+      <form id="form-pet_perdido" class="form-type" style="display:none" autocomplete="off" onsubmit="submitForm(event,'pet_perdido')">
+        <p class="section-title">Dados do Pet Perdido</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nome do pet <span class="req">*</span></label>
+            <input type="text" name="nome_pet" placeholder="Ex: Rex, Mimi, Thor..." required />
+          </div>
+          <div class="form-group">
+            <label>Espécie <span class="req">*</span></label>
+            <div class="radio-group">
+              <label class="radio-item"><input type="radio" name="especie" value="Cão" required /> Cão</label>
+              <label class="radio-item"><input type="radio" name="especie" value="Gato" /> Gato</label>
+              <label class="radio-item"><input type="radio" name="especie" value="Outro" /> Outro</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Raça</label>
+            <input type="text" name="raca" placeholder="Ex: Vira-lata, Labrador, Siamês..." />
+          </div>
+          <div class="form-group">
+            <label>Cor predominante <span class="req">*</span></label>
+            <input type="text" name="cor" placeholder="Ex: Caramelo, preto e branco..." required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Descrição / Características <span class="req">*</span></label>
+          <textarea name="descricao" placeholder="Porte, marcas especiais, coleira, comportamento, condições de saúde..." required></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Última vez visto</label>
+            <input type="datetime-local" name="ultima_vez" />
+          </div>
+          <div class="form-group">
+            <label>Local onde foi visto <span class="req">*</span></label>
+            <input type="text" name="local_visto" placeholder="Bairro, rua, ponto de referência" required />
+          </div>
+        </div>
+        <hr class="divider"/>
+        <p class="section-title">Contato</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Seu nome <span class="req">*</span></label>
+            <input type="text" name="contato_nome" placeholder="Nome completo" required />
+          </div>
+          <div class="form-group">
+            <label>Telefone / WhatsApp <span class="req">*</span></label>
+            <input type="tel" name="contato_tel" placeholder="(32) 99999-0000" required />
+          </div>
+        </div>
+        <hr class="divider"/>
+        <p class="section-title">Foto do Pet</p>
+        <div class="form-group">
+          <label>Envie uma foto do pet <span class="tip">(ajuda muito na identificação!)</span></label>
+          <div class="foto-upload-area">
+            <input type="file" name="foto" accept="image/png,image/jpeg,image/webp" class="foto-file-input" id="foto-file-pet_perdido" />
+            <label for="foto-file-pet_perdido" class="foto-upload-label">
+              <i data-lucide="camera" class="icon-sm"></i>
+              <span>Clique para enviar foto do pet</span>
+              <span class="foto-upload-hint">PNG, JPG ou WEBP — Máximo 2MB</span>
+            </label>
+            <div class="foto-preview" id="foto-preview-pet_perdido" style="display:none">
+              <img id="foto-preview-img-pet_perdido" alt="Preview da foto" />
+              <button type="button" class="foto-remove-btn" onclick="removeFotoImage('pet_perdido')">
+                <i data-lucide="x" class="icon-xs"></i> Remover
+              </button>
+            </div>
+          </div>
+        </div>
+        <hr class="divider"/>
+        <div class="form-group">
+          <label>Observações</label>
+          <textarea name="obs" placeholder="Informações adicionais que podem ajudar a encontrar o pet..."></textarea>
+        </div>
+        <div class="btn-row">
+          <button type="button" class="btn btn-secondary" onclick="goStep(2)">← Voltar</button>
+          <button type="submit" class="btn btn-red"><i data-lucide="search" class="icon-sm"></i> Registrar Pet Perdido →</button>
+        </div>
+      </form>
+
     </div><!-- .form-card -->
   </div><!-- #step-3 -->
 
@@ -853,6 +1025,8 @@
         <option value="voluntarios">🙋 Voluntários</option>
         <option value="vaquinhas">💛 Vaquinhas</option>
         <option value="doadores">🤲 Quero Doar</option>
+        <option value="ongs_protetores">🐾 ONGs / Protetores</option>
+        <option value="pets_perdidos">🐕 Pets Perdidos</option>
       </select>
     </div>
 

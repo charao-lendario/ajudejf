@@ -20,7 +20,7 @@ function makeLink (id, tipo, acao) {
   return `${APP_URL}/api/moderar?id=${id}&tipo=${tipo}&acao=${acao}&token=${token}`
 }
 
-async function uploadPixImage (supabase, base64DataUrl, recordId) {
+async function uploadImage (supabase, base64DataUrl, recordId, bucket) {
   const matches = base64DataUrl.match(/^data:(image\/\w+);base64,(.+)$/)
   if (!matches) return null
 
@@ -32,19 +32,24 @@ async function uploadPixImage (supabase, base64DataUrl, recordId) {
   const buffer = Buffer.from(base64Data, 'base64')
 
   const { error } = await supabase.storage
-    .from('pix-qrcodes')
+    .from(bucket)
     .upload(fileName, buffer, { contentType: mimeType, upsert: true })
 
   if (error) {
-    console.error('[notify] Storage upload error:', error)
+    console.error(`[notify] Storage upload error (${bucket}):`, error)
     return null
   }
 
   const { data: urlData } = supabase.storage
-    .from('pix-qrcodes')
+    .from(bucket)
     .getPublicUrl(fileName)
 
   return urlData.publicUrl
+}
+
+// Wrapper de compatibilidade para PIX
+async function uploadPixImage (supabase, base64DataUrl, recordId) {
+  return uploadImage(supabase, base64DataUrl, recordId, 'pix-qrcodes')
 }
 
 function buildHtml (tipo, data, id, pixQrcodeUrl) {
@@ -114,18 +119,25 @@ module.exports = async function handler (req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
 
   try {
-    const { tipo, payload, pix_qrcode_base64 } = req.body || {}
+    const { tipo, payload, pix_qrcode_base64, foto_base64, bucket } = req.body || {}
 
     if (!tipo || !payload) {
       return res.status(400).json({ error: 'tipo e payload são obrigatórios' })
     }
-    if (!['vaquinha', 'doacao_pix'].includes(tipo)) {
+
+    const TIPOS_VALIDOS = ['vaquinha', 'doacao_pix', 'ong_protetor', 'pet_perdido']
+    if (!TIPOS_VALIDOS.includes(tipo)) {
       return res.status(400).json({ error: 'Tipo inválido' })
     }
 
-    // Valida tamanho da imagem (base64 ~33% maior que binário, 750KB ≈ 500KB real)
+    // Valida tamanho da imagem PIX (base64 ~33% maior que binário, 750KB ≈ 500KB real)
     if (pix_qrcode_base64 && pix_qrcode_base64.length > 750000) {
       return res.status(400).json({ error: 'Imagem do QR Code muito grande. Máximo 500KB.' })
+    }
+
+    // Valida tamanho da foto (2MB real ≈ 2.8MB base64)
+    if (foto_base64 && foto_base64.length > 2800000) {
+      return res.status(400).json({ error: 'Foto muito grande. Máximo 2MB.' })
     }
 
     // Cria cliente com service role (bypassa RLS)
@@ -134,6 +146,35 @@ module.exports = async function handler (req, res) {
       process.env.SUPABASE_SERVICE_ROLE_KEY
     )
 
+    // ── Fluxo para ONG/Protetor e Pet Perdido (com foto, sem moderação) ──
+    if (tipo === 'ong_protetor' || tipo === 'pet_perdido') {
+      const tabela = tipo === 'ong_protetor' ? 'ongs_protetores' : 'pets_perdidos'
+
+      const { data: inserted, error: dbErr } = await supabase
+        .from(tabela)
+        .insert(payload)
+        .select('id')
+        .single()
+
+      if (dbErr) throw new Error(`DB: ${dbErr.message}`)
+
+      const id = inserted.id
+
+      // Upload foto se fornecida
+      if (foto_base64 && bucket) {
+        const fotoUrl = await uploadImage(supabase, foto_base64, id, bucket)
+        if (fotoUrl) {
+          await supabase
+            .from(tabela)
+            .update({ foto_url: fotoUrl })
+            .eq('id', id)
+        }
+      }
+
+      return res.status(200).json({ ok: true, id })
+    }
+
+    // ── Fluxo de moderação (vaquinha e doacao_pix) ──
     const tabela = tipo === 'vaquinha' ? 'vaquinhas' : 'pontos_doacao'
     const insertPayload = { ...payload, moderation_status: 'pendente' }
 

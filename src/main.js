@@ -10,7 +10,7 @@ import {
   Car, ChefHat, Dumbbell, Brain, Smartphone,
   Pill, Cross, PawPrint, Cake, FileText, Brush, Wheat,
   Stethoscope, Heart, Gift,
-  Camera, X, QrCode, ZoomIn,
+  Camera, X, QrCode, ZoomIn, Dog, ImagePlus,
 } from 'lucide'
 
 const ICONS = {
@@ -22,7 +22,7 @@ const ICONS = {
   Car, ChefHat, Dumbbell, Brain, Smartphone,
   Pill, Cross, PawPrint, Cake, FileText, Brush, Wheat,
   Stethoscope, Heart, Gift,
-  Camera, X, QrCode, ZoomIn,
+  Camera, X, QrCode, ZoomIn, Dog, ImagePlus,
 }
 
 function initIcons (root = document) {
@@ -112,6 +112,81 @@ function readFileAsBase64 (file) {
   })
 }
 
+// ── FOTO UPLOAD (ONG/Protetor e Pet Perdido) ──
+window.removeFotoImage = function (formId) {
+  const fileInput = document.getElementById('foto-file-' + formId)
+  const previewDiv = document.getElementById('foto-preview-' + formId)
+  const uploadLabel = previewDiv.previousElementSibling
+  fileInput.value = ''
+  previewDiv.style.display = 'none'
+  uploadLabel.style.display = 'flex'
+}
+
+function setupFotoUpload (formId) {
+  const fileInput = document.getElementById('foto-file-' + formId)
+  if (!fileInput) return
+  fileInput.addEventListener('change', function () {
+    const file = this.files[0]
+    if (!file) return
+    if (file.size > 2097152) {
+      alert('A imagem deve ter no máximo 2MB.')
+      this.value = ''
+      return
+    }
+    if (!file.type.startsWith('image/')) {
+      alert('Formato não suportado. Use uma imagem.')
+      this.value = ''
+      return
+    }
+    const reader = new FileReader()
+    reader.onload = function (e) {
+      const previewDiv = document.getElementById('foto-preview-' + formId)
+      const previewImg = document.getElementById('foto-preview-img-' + formId)
+      const uploadLabel = previewDiv.previousElementSibling
+      previewImg.src = e.target.result
+      previewDiv.style.display = 'flex'
+      uploadLabel.style.display = 'none'
+      initIcons(previewDiv)
+    }
+    reader.readAsDataURL(file)
+  })
+}
+
+// ── FOTO LIGHTBOX (consulta) ──
+window.openFotoLightbox = function (url, hint) {
+  let overlay = document.getElementById('foto-lightbox')
+  if (!overlay) {
+    overlay = document.createElement('div')
+    overlay.id = 'foto-lightbox'
+    overlay.className = 'pix-lightbox-overlay'
+    overlay.innerHTML = `
+      <div class="pix-lightbox-content" style="max-width:480px">
+        <button class="pix-lightbox-close" onclick="window.closeFotoLightbox()">&times;</button>
+        <p class="pix-lightbox-hint" id="foto-lightbox-hint"></p>
+        <img class="pix-lightbox-img" alt="Foto" style="max-width:400px;border-color:var(--blue-main)" />
+        <button class="pix-lightbox-download" onclick="window.open(document.querySelector('#foto-lightbox .pix-lightbox-img').src, '_blank')">
+          Abrir imagem em nova aba
+        </button>
+      </div>`
+    document.body.appendChild(overlay)
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) window.closeFotoLightbox()
+    })
+  }
+  overlay.querySelector('#foto-lightbox-hint').textContent = hint || 'Foto'
+  overlay.querySelector('.pix-lightbox-img').src = url
+  overlay.classList.add('active')
+  document.body.style.overflow = 'hidden'
+}
+
+window.closeFotoLightbox = function () {
+  const overlay = document.getElementById('foto-lightbox')
+  if (overlay) {
+    overlay.classList.remove('active')
+    document.body.style.overflow = ''
+  }
+}
+
 // ── STATE ──
 const state = {
   city: '',
@@ -121,14 +196,16 @@ const state = {
 }
 
 const typeLabels = {
-  abrigo:       'Abrigo',
-  doacao:       'Ponto de Doação',
-  desaparecido: 'Pessoa Desaparecida',
-  alimentacao:  'Ponto de Alimentação',
-  comunidade:   'Comunidade / Bairro',
-  voluntario:   'Oferecer Ajuda',
-  vaquinha:     'Vaquinha',
-  doador:       'Quero Doar'
+  abrigo:        'Abrigo',
+  doacao:        'Ponto de Doação',
+  desaparecido:  'Pessoa Desaparecida',
+  alimentacao:   'Ponto de Alimentação',
+  comunidade:    'Comunidade / Bairro',
+  voluntario:    'Oferecer Ajuda',
+  vaquinha:      'Vaquinha',
+  doador:        'Quero Doar',
+  ong_protetor:  'ONG / Protetor',
+  pet_perdido:   'Pet Perdido'
 }
 
 // ── NAVIGATION ──
@@ -158,19 +235,21 @@ window.selectType = function (type) {
 
 // ── MAPA: tipo → tabela e campos ──
 const TIPO_TABELA = {
-  abrigo:       'abrigos',
-  doacao:       'pontos_doacao',
-  desaparecido: 'desaparecidos',
-  alimentacao:  'pontos_alimentacao',
-  comunidade:   'comunidades',
-  voluntario:   'voluntarios',
-  vaquinha:     'vaquinhas',
-  doador:       'doadores'
+  abrigo:        'abrigos',
+  doacao:        'pontos_doacao',
+  desaparecido:  'desaparecidos',
+  alimentacao:   'pontos_alimentacao',
+  comunidade:    'comunidades',
+  voluntario:    'voluntarios',
+  vaquinha:      'vaquinhas',
+  doador:        'doadores',
+  ong_protetor:  'ongs_protetores',
+  pet_perdido:   'pets_perdidos'
 }
 
 // Campos que devem virar arrays (checkboxes múltiplos)
 const CAMPOS_ARRAY = new Set([
-  'recursos', 'aceita', 'refeicao', 'necessidades', 'habilidade', 'oferece'
+  'recursos', 'aceita', 'refeicao', 'necessidades', 'habilidade', 'oferece', 'animais_aceitos'
 ])
 
 // Mapa de nomes de campo do form → coluna da tabela
@@ -180,10 +259,12 @@ const CAMPO_COLUNA = {
   pix_tipo:     'pix_tipo',
   pix_chave:    'pix_chave',
   pix_titular:  'pix_titular',
-  ultima_vez:   'ultima_vez_visto',
-  saude:        'condicao_saude',
+  ultima_vez:      'ultima_vez_visto',
+  saude:           'condicao_saude',
   informante_nome: 'informante_nome',
   informante_tel:  'informante_tel',
+  contato_nome:    'contato_nome',
+  contato_tel:     'contato_tel',
 }
 
 // Carrega cidade_id a partir do nome (cache simples)
@@ -246,6 +327,14 @@ window.submitForm = async function (event, tipo) {
     const hasPixImage = !!pixFile
     const needsModeration = tipo === 'vaquinha' || (tipo === 'doacao' && (hasPix || hasPixImage))
 
+    // Lê foto se presente (ONG/Protetor e Pet Perdido)
+    const fotoFileInput = form.querySelector('input[name="foto"]')
+    const fotoFile = fotoFileInput && fotoFileInput.files[0]
+    let fotoImageBase64 = null
+    if (fotoFile) {
+      fotoImageBase64 = await readFileAsBase64(fotoFile)
+    }
+
     if (needsModeration) {
       // ── Envia para API (Resend + insert pendente) ──
       const apiTipo = tipo === 'vaquinha' ? 'vaquinha' : 'doacao_pix'
@@ -265,6 +354,24 @@ window.submitForm = async function (event, tipo) {
       }
 
       state.pendingModeration = true
+    } else if (fotoImageBase64 && (tipo === 'ong_protetor' || tipo === 'pet_perdido')) {
+      // ── Insert com foto via API (upload server-side) ──
+      const payload = buildPayload({ cidade_id })
+      const bucket = tipo === 'ong_protetor' ? 'fotos-ongs' : 'fotos-pets'
+      const apiBody = { tipo: tipo, payload, foto_base64: fotoImageBase64, bucket }
+
+      const resp = await fetch('/api/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(apiBody)
+      })
+
+      if (!resp.ok) {
+        const errBody = await resp.json().catch(() => ({}))
+        throw new Error(errBody.error || `Erro ${resp.status} ao salvar`)
+      }
+
+      state.pendingModeration = false
     } else {
       // ── Insert direto no Supabase ──
       const payload = buildPayload({ cidade_id })
@@ -292,6 +399,8 @@ window.submitForm = async function (event, tipo) {
     form.reset()
     document.querySelectorAll('.pix-preview').forEach(p => { p.style.display = 'none' })
     document.querySelectorAll('.pix-upload-label').forEach(l => { l.style.display = 'flex' })
+    document.querySelectorAll('.foto-preview').forEach(p => { p.style.display = 'none' })
+    document.querySelectorAll('.foto-upload-label').forEach(l => { l.style.display = 'flex' })
 
     goStep(4)
 
@@ -369,6 +478,15 @@ function buildSummary(city, type, data) {
     disponibilidade:  'Disponibilidade',
     link_vakinha:     'Link da vaquinha',
     oferece:          'O que deseja doar',
+    nome_pet:         'Nome do pet',
+    especie:          'Espécie',
+    raca:             'Raça',
+    cor:              'Cor',
+    local_visto:      'Onde foi visto',
+    contato_nome:     'Contato',
+    contato_tel:      'Tel. contato',
+    animais_aceitos:  'Animais que aceita',
+    tipo:             'Tipo',
     obs:              'Observações'
   }
 
@@ -414,6 +532,8 @@ window.newEntry = function () {
   })
   document.querySelectorAll('.pix-preview').forEach(p => { p.style.display = 'none' })
   document.querySelectorAll('.pix-upload-label').forEach(l => { l.style.display = 'flex' })
+  document.querySelectorAll('.foto-preview').forEach(p => { p.style.display = 'none' })
+  document.querySelectorAll('.foto-upload-label').forEach(l => { l.style.display = 'flex' })
   state.city = ''
   state.type = ''
   state.data = {}
@@ -437,6 +557,8 @@ window.showView = function (view) {
 initIcons()
 setupPixUpload('doacao')
 setupPixUpload('vaquinha')
+setupFotoUpload('ong_protetor')
+setupFotoUpload('pet_perdido')
 
 // ═══════════════════════════════════════════════════════
 // CONSULTA — HELPERS
@@ -620,6 +742,57 @@ function cardDoador (item, cidade) {
     </div>`
 }
 
+function cardOngProtetor (item, cidade) {
+  const fotoHtml = item.foto_url
+    ? `<div class="rc-foto-avatar" onclick="window.openFotoLightbox('${esc(item.foto_url)}', '${esc(item.nome)}')">
+        <img src="${esc(item.foto_url)}" alt="${esc(item.nome)}" />
+       </div>`
+    : ''
+  return `
+    <div class="result-card result-card-ong">
+      ${fotoHtml}
+      <div class="rc-header">
+        <div class="rc-title">${esc(item.nome)}</div>
+        <span class="badge badge-blue">${esc(item.tipo)}</span>
+      </div>
+      <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)}${item.endereco ? ` — ${esc(item.endereco)}` : ''}</div>
+      <div class="rc-body">
+        <div class="rc-row">${esc(item.descricao)}</div>
+        ${chips(item.animais_aceitos)}
+        ${item.capacidade ? `<div class="rc-row"><i data-lucide="users" class="icon-xs"></i> Capacidade: ${esc(item.capacidade)}</div>` : ''}
+        ${item.necessidades ? `<div class="rc-row rc-needs"><i data-lucide="alert-triangle" class="icon-xs"></i> Precisa: ${esc(item.necessidades)}</div>` : ''}
+      </div>
+      ${wppBtn(item.telefone)}
+    </div>`
+}
+
+function cardPetPerdido (item, cidade) {
+  const fotoHtml = item.foto_url
+    ? `<div class="rc-foto-pet" onclick="window.openFotoLightbox('${esc(item.foto_url)}', '${esc(item.nome_pet)}')">
+        <img src="${esc(item.foto_url)}" alt="${esc(item.nome_pet)}" />
+       </div>`
+    : ''
+  const statusBadge = item.status === 'encontrado'
+    ? '<span class="badge badge-green">Encontrado</span>'
+    : '<span class="badge badge-red">Perdido</span>'
+  return `
+    <div class="result-card result-card-pet">
+      ${fotoHtml}
+      <div class="rc-header">
+        <div class="rc-title">${esc(item.nome_pet)}</div>
+        ${statusBadge}
+      </div>
+      <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)}${item.local_visto ? ` — ${esc(item.local_visto)}` : ''}</div>
+      <div class="rc-body">
+        <div class="rc-row"><i data-lucide="paw-print" class="icon-xs"></i> ${esc(item.especie)}${item.raca ? ` — ${esc(item.raca)}` : ''} — ${esc(item.cor)}</div>
+        <div class="rc-row"><i data-lucide="file-text" class="icon-xs"></i> ${esc(item.descricao)}</div>
+        ${item.ultima_vez_visto ? `<div class="rc-row"><i data-lucide="clock" class="icon-xs"></i> Última vez: ${formatDate(item.ultima_vez_visto)}</div>` : ''}
+      </div>
+      <div class="rc-footer-info">Contato: ${esc(item.contato_nome)}</div>
+      ${wppBtn(item.contato_tel, 'Contatar')}
+    </div>`
+}
+
 const TABELA_CONFIG = {
   abrigos:            { icon: 'home',        label: 'Abrigos',           card: cardAbrigo },
   pontos_doacao:      { icon: 'package',     label: 'Pontos de Doação',  card: cardDoacao },
@@ -629,6 +802,8 @@ const TABELA_CONFIG = {
   voluntarios:        { icon: 'hand-heart',  label: 'Voluntários',       card: cardVoluntario },
   vaquinhas:          { icon: 'heart',       label: 'Vaquinhas',         card: cardVaquinha },
   doadores:           { icon: 'gift',        label: 'Quero Doar',        card: cardDoador },
+  ongs_protetores:    { icon: 'paw-print',   label: 'ONGs / Protetores', card: cardOngProtetor },
+  pets_perdidos:      { icon: 'search',      label: 'Pets Perdidos',     card: cardPetPerdido },
 }
 
 // ═══════════════════════════════════════════════════════
