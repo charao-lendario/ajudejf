@@ -11,7 +11,7 @@ import {
   Pill, Cross, PawPrint, Cake, FileText, Brush, Wheat,
   Stethoscope, Heart, Gift,
   Camera, X, QrCode, ZoomIn, Dog, ImagePlus,
-  Palette, User, Phone,
+  Palette, User, Phone, ArrowLeft, HeartHandshake,
 } from 'lucide'
 
 const ICONS = {
@@ -24,7 +24,7 @@ const ICONS = {
   Pill, Cross, PawPrint, Cake, FileText, Brush, Wheat,
   Stethoscope, Heart, Gift,
   Camera, X, QrCode, ZoomIn, Dog, ImagePlus,
-  Palette, User, Phone,
+  Palette, User, Phone, ArrowLeft, HeartHandshake,
 }
 
 function initIcons (root = document) {
@@ -114,7 +114,7 @@ function readFileAsBase64 (file) {
   })
 }
 
-// ── FOTO UPLOAD (ONG/Protetor e Pet Perdido) ──
+// ── FOTO UPLOAD ──
 window.removeFotoImage = function (formId) {
   const fileInput = document.getElementById('foto-file-' + formId)
   const previewDiv = document.getElementById('foto-preview-' + formId)
@@ -154,7 +154,7 @@ function setupFotoUpload (formId) {
   })
 }
 
-// ── FOTO LIGHTBOX (consulta) ──
+// ── FOTO LIGHTBOX ──
 window.openFotoLightbox = function (url, hint) {
   let overlay = document.getElementById('foto-lightbox')
   if (!overlay) {
@@ -251,8 +251,20 @@ window.closePetDetail = function () {
   }
 }
 
-// ── STATE ──
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+
 const state = {
+  mode: '',  // '' = landing, 'pet', 'geral'
+  city: '',
+  type: '',
+  data: {},
+  pendingModeration: false
+}
+
+// State separado para o modo geral
+const stateGeral = {
   city: '',
   type: '',
   data: {},
@@ -268,9 +280,85 @@ const typeLabels = {
   vaquinha:        'Vaquinha'
 }
 
-// ── NAVIGATION ──
+const typeLabelsGeral = {
+  desaparecido:      'Pessoa Desaparecida',
+  abrigo:            'Abrigo',
+  alimentacao:       'Ponto de Alimentação',
+  comunidade:        'Comunidade',
+  doacao_geral:      'Ponto de Doação',
+  voluntario_geral:  'Voluntário',
+  vaquinha_geral:    'Vaquinha'
+}
+
+// ═══════════════════════════════════════════════════════
+// LANDING & MODE SWITCHING
+// ═══════════════════════════════════════════════════════
+
+window.enterMode = function (mode) {
+  state.mode = mode
+
+  // Hide landing, show app
+  document.getElementById('view-landing').classList.remove('active')
+  document.getElementById('app-wrapper').style.display = ''
+
+  // Update header/sidebar/banner based on mode
+  const banner = document.getElementById('emergency-banner')
+  const subtitle = document.getElementById('header-subtitle')
+  const badge = document.getElementById('header-badge')
+  const sidebarPet = document.getElementById('sidebar-nums-pet')
+  const sidebarGeral = document.getElementById('sidebar-nums-geral')
+  const tagline = document.getElementById('sidebar-tagline')
+  const footerPhones = document.getElementById('footer-phones')
+
+  if (mode === 'pet') {
+    banner.innerHTML = 'APOIO ANIMAL — Juiz de Fora e Região &nbsp;|&nbsp; Denúncias: <strong>0800 61 8080</strong> (IBAMA) &nbsp;|&nbsp; <strong>153</strong> (Guarda Municipal) &nbsp;|&nbsp; <strong>(32) 3690-8450</strong> (Zoonoses)'
+    banner.style.background = 'var(--red)'
+    subtitle.textContent = 'Central de Apoio Animal — Juiz de Fora e Região'
+    badge.textContent = 'Apoio Animal'
+    badge.style.background = 'var(--blue-main)'
+    sidebarPet.style.display = ''
+    sidebarGeral.style.display = 'none'
+    tagline.textContent = 'Plataforma de apoio animal para Juiz de Fora e região'
+    footerPhones.innerHTML = 'Denúncias: <strong>0800 61 8080</strong> (IBAMA) · <strong>153</strong> (Guarda Municipal) · <strong>(32) 3690-8450</strong> (Zoonoses)'
+
+    // Show pet home
+    document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'))
+    document.getElementById('view-home').classList.add('active')
+  } else {
+    banner.innerHTML = 'APOIO A PESSOAS — Juiz de Fora e Região &nbsp;|&nbsp; SAMU: <strong>192</strong> &nbsp;|&nbsp; Bombeiros: <strong>193</strong> &nbsp;|&nbsp; Defesa Civil: <strong>(32) 3690-8280</strong>'
+    banner.style.background = 'var(--blue-main)'
+    subtitle.textContent = 'Central de Apoio a Pessoas — Juiz de Fora e Região'
+    badge.textContent = 'Apoio a Pessoas'
+    badge.style.background = 'var(--green)'
+    sidebarPet.style.display = 'none'
+    sidebarGeral.style.display = ''
+    tagline.textContent = 'Plataforma de apoio a pessoas para Juiz de Fora e região'
+    footerPhones.innerHTML = 'SAMU: <strong>192</strong> · Bombeiros: <strong>193</strong> · Defesa Civil: <strong>(32) 3690-8280</strong> · CRAS: <strong>(32) 3690-8498</strong>'
+
+    // Show geral home
+    document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'))
+    document.getElementById('view-home-geral').classList.add('active')
+  }
+
+  initIcons()
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+window.goToLanding = function () {
+  state.mode = ''
+  document.getElementById('app-wrapper').style.display = 'none'
+  document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'))
+  document.getElementById('view-landing').classList.add('active')
+  initIcons()
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+// ═══════════════════════════════════════════════════════
+// NAVIGATION — PET
+// ═══════════════════════════════════════════════════════
+
 window.goStep = function (n) {
-  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'))
+  document.querySelectorAll('#view-cadastrar .step').forEach(s => s.classList.remove('active'))
   document.getElementById('step-' + n).classList.add('active')
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
@@ -285,15 +373,52 @@ window.selectCity = function (city) {
 window.selectType = function (type) {
   state.type = type
   document.getElementById('ctx-type').textContent = typeLabels[type] || type
-
-  document.querySelectorAll('.form-type').forEach(f => f.style.display = 'none')
+  document.querySelectorAll('#view-cadastrar .form-type').forEach(f => f.style.display = 'none')
   const form = document.getElementById('form-' + type)
   if (form) form.style.display = 'block'
-
   goStep(3)
 }
 
-// ── MAPA: tipo → tabela e campos ──
+window.showView = function (view) {
+  document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'))
+  document.getElementById('view-' + view).classList.add('active')
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+  if (view === 'consultar') loadConsulta()
+  if (view === 'consultar-geral') loadConsultaGeral()
+  if (view === 'cadastrar') window.goStep(1)
+  if (view === 'cadastrar-geral') window.goStepGeral(1)
+}
+
+// ═══════════════════════════════════════════════════════
+// NAVIGATION — GERAL
+// ═══════════════════════════════════════════════════════
+
+window.goStepGeral = function (n) {
+  document.querySelectorAll('#view-cadastrar-geral .step').forEach(s => s.classList.remove('active'))
+  document.getElementById('geral-step-' + n).classList.add('active')
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+window.selectCityGeral = function (city) {
+  stateGeral.city = city
+  document.getElementById('geral-selected-city-label').textContent = city
+  document.getElementById('geral-ctx-city').textContent = city
+  goStepGeral(2)
+}
+
+window.selectTypeGeral = function (type) {
+  stateGeral.type = type
+  document.getElementById('geral-ctx-type').textContent = typeLabelsGeral[type] || type
+  document.querySelectorAll('#view-cadastrar-geral .form-type-geral').forEach(f => f.style.display = 'none')
+  const form = document.getElementById('form-' + type)
+  if (form) form.style.display = 'block'
+  goStepGeral(3)
+}
+
+// ═══════════════════════════════════════════════════════
+// FORM MAPPING
+// ═══════════════════════════════════════════════════════
+
 const TIPO_TABELA = {
   pet_perdido:     'pets_perdidos',
   ong_protetor:    'ongs_protetores',
@@ -303,18 +428,26 @@ const TIPO_TABELA = {
   vaquinha:        'vaquinhas'
 }
 
-// Campos que devem virar arrays (checkboxes múltiplos)
+const TIPO_TABELA_GERAL = {
+  desaparecido:     'desaparecidos',
+  abrigo:           'abrigos',
+  alimentacao:      'pontos_alimentacao',
+  comunidade:       'comunidades',
+  doacao_geral:     'pontos_doacao',
+  voluntario_geral: 'voluntarios',
+  vaquinha_geral:   'vaquinhas'
+}
+
 const CAMPOS_ARRAY = new Set([
   'recursos', 'aceita', 'refeicao', 'necessidades', 'habilidade', 'oferece', 'animais_aceitos'
 ])
 
-// Mapa de nomes de campo do form → coluna da tabela
 const CAMPO_COLUNA = {
-  refeicao:     'refeicoes',
-  habilidade:   'habilidades',
-  pix_tipo:     'pix_tipo',
-  pix_chave:    'pix_chave',
-  pix_titular:  'pix_titular',
+  refeicao:        'refeicoes',
+  habilidade:      'habilidades',
+  pix_tipo:        'pix_tipo',
+  pix_chave:       'pix_chave',
+  pix_titular:     'pix_titular',
   ultima_vez:      'ultima_vez_visto',
   saude:           'condicao_saude',
   informante_nome: 'informante_nome',
@@ -323,7 +456,6 @@ const CAMPO_COLUNA = {
   contato_tel:     'tutor_tel',
 }
 
-// Carrega cidade_id a partir do nome (cache simples)
 const cidadeCache = {}
 async function getCidadeId(nome) {
   if (cidadeCache[nome]) return cidadeCache[nome]
@@ -337,12 +469,14 @@ async function getCidadeId(nome) {
   return data.id
 }
 
-// ── FORM SUBMIT ──
+// ═══════════════════════════════════════════════════════
+// FORM SUBMIT — PET
+// ═══════════════════════════════════════════════════════
+
 window.submitForm = async function (event, tipo) {
   event.preventDefault()
   const form = event.target
   const submitBtn = form.querySelector('[type="submit"]')
-
   const originalText = submitBtn.innerHTML
   submitBtn.innerHTML = 'Salvando...'
   submitBtn.disabled = true
@@ -357,7 +491,6 @@ window.submitForm = async function (event, tipo) {
     const formRaw = collectFormData(form)
     state.data = formRaw
 
-    // Monta payload limpo
     function buildPayload (base) {
       const p = { ...base }
       for (const [key, val] of Object.entries(formRaw)) {
@@ -370,29 +503,21 @@ window.submitForm = async function (event, tipo) {
       return p
     }
 
-    // Lê imagem QR Code PIX se presente
     const pixFileInput = form.querySelector('input[name="pix_qrcode"]')
     const pixFile = pixFileInput && pixFileInput.files[0]
     let pixImageBase64 = null
-    if (pixFile) {
-      pixImageBase64 = await readFileAsBase64(pixFile)
-    }
+    if (pixFile) pixImageBase64 = await readFileAsBase64(pixFile)
 
-    // Detecta se precisa de moderação
     const hasPix = formRaw.pix_chave && formRaw.pix_chave.trim() !== ''
     const hasPixImage = !!pixFile
     const needsModeration = tipo === 'vaquinha' || (tipo === 'doacao' && (hasPix || hasPixImage))
 
-    // Lê foto se presente (ONG/Protetor e Pet Perdido)
     const fotoFileInput = form.querySelector('input[name="foto"]')
     const fotoFile = fotoFileInput && fotoFileInput.files[0]
     let fotoImageBase64 = null
-    if (fotoFile) {
-      fotoImageBase64 = await readFileAsBase64(fotoFile)
-    }
+    if (fotoFile) fotoImageBase64 = await readFileAsBase64(fotoFile)
 
     if (needsModeration) {
-      // ── Envia para API (Resend + insert pendente) ──
       const apiTipo = tipo === 'vaquinha' ? 'vaquinha' : 'doacao_pix'
       const payload = buildPayload({ cidade_id })
       const apiBody = { tipo: apiTipo, payload }
@@ -403,15 +528,12 @@ window.submitForm = async function (event, tipo) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(apiBody)
       })
-
       if (!resp.ok) {
         const errBody = await resp.json().catch(() => ({}))
         throw new Error(errBody.error || `Erro ${resp.status} ao enviar para moderação`)
       }
-
       state.pendingModeration = true
     } else if (fotoImageBase64 && (tipo === 'ong_protetor' || tipo === 'pet_perdido')) {
-      // ── Insert com foto via API (upload server-side) ──
       const payload = buildPayload({ cidade_id })
       const bucket = tipo === 'ong_protetor' ? 'fotos-ongs' : 'fotos-pets'
       const apiBody = { tipo: tipo, payload, foto_base64: fotoImageBase64, bucket }
@@ -421,15 +543,12 @@ window.submitForm = async function (event, tipo) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(apiBody)
       })
-
       if (!resp.ok) {
         const errBody = await resp.json().catch(() => ({}))
         throw new Error(errBody.error || `Erro ${resp.status} ao salvar`)
       }
-
       state.pendingModeration = false
     } else {
-      // ── Insert direto no Supabase ──
       const payload = buildPayload({ cidade_id })
       const tabela = TIPO_TABELA[tipo]
       const { error } = await supabase.from(tabela).insert(payload)
@@ -437,7 +556,6 @@ window.submitForm = async function (event, tipo) {
       state.pendingModeration = false
     }
 
-    // Atualiza mensagem do step-4 conforme moderação
     const titleEl = document.getElementById('success-title')
     const descEl  = document.getElementById('success-desc')
     if (state.pendingModeration) {
@@ -448,31 +566,115 @@ window.submitForm = async function (event, tipo) {
       if (descEl)  descEl.textContent  = 'Seus dados foram salvos com sucesso. Compartilhe pelo WhatsApp para ampliar o alcance e facilitar a coordenação.'
     }
 
-    const summary = buildSummary(state.city, tipo, formRaw)
+    const summary = buildSummary(state.city, tipo, formRaw, typeLabels)
     document.getElementById('summary-text').textContent = summary
 
-    // Limpa o formulário após envio bem-sucedido
     form.reset()
-    document.querySelectorAll('.pix-preview').forEach(p => { p.style.display = 'none' })
-    document.querySelectorAll('.pix-upload-label').forEach(l => { l.style.display = 'flex' })
-    document.querySelectorAll('.foto-preview').forEach(p => { p.style.display = 'none' })
-    document.querySelectorAll('.foto-upload-label').forEach(l => { l.style.display = 'flex' })
-
+    clearUploads()
     goStep(4)
 
   } catch (err) {
     submitBtn.innerHTML = originalText
     submitBtn.disabled = false
-    const errEl = document.createElement('div')
-    errEl.className = 'alert alert-warning form-error'
-    errEl.style.marginTop = '16px'
-    errEl.innerHTML = `<span><i data-lucide="alert-triangle" class="icon-sm"></i></span><span>Erro ao salvar: ${err.message}. Tente novamente.</span>`
-    form.appendChild(errEl)
-    initIcons(errEl)
+    showFormError(form, err.message)
   }
 }
 
-// ── COLLECT FORM DATA ──
+// ═══════════════════════════════════════════════════════
+// FORM SUBMIT — GERAL
+// ═══════════════════════════════════════════════════════
+
+window.submitFormGeral = async function (event, tipo) {
+  event.preventDefault()
+  const form = event.target
+  const submitBtn = form.querySelector('[type="submit"]')
+  const originalText = submitBtn.innerHTML
+  submitBtn.innerHTML = 'Salvando...'
+  submitBtn.disabled = true
+
+  const existingError = form.querySelector('.form-error')
+  if (existingError) existingError.remove()
+
+  const PIX_SKIP = new Set(['— Não recebe PIX —', '— Não informar PIX —'])
+
+  try {
+    const cidade_id = await getCidadeId(stateGeral.city)
+    const formRaw = collectFormData(form)
+    stateGeral.data = formRaw
+
+    function buildPayload (base) {
+      const p = { ...base }
+      for (const [key, val] of Object.entries(formRaw)) {
+        if (val === null || val === undefined || val === '' || PIX_SKIP.has(val)) continue
+        const coluna = CAMPO_COLUNA[key] || key
+        p[coluna] = CAMPOS_ARRAY.has(key)
+          ? (Array.isArray(val) ? val : [val])
+          : val
+      }
+      return p
+    }
+
+    const pixFileInput = form.querySelector('input[name="pix_qrcode"]')
+    const pixFile = pixFileInput && pixFileInput.files[0]
+    let pixImageBase64 = null
+    if (pixFile) pixImageBase64 = await readFileAsBase64(pixFile)
+
+    const hasPix = formRaw.pix_chave && formRaw.pix_chave.trim() !== ''
+    const hasPixImage = !!pixFile
+    const needsModeration = tipo === 'vaquinha_geral' || (tipo === 'doacao_geral' && (hasPix || hasPixImage))
+
+    if (needsModeration) {
+      const apiTipo = tipo === 'vaquinha_geral' ? 'vaquinha' : 'doacao_pix'
+      const payload = buildPayload({ cidade_id })
+      const apiBody = { tipo: apiTipo, payload }
+      if (pixImageBase64) apiBody.pix_qrcode_base64 = pixImageBase64
+
+      const resp = await fetch('/api/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(apiBody)
+      })
+      if (!resp.ok) {
+        const errBody = await resp.json().catch(() => ({}))
+        throw new Error(errBody.error || `Erro ${resp.status} ao enviar para moderação`)
+      }
+      stateGeral.pendingModeration = true
+    } else {
+      const payload = buildPayload({ cidade_id })
+      const tabela = TIPO_TABELA_GERAL[tipo]
+      const { error } = await supabase.from(tabela).insert(payload)
+      if (error) throw error
+      stateGeral.pendingModeration = false
+    }
+
+    const titleEl = document.getElementById('geral-success-title')
+    const descEl  = document.getElementById('geral-success-desc')
+    if (stateGeral.pendingModeration) {
+      if (titleEl) titleEl.textContent = 'Enviado para aprovação!'
+      if (descEl)  descEl.textContent  = 'Seus dados foram enviados e estão aguardando moderação.'
+    } else {
+      if (titleEl) titleEl.textContent = 'Cadastro registrado!'
+      if (descEl)  descEl.textContent  = 'Seus dados foram salvos com sucesso. Compartilhe pelo WhatsApp para ampliar o alcance.'
+    }
+
+    const summary = buildSummary(stateGeral.city, tipo, formRaw, typeLabelsGeral)
+    document.getElementById('geral-summary-text').textContent = summary
+
+    form.reset()
+    clearUploads()
+    goStepGeral(4)
+
+  } catch (err) {
+    submitBtn.innerHTML = originalText
+    submitBtn.disabled = false
+    showFormError(form, err.message)
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════
+
 function collectFormData(form) {
   const formData = new FormData(form)
   const data = {}
@@ -488,62 +690,48 @@ function collectFormData(form) {
   return data
 }
 
-// ── BUILD SUMMARY ──
-function buildSummary(city, type, data) {
+function clearUploads () {
+  document.querySelectorAll('.pix-preview').forEach(p => { p.style.display = 'none' })
+  document.querySelectorAll('.pix-upload-label').forEach(l => { l.style.display = 'flex' })
+  document.querySelectorAll('.foto-preview').forEach(p => { p.style.display = 'none' })
+  document.querySelectorAll('.foto-upload-label').forEach(l => { l.style.display = 'flex' })
+}
+
+function showFormError (form, msg) {
+  const errEl = document.createElement('div')
+  errEl.className = 'alert alert-warning form-error'
+  errEl.style.marginTop = '16px'
+  errEl.innerHTML = `<span><i data-lucide="alert-triangle" class="icon-sm"></i></span><span>Erro ao salvar: ${msg}. Tente novamente.</span>`
+  form.appendChild(errEl)
+  initIcons(errEl)
+}
+
+function buildSummary(city, type, data, labels) {
   const now = new Date().toLocaleString('pt-BR')
   const lines = []
-  lines.push('=== AJUDE JF — ' + (typeLabels[type] || type).toUpperCase() + ' ===')
+  lines.push('=== AJUDE JF — ' + (labels[type] || type).toUpperCase() + ' ===')
   lines.push('📍 Cidade: ' + city)
   lines.push('📅 Data/hora: ' + now)
   lines.push('')
 
   const labelMap = {
-    nome_local:       'Local',
-    nome_pessoa:      'Nome da pessoa',
-    nome_campanha:    'Nome da campanha',
-    nome:             'Nome',
-    responsavel:      'Responsável',
-    telefone:         'Telefone/WhatsApp',
-    endereco:         'Endereço',
-    vagas:            'Vagas disponíveis',
-    recursos:         'Recursos disponíveis',
-    animais:          'Aceita animais',
-    necessidades:     'Necessidades AGORA',
-    nao_precisa:      'NÃO precisa',
-    prioridade:       'Prioridade',
-    horario:          'Horário',
-    aceita:           'O que aceita',
-    pix_tipo:         'Tipo da chave PIX',
-    pix_chave:        'Chave PIX',
-    pix_titular:      'Titular PIX',
-    refeicao:         'Tipo de refeição',
-    voluntarios:      'Precisa voluntários',
-    capacidade:       'Capacidade',
-    familias:         'Famílias afetadas',
-    descricao:        'Descrição',
-    ultima_vez:       'Última vez visto',
-    local_visto:      'Local visto',
-    saude:            'Condição de saúde',
-    informante_nome:  'Informante',
-    informante_tel:   'Tel. informante',
-    relacao:          'Relação',
-    idade:            'Idade',
-    bairro:           'Bairro',
-    veiculo:          'Veículo',
-    habilidade:       'Habilidades',
-    disponibilidade:  'Disponibilidade',
-    link_vakinha:     'Link da vaquinha',
-    oferece:          'O que deseja doar',
-    nome_pet:         'Nome do pet',
-    especie:          'Espécie',
-    raca:             'Raça',
-    cor:              'Cor',
-    local_visto:      'Onde foi visto',
-    contato_nome:     'Contato',
-    contato_tel:      'Tel. contato',
-    animais_aceitos:  'Animais que aceita',
-    tipo:             'Tipo',
-    obs:              'Observações'
+    nome_local: 'Local', nome_pessoa: 'Nome da pessoa', nome_campanha: 'Nome da campanha',
+    nome: 'Nome', responsavel: 'Responsável', telefone: 'Telefone/WhatsApp',
+    endereco: 'Endereço', vagas: 'Vagas disponíveis', recursos: 'Recursos disponíveis',
+    animais: 'Aceita animais', necessidades: 'Necessidades AGORA', nao_precisa: 'NÃO precisa',
+    prioridade: 'Prioridade', horario: 'Horário', aceita: 'O que aceita',
+    pix_tipo: 'Tipo da chave PIX', pix_chave: 'Chave PIX', pix_titular: 'Titular PIX',
+    refeicao: 'Tipo de refeição', voluntarios: 'Precisa voluntários',
+    capacidade: 'Capacidade', familias: 'Famílias afetadas', descricao: 'Descrição',
+    ultima_vez: 'Última vez visto', local_visto: 'Local visto', saude: 'Condição de saúde',
+    informante_nome: 'Informante', informante_tel: 'Tel. informante', relacao: 'Relação',
+    idade: 'Idade', bairro: 'Bairro', veiculo: 'Veículo', habilidade: 'Habilidades',
+    disponibilidade: 'Disponibilidade', link_vakinha: 'Link da vaquinha',
+    oferece: 'O que deseja doar', nome_pet: 'Nome do pet', especie: 'Espécie',
+    raca: 'Raça', cor: 'Cor', contato_nome: 'Contato', contato_tel: 'Tel. contato',
+    animais_aceitos: 'Animais que aceita', tipo: 'Tipo', obs: 'Observações',
+    aceita_animais: 'Aceita animais', precisa_voluntarios: 'Precisa voluntários',
+    experiencia: 'Experiência'
   }
 
   for (const [key, val] of Object.entries(data)) {
@@ -558,38 +746,23 @@ function buildSummary(city, type, data) {
   return lines.join('\n')
 }
 
-// ── SHARE ──
+// ── SHARE PET ──
 window.shareWhatsApp = function () {
   const text = document.getElementById('summary-text').textContent
   window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank')
 }
-
 window.copyText = function () {
   const text = document.getElementById('summary-text').textContent
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(text).then(() => alert('Texto copiado!'))
-  } else {
-    const el = document.createElement('textarea')
-    el.value = text
-    document.body.appendChild(el)
-    el.select()
-    document.execCommand('copy')
-    document.body.removeChild(el)
-    alert('Texto copiado!')
-  }
+  navigator.clipboard.writeText(text).then(() => alert('Texto copiado!'))
 }
-
 window.newEntry = function () {
-  document.querySelectorAll('.form-type').forEach(f => {
+  document.querySelectorAll('#view-cadastrar .form-type').forEach(f => {
     f.reset()
     f.style.display = 'none'
     const err = f.querySelector('.form-error')
     if (err) err.remove()
   })
-  document.querySelectorAll('.pix-preview').forEach(p => { p.style.display = 'none' })
-  document.querySelectorAll('.pix-upload-label').forEach(l => { l.style.display = 'flex' })
-  document.querySelectorAll('.foto-preview').forEach(p => { p.style.display = 'none' })
-  document.querySelectorAll('.foto-upload-label').forEach(l => { l.style.display = 'flex' })
+  clearUploads()
   state.city = ''
   state.type = ''
   state.data = {}
@@ -597,25 +770,44 @@ window.newEntry = function () {
   goStep(1)
 }
 
-// ═══════════════════════════════════════════════════════
-// VIEWS — HOME / CADASTRAR / CONSULTAR
-// ═══════════════════════════════════════════════════════
-
-window.showView = function (view) {
-  document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'))
-  document.getElementById('view-' + view).classList.add('active')
-  window.scrollTo({ top: 0, behavior: 'smooth' })
-  if (view === 'consultar') loadConsulta()
-  if (view === 'cadastrar') window.goStep(1)
+// ── SHARE GERAL ──
+window.shareWhatsAppGeral = function () {
+  const text = document.getElementById('geral-summary-text').textContent
+  window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank')
+}
+window.copyTextGeral = function () {
+  const text = document.getElementById('geral-summary-text').textContent
+  navigator.clipboard.writeText(text).then(() => alert('Texto copiado!'))
+}
+window.newEntryGeral = function () {
+  document.querySelectorAll('#view-cadastrar-geral .form-type-geral').forEach(f => {
+    f.reset()
+    f.style.display = 'none'
+    const err = f.querySelector('.form-error')
+    if (err) err.remove()
+  })
+  clearUploads()
+  stateGeral.city = ''
+  stateGeral.type = ''
+  stateGeral.data = {}
+  stateGeral.pendingModeration = false
+  goStepGeral(1)
 }
 
-// Inicializa ícones e uploads no carregamento
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+
 initIcons()
+// Pet uploads
 setupPixUpload('doacao')
 setupPixUpload('vaquinha')
 setupFotoUpload('ong_protetor')
 setupFotoUpload('pet_perdido')
 setupFotoUpload('lar_temporario')
+// Geral uploads
+setupPixUpload('doacao_geral')
+setupPixUpload('vaquinha_geral')
 
 // ═══════════════════════════════════════════════════════
 // CONSULTA — HELPERS
@@ -657,16 +849,13 @@ function wppBtn (tel, label = 'WhatsApp') {
 }
 
 // ═══════════════════════════════════════════════════════
-// CONSULTA — CARDS POR TABELA
+// CONSULTA — CARDS PET
 // ═══════════════════════════════════════════════════════
 
 function cardLarTemporario (item, cidade) {
   return `
     <div class="result-card result-card-voluntario">
-      <div class="rc-header">
-        <div class="rc-title">${esc(item.nome)}</div>
-        <span class="badge badge-green">Lar Temporário</span>
-      </div>
+      <div class="rc-header"><div class="rc-title">${esc(item.nome)}</div><span class="badge badge-green">Lar Temporário</span></div>
       <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)}${item.endereco ? ` — ${esc(item.endereco)}` : ''}</div>
       <div class="rc-body">
         ${item.vagas ? `<div class="rc-row"><i data-lucide="home" class="icon-xs"></i> Pode acolher <strong>${item.vagas}</strong> animal(is)</div>` : ''}
@@ -681,9 +870,7 @@ function cardLarTemporario (item, cidade) {
 function cardDoacao (item, cidade) {
   return `
     <div class="result-card">
-      <div class="rc-header">
-        <div class="rc-title">${esc(item.nome_local)}</div>
-      </div>
+      <div class="rc-header"><div class="rc-title">${esc(item.nome_local)}</div></div>
       <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)} — ${esc(item.endereco)}</div>
       <div class="rc-body">
         ${item.horario ? `<div class="rc-row"><i data-lucide="clock" class="icon-xs"></i> ${esc(item.horario)}</div>` : ''}
@@ -695,15 +882,10 @@ function cardDoacao (item, cidade) {
     </div>`
 }
 
-/* Cards de desaparecido, alimentação e comunidade removidos (foco Pet) */
-
 function cardVoluntario (item, cidade) {
   return `
     <div class="result-card result-card-voluntario">
-      <div class="rc-header">
-        <div class="rc-title">${esc(item.nome)}</div>
-        ${item.veiculo && item.veiculo !== 'Não' ? `<span class="badge badge-blue">${esc(item.veiculo)}</span>` : ''}
-      </div>
+      <div class="rc-header"><div class="rc-title">${esc(item.nome)}</div>${item.veiculo && item.veiculo !== 'Não' ? `<span class="badge badge-blue">${esc(item.veiculo)}</span>` : ''}</div>
       <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)}${item.bairro ? ` — ${esc(item.bairro)}` : ''}</div>
       <div class="rc-body">
         ${chips(item.habilidades)}
@@ -716,10 +898,7 @@ function cardVoluntario (item, cidade) {
 function cardVaquinha (item, cidade) {
   return `
     <div class="result-card">
-      <div class="rc-header">
-        <div class="rc-title">${esc(item.nome_campanha)}</div>
-        <span class="badge badge-blue">Vaquinha</span>
-      </div>
+      <div class="rc-header"><div class="rc-title">${esc(item.nome_campanha)}</div><span class="badge badge-blue">Vaquinha</span></div>
       <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)}</div>
       <div class="rc-body">
         ${item.descricao ? `<div class="rc-row">${esc(item.descricao)}</div>` : ''}
@@ -731,21 +910,14 @@ function cardVaquinha (item, cidade) {
     </div>`
 }
 
-/* Card de doador removido (foco Pet) */
-
 function cardOngProtetor (item, cidade) {
   const fotoHtml = item.foto_url
-    ? `<div class="rc-foto-avatar" onclick="window.openFotoLightbox('${esc(item.foto_url)}', '${esc(item.nome)}')">
-        <img src="${esc(item.foto_url)}" alt="${esc(item.nome)}" />
-       </div>`
+    ? `<div class="rc-foto-avatar" onclick="window.openFotoLightbox('${esc(item.foto_url)}', '${esc(item.nome)}')"><img src="${esc(item.foto_url)}" alt="${esc(item.nome)}" /></div>`
     : ''
   return `
     <div class="result-card result-card-ong">
       ${fotoHtml}
-      <div class="rc-header">
-        <div class="rc-title">${esc(item.nome)}</div>
-        <span class="badge badge-blue">${esc(item.tipo)}</span>
-      </div>
+      <div class="rc-header"><div class="rc-title">${esc(item.nome)}</div><span class="badge badge-blue">${esc(item.tipo)}</span></div>
       <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)}${item.endereco ? ` — ${esc(item.endereco)}` : ''}</div>
       <div class="rc-body">
         <div class="rc-row">${esc(item.descricao)}</div>
@@ -760,9 +932,7 @@ function cardOngProtetor (item, cidade) {
 function cardPetPerdido (item, cidade) {
   const itemData = encodeURIComponent(JSON.stringify(item))
   const fotoHtml = item.foto_url
-    ? `<div class="rc-foto-pet">
-        <img src="${esc(item.foto_url)}" alt="${esc(item.nome_pet)}" />
-       </div>`
+    ? `<div class="rc-foto-pet"><img src="${esc(item.foto_url)}" alt="${esc(item.nome_pet)}" /></div>`
     : ''
   const statusBadge = item.status === 'encontrado'
     ? '<span class="badge badge-green">Encontrado</span>'
@@ -770,10 +940,7 @@ function cardPetPerdido (item, cidade) {
   return `
     <div class="result-card result-card-pet result-card-clickable" onclick="window.openPetDetail('${itemData}')">
       ${fotoHtml}
-      <div class="rc-header">
-        <div class="rc-title">${esc(item.nome_pet)}</div>
-        ${statusBadge}
-      </div>
+      <div class="rc-header"><div class="rc-title">${esc(item.nome_pet)}</div>${statusBadge}</div>
       <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)}${item.local_visto ? ` — ${esc(item.local_visto)}` : ''}</div>
       <div class="rc-body">
         <div class="rc-row"><i data-lucide="paw-print" class="icon-xs"></i> ${esc(item.especie)}${item.raca ? ` — ${esc(item.raca)}` : ''} — ${esc(item.cor)}</div>
@@ -794,7 +961,86 @@ const TABELA_CONFIG = {
 }
 
 // ═══════════════════════════════════════════════════════
-// CONSULTA — LOAD & RENDER
+// CONSULTA — CARDS GERAL
+// ═══════════════════════════════════════════════════════
+
+function cardDesaparecido (item, cidade) {
+  const statusBadge = item.status === 'encontrado'
+    ? '<span class="badge badge-green">Encontrado</span>'
+    : '<span class="badge badge-red">Desaparecido</span>'
+  return `
+    <div class="result-card result-card-urgente">
+      <div class="rc-header"><div class="rc-title">${esc(item.nome_pessoa)}</div>${statusBadge}</div>
+      <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)}${item.local_visto ? ` — ${esc(item.local_visto)}` : ''}</div>
+      <div class="rc-body">
+        ${item.idade ? `<div class="rc-row"><i data-lucide="user" class="icon-xs"></i> Idade: ${item.idade} anos</div>` : ''}
+        <div class="rc-row"><i data-lucide="file-text" class="icon-xs"></i> ${esc(item.descricao)}</div>
+        ${item.ultima_vez_visto ? `<div class="rc-row"><i data-lucide="clock" class="icon-xs"></i> Última vez: ${formatDate(item.ultima_vez_visto)}</div>` : ''}
+        ${item.condicao_saude ? `<div class="rc-row"><i data-lucide="heart-pulse" class="icon-xs"></i> Saúde: ${esc(item.condicao_saude)}</div>` : ''}
+      </div>
+      <div class="rc-footer-info">Informante: ${esc(item.informante_nome)}</div>
+      ${wppBtn(item.informante_tel, 'Contatar informante')}
+    </div>`
+}
+
+function cardAbrigo (item, cidade) {
+  return `
+    <div class="result-card">
+      <div class="rc-header"><div class="rc-title">${esc(item.nome_local)}</div>${prioBadge(item.prioridade)}</div>
+      <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)} — ${esc(item.endereco)}</div>
+      <div class="rc-body">
+        ${item.vagas != null ? `<div class="rc-row"><i data-lucide="users" class="icon-xs"></i> Vagas: <strong>${item.vagas}</strong></div>` : ''}
+        ${chips(item.recursos)}
+        ${item.aceita_animais ? `<div class="rc-row"><i data-lucide="paw-print" class="icon-xs"></i> Aceita animais: ${esc(item.aceita_animais)}</div>` : ''}
+        ${item.necessidades ? `<div class="rc-row rc-needs"><i data-lucide="alert-triangle" class="icon-xs"></i> Precisa: ${esc(item.necessidades)}</div>` : ''}
+      </div>
+      ${wppBtn(item.telefone)}
+    </div>`
+}
+
+function cardAlimentacao (item, cidade) {
+  return `
+    <div class="result-card">
+      <div class="rc-header"><div class="rc-title">${esc(item.nome_local)}</div></div>
+      <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)} — ${esc(item.endereco)}</div>
+      <div class="rc-body">
+        ${item.horario ? `<div class="rc-row"><i data-lucide="clock" class="icon-xs"></i> ${esc(item.horario)}</div>` : ''}
+        ${item.capacidade ? `<div class="rc-row"><i data-lucide="users" class="icon-xs"></i> Capacidade: ${esc(item.capacidade)}</div>` : ''}
+        ${chips(item.refeicoes)}
+        ${item.precisa_voluntarios ? `<div class="rc-row"><i data-lucide="hand-heart" class="icon-xs"></i> Voluntários: ${esc(item.precisa_voluntarios)}</div>` : ''}
+        ${item.necessidades ? `<div class="rc-row rc-needs"><i data-lucide="alert-triangle" class="icon-xs"></i> Precisa: ${esc(item.necessidades)}</div>` : ''}
+      </div>
+      ${wppBtn(item.telefone)}
+    </div>`
+}
+
+function cardComunidade (item, cidade) {
+  return `
+    <div class="result-card result-card-urgente">
+      <div class="rc-header"><div class="rc-title">${esc(item.nome_local)}</div>${prioBadge(item.prioridade)}</div>
+      <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)} — ${esc(item.endereco)}</div>
+      <div class="rc-body">
+        ${item.familias ? `<div class="rc-row"><i data-lucide="users" class="icon-xs"></i> Famílias afetadas: <strong>${item.familias}</strong></div>` : ''}
+        ${chips(item.necessidades)}
+        ${item.nao_precisa ? `<div class="rc-row" style="color:var(--green)"><i data-lucide="check-circle-2" class="icon-xs"></i> NÃO precisa: ${esc(item.nao_precisa)}</div>` : ''}
+        ${item.obs ? `<div class="rc-row">${esc(item.obs)}</div>` : ''}
+      </div>
+      ${wppBtn(item.telefone)}
+    </div>`
+}
+
+const TABELA_CONFIG_GERAL = {
+  desaparecidos:      { icon: 'search',      label: 'Pessoas Desaparecidas', card: cardDesaparecido },
+  abrigos:            { icon: 'building-2',  label: 'Abrigos',               card: cardAbrigo },
+  pontos_alimentacao: { icon: 'utensils',    label: 'Pontos de Alimentação', card: cardAlimentacao },
+  comunidades:        { icon: 'users',       label: 'Comunidades',           card: cardComunidade },
+  pontos_doacao:      { icon: 'package',     label: 'Pontos de Doação',      card: cardDoacao },
+  voluntarios:        { icon: 'hand-heart',  label: 'Voluntários',           card: cardVoluntario },
+  vaquinhas:          { icon: 'heart',       label: 'Vaquinhas',             card: cardVaquinha },
+}
+
+// ═══════════════════════════════════════════════════════
+// CONSULTA — LOAD PET
 // ═══════════════════════════════════════════════════════
 
 window.loadConsulta = async function () {
@@ -821,12 +1067,10 @@ window.loadConsulta = async function () {
 
     for (const table of tables) {
       let query = supabase.from(table).select('*').order('created_at', { ascending: false }).limit(100)
-
       if (cityFilter) {
         const cidadeId = (cidades || []).find(c => c.nome === cityFilter)?.id
         if (cidadeId) query = query.eq('cidade_id', cidadeId)
       }
-
       const { data, error: err } = await query
       if (err) throw err
 
@@ -837,29 +1081,78 @@ window.loadConsulta = async function () {
       const config = TABELA_CONFIG[table]
       html += `
         <div class="consulta-section">
-          <div class="consulta-section-header">
-            <span><i data-lucide="${config.icon}" class="icon-sm"></i> ${config.label}</span>
-            <span class="consulta-section-count">${items.length}</span>
-          </div>
-          <div class="result-cards-grid">
-            ${items.map(item => config.card(item, cidadeMap[item.cidade_id] || '—')).join('')}
-          </div>
+          <div class="consulta-section-header"><span><i data-lucide="${config.icon}" class="icon-sm"></i> ${config.label}</span><span class="consulta-section-count">${items.length}</span></div>
+          <div class="result-cards-grid">${items.map(item => config.card(item, cidadeMap[item.cidade_id] || '—')).join('')}</div>
         </div>`
     }
 
     elLoading.style.display = 'none'
-
-    if (totalItems === 0) {
-      elEmpty.style.display = 'flex'
-      return
-    }
-
+    if (totalItems === 0) { elEmpty.style.display = 'flex'; return }
     elResults.innerHTML = html
     initIcons(elResults)
 
   } catch (err) {
     elLoading.style.display = 'none'
     document.getElementById('consulta-error-msg').textContent = 'Erro ao carregar dados: ' + err.message
+    elError.style.display = 'flex'
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// CONSULTA — LOAD GERAL
+// ═══════════════════════════════════════════════════════
+
+window.loadConsultaGeral = async function () {
+  const cityFilter = document.getElementById('filter-city-geral').value
+  const typeFilter = document.getElementById('filter-type-geral').value
+  const elLoading  = document.getElementById('consulta-loading-geral')
+  const elEmpty    = document.getElementById('consulta-empty-geral')
+  const elError    = document.getElementById('consulta-error-geral')
+  const elResults  = document.getElementById('consulta-results-geral')
+
+  elLoading.style.display = 'flex'
+  elEmpty.style.display   = 'none'
+  elError.style.display   = 'none'
+  elResults.innerHTML     = ''
+
+  try {
+    const { data: cidades } = await supabase.from('cidades').select('id, nome')
+    const cidadeMap = {}
+    ;(cidades || []).forEach(c => { cidadeMap[c.id] = c.nome })
+
+    const tables = typeFilter ? [typeFilter] : Object.keys(TABELA_CONFIG_GERAL)
+    let totalItems = 0
+    let html = ''
+
+    for (const table of tables) {
+      let query = supabase.from(table).select('*').order('created_at', { ascending: false }).limit(100)
+      if (cityFilter) {
+        const cidadeId = (cidades || []).find(c => c.nome === cityFilter)?.id
+        if (cidadeId) query = query.eq('cidade_id', cidadeId)
+      }
+      const { data, error: err } = await query
+      if (err) throw err
+
+      const items = data || []
+      if (items.length === 0) continue
+
+      totalItems += items.length
+      const config = TABELA_CONFIG_GERAL[table]
+      html += `
+        <div class="consulta-section">
+          <div class="consulta-section-header"><span><i data-lucide="${config.icon}" class="icon-sm"></i> ${config.label}</span><span class="consulta-section-count">${items.length}</span></div>
+          <div class="result-cards-grid">${items.map(item => config.card(item, cidadeMap[item.cidade_id] || '—')).join('')}</div>
+        </div>`
+    }
+
+    elLoading.style.display = 'none'
+    if (totalItems === 0) { elEmpty.style.display = 'flex'; return }
+    elResults.innerHTML = html
+    initIcons(elResults)
+
+  } catch (err) {
+    elLoading.style.display = 'none'
+    document.getElementById('consulta-error-msg-geral').textContent = 'Erro ao carregar dados: ' + err.message
     elError.style.display = 'flex'
   }
 }

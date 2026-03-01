@@ -3,12 +3,45 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ajude JF — Central de Apoio Animal</title>
-  <meta name="description" content="Plataforma de apoio animal para Juiz de Fora e região. Cadastre pets perdidos, ONGs, protetores, lares temporários, doações e muito mais." />
+  <title>Ajude JF — Central de Apoio</title>
+  <meta name="description" content="Plataforma de apoio para Juiz de Fora e região. Apoio animal e apoio a pessoas — cadastre e consulte informações de ajuda." />
 </head>
 <body>
-<!-- PET BANNER -->
-<div class="emergency-banner">
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- LANDING PAGE (tela inicial — sem header/sidebar)          -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div id="view-landing" class="landing-page active">
+  <div class="landing-content">
+    <img src="logo-ajudejf.png" alt="Ajude JF" class="landing-logo" />
+    <h1 class="landing-title">Ajude JF</h1>
+    <p class="landing-subtitle">Plataforma de apoio para Juiz de Fora e região</p>
+    <div class="landing-options">
+      <button class="landing-card landing-card-pet" onclick="enterMode('pet')">
+        <span class="landing-card-icon"><i data-lucide="paw-print"></i></span>
+        <div class="landing-card-title">Ajuda Pet</div>
+        <div class="landing-card-desc">Apoio animal — pets perdidos, ONGs, protetores, lares temporários, doações e voluntários</div>
+      </button>
+      <button class="landing-card landing-card-geral" onclick="enterMode('geral')">
+        <span class="landing-card-icon"><i data-lucide="heart-handshake"></i></span>
+        <div class="landing-card-title">Ajuda Geral</div>
+        <div class="landing-card-desc">Apoio a pessoas — desaparecidos, abrigos, alimentação, comunidades, doações e voluntários</div>
+      </button>
+    </div>
+    <a href="https://dash-pet.vercel.app" id="landing-whatsapp-link" class="landing-whatsapp-link" target="_blank" rel="noopener noreferrer">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.122.558 4.112 1.524 5.84L.057 23.273a.5.5 0 0 0 .67.67l5.433-1.467A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.95 0-3.78-.526-5.354-1.44l-.381-.228-3.954 1.068 1.068-3.954-.228-.381A9.96 9.96 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+      Painel Grupos WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- APP WRAPPER (header + sidebar + main) — oculto na landing -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div id="app-wrapper" class="app-wrapper" style="display:none">
+
+<!-- BANNER -->
+<div class="emergency-banner" id="emergency-banner">
   APOIO ANIMAL — Juiz de Fora e Região &nbsp;|&nbsp; Denúncias: <strong>0800 61 8080</strong> (IBAMA) &nbsp;|&nbsp; <strong>153</strong> (Guarda Municipal) &nbsp;|&nbsp; <strong>(32) 3690-8450</strong> (Zoonoses)
 </div>
 
@@ -17,10 +50,10 @@
   <div class="header-inner">
     <div class="header-title">
       <h1>Ajude JF</h1>
-      <p>Central de Apoio Animal — Juiz de Fora e Região</p>
+      <p id="header-subtitle">Central de Apoio Animal — Juiz de Fora e Região</p>
     </div>
     <div class="header-actions">
-      <span class="header-badge" style="background:var(--blue-main)">Apoio Animal</span>
+      <span class="header-badge" id="header-badge" style="background:var(--blue-main)">Apoio Animal</span>
       <a href="https://www.instagram.com/ajudejuizdefora2026?igsh=MTNub3BqcHJzdDNkYQ==" target="_blank" rel="noopener noreferrer" class="instagram-link" title="Siga-nos no Instagram">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
       </a>
@@ -38,7 +71,7 @@
     <span>@ajudejuizdefora2026</span>
   </a>
   <hr class="sidebar-divider" />
-  <div class="sidebar-nums">
+  <div class="sidebar-nums" id="sidebar-nums-pet">
     <div class="sidebar-num">
       <span class="sidebar-num-icon"><i data-lucide="shield"></i></span>
       <div>
@@ -61,14 +94,45 @@
       </div>
     </div>
   </div>
-  <p class="sidebar-tagline">Plataforma de apoio animal para Juiz de Fora e região</p>
+  <div class="sidebar-nums" id="sidebar-nums-geral" style="display:none">
+    <div class="sidebar-num">
+      <span class="sidebar-num-icon"><i data-lucide="heart-pulse"></i></span>
+      <div>
+        <div class="sidebar-num-label">SAMU</div>
+        <div class="sidebar-num-value">192</div>
+      </div>
+    </div>
+    <div class="sidebar-num">
+      <span class="sidebar-num-icon"><i data-lucide="flame"></i></span>
+      <div>
+        <div class="sidebar-num-label">Bombeiros</div>
+        <div class="sidebar-num-value">193</div>
+      </div>
+    </div>
+    <div class="sidebar-num">
+      <span class="sidebar-num-icon"><i data-lucide="shield"></i></span>
+      <div>
+        <div class="sidebar-num-label">Defesa Civil JF</div>
+        <div class="sidebar-num-value">(32) 3690-8280</div>
+      </div>
+    </div>
+    <div class="sidebar-num">
+      <span class="sidebar-num-icon"><i data-lucide="building-2"></i></span>
+      <div>
+        <div class="sidebar-num-label">CRAS JF</div>
+        <div class="sidebar-num-value">(32) 3690-8498</div>
+      </div>
+    </div>
+  </div>
+  <p class="sidebar-tagline" id="sidebar-tagline">Plataforma de apoio animal para Juiz de Fora e região</p>
+  <button class="btn-sidebar-switch" onclick="goToLanding()"><i data-lucide="arrow-left" class="icon-xs"></i> Trocar área</button>
 </aside>
 
 <!-- MAIN -->
 <main>
 
-  <!-- ─── HOME SELECTION ─── -->
-  <div id="view-home" class="view-section active">
+  <!-- ─── HOME PET ─── -->
+  <div id="view-home" class="view-section">
     <div class="home-hero">
       <h2>Central de Apoio Animal</h2>
       <p>O que você deseja fazer?</p>
@@ -84,48 +148,62 @@
           <div class="home-option-desc">Buscar pets perdidos, ONGs/protetores, lares temporários, doações de ração, voluntários e vaquinhas</div>
         </button>
       </div>
+      <a href="https://dash-pet.vercel.app" id="home-whatsapp-link-pet" class="home-whatsapp-link" target="_blank" rel="noopener noreferrer">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.122.558 4.112 1.524 5.84L.057 23.273a.5.5 0 0 0 .67.67l5.433-1.467A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.95 0-3.78-.526-5.354-1.44l-.381-.228-3.954 1.068 1.068-3.954-.228-.381A9.96 9.96 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+        Painel Grupos WhatsApp
+      </a>
     </div>
   </div>
 
-  <!-- ─── CADASTRAR VIEW ─── -->
+  <!-- ─── HOME GERAL ─── -->
+  <div id="view-home-geral" class="view-section">
+    <div class="home-hero">
+      <h2>Central de Apoio a Pessoas</h2>
+      <p>O que você deseja fazer?</p>
+      <div class="home-options">
+        <button class="home-option-card" onclick="showView('cadastrar-geral')">
+          <span class="home-option-icon"><i data-lucide="pen-line"></i></span>
+          <div class="home-option-title">Cadastrar</div>
+          <div class="home-option-desc">Registrar pessoa desaparecida, abrigo, ponto de alimentação, comunidade, doação, voluntário ou vaquinha</div>
+        </button>
+        <button class="home-option-card" onclick="showView('consultar-geral')">
+          <span class="home-option-icon"><i data-lucide="search"></i></span>
+          <div class="home-option-title">Consultar</div>
+          <div class="home-option-desc">Buscar pessoas desaparecidas, abrigos, alimentação, comunidades, doações, voluntários e vaquinhas</div>
+        </button>
+      </div>
+      <a href="https://dash-pet.vercel.app" id="home-whatsapp-link-geral" class="home-whatsapp-link" target="_blank" rel="noopener noreferrer">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.122.558 4.112 1.524 5.84L.057 23.273a.5.5 0 0 0 .67.67l5.433-1.467A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.95 0-3.78-.526-5.354-1.44l-.381-.228-3.954 1.068 1.068-3.954-.228-.381A9.96 9.96 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+        Painel Grupos WhatsApp
+      </a>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- CADASTRAR PET (wizard existente)                       -->
+  <!-- ═══════════════════════════════════════════════════════ -->
   <div id="view-cadastrar" class="view-section">
   <button class="btn-view-back" onclick="showView('home')">← Início</button>
 
-  <!-- ═══════════════════════════════ STEP 1 — CIDADE ═══════════════════════════════ -->
+  <!-- STEP 1 — CIDADE -->
   <div class="step active" id="step-1">
-
     <div class="step-indicator">
-      <div class="step-dot active">
-        <div class="step-dot-circle">1</div>
-        <div class="step-dot-label">Cidade</div>
-      </div>
+      <div class="step-dot active"><div class="step-dot-circle">1</div><div class="step-dot-label">Cidade</div></div>
       <div class="step-line"></div>
-      <div class="step-dot">
-        <div class="step-dot-circle">2</div>
-        <div class="step-dot-label">Tipo</div>
-      </div>
+      <div class="step-dot"><div class="step-dot-circle">2</div><div class="step-dot-label">Tipo</div></div>
       <div class="step-line"></div>
-      <div class="step-dot">
-        <div class="step-dot-circle">3</div>
-        <div class="step-dot-label">Cadastro</div>
-      </div>
+      <div class="step-dot"><div class="step-dot-circle">3</div><div class="step-dot-label">Cadastro</div></div>
       <div class="step-line"></div>
-      <div class="step-dot">
-        <div class="step-dot-circle">4</div>
-        <div class="step-dot-label">Concluído</div>
-      </div>
+      <div class="step-dot"><div class="step-dot-circle">4</div><div class="step-dot-label">Concluído</div></div>
     </div>
-
     <div class="alert alert-info">
       <span><i data-lucide="info" class="icon-sm"></i></span>
       <span>Para denúncias de maus-tratos ligue <strong>0800 61 8080</strong> (IBAMA) ou <strong>153</strong> (Guarda Municipal). Para resgate de animais em risco, acione a <strong>Zoonoses: (32) 3690-8450</strong>.</span>
     </div>
-
     <div class="section-header">
       <h2>Selecione a cidade</h2>
       <p>Escolha a cidade à qual a informação se refere para iniciar o cadastro.</p>
     </div>
-
     <div class="cards-grid cities" id="city-cards">
       <button class="card-btn" onclick="selectCity('Juiz de Fora')">
         <img src="flag-jf.png" alt="Bandeira de Juiz de Fora" class="card-flag" />
@@ -150,36 +228,21 @@
     </div>
   </div>
 
-  <!-- ═══════════════════════════════ STEP 2 — TIPO ═══════════════════════════════ -->
+  <!-- STEP 2 — TIPO PET -->
   <div class="step" id="step-2">
-
     <div class="step-indicator">
-      <div class="step-dot done">
-        <div class="step-dot-circle">✓</div>
-        <div class="step-dot-label">Cidade</div>
-      </div>
+      <div class="step-dot done"><div class="step-dot-circle">✓</div><div class="step-dot-label">Cidade</div></div>
       <div class="step-line"></div>
-      <div class="step-dot active">
-        <div class="step-dot-circle">2</div>
-        <div class="step-dot-label">Tipo</div>
-      </div>
+      <div class="step-dot active"><div class="step-dot-circle">2</div><div class="step-dot-label">Tipo</div></div>
       <div class="step-line"></div>
-      <div class="step-dot">
-        <div class="step-dot-circle">3</div>
-        <div class="step-dot-label">Cadastro</div>
-      </div>
+      <div class="step-dot"><div class="step-dot-circle">3</div><div class="step-dot-label">Cadastro</div></div>
       <div class="step-line"></div>
-      <div class="step-dot">
-        <div class="step-dot-circle">4</div>
-        <div class="step-dot-label">Concluído</div>
-      </div>
+      <div class="step-dot"><div class="step-dot-circle">4</div><div class="step-dot-label">Concluído</div></div>
     </div>
-
     <div class="section-header">
       <h2>O que deseja cadastrar?</h2>
       <p>Cidade selecionada: <strong id="selected-city-label">—</strong> &nbsp;·&nbsp; <a href="#" onclick="goStep(1);return false;" style="color:var(--blue-main)">Trocar cidade</a></p>
     </div>
-
     <div class="cards-grid" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));">
       <button class="card-btn" onclick="selectType('pet_perdido')">
         <span class="card-icon"><i data-lucide="search"></i></span>
@@ -212,35 +275,21 @@
         <div class="card-desc">Campanha de arrecadação para custos veterinários ou resgate</div>
       </button>
     </div>
-
     <div class="btn-row">
       <button class="btn btn-secondary" onclick="goStep(1)">← Voltar</button>
     </div>
   </div>
 
-  <!-- ═══════════════════════════════ STEP 3 — FORMULÁRIOS ═══════════════════════════════ -->
+  <!-- STEP 3 — FORMULÁRIOS PET -->
   <div class="step" id="step-3">
-
     <div class="step-indicator">
-      <div class="step-dot done">
-        <div class="step-dot-circle">✓</div>
-        <div class="step-dot-label">Cidade</div>
-      </div>
+      <div class="step-dot done"><div class="step-dot-circle">✓</div><div class="step-dot-label">Cidade</div></div>
       <div class="step-line"></div>
-      <div class="step-dot done">
-        <div class="step-dot-circle">✓</div>
-        <div class="step-dot-label">Tipo</div>
-      </div>
+      <div class="step-dot done"><div class="step-dot-circle">✓</div><div class="step-dot-label">Tipo</div></div>
       <div class="step-line"></div>
-      <div class="step-dot active">
-        <div class="step-dot-circle">3</div>
-        <div class="step-dot-label">Cadastro</div>
-      </div>
+      <div class="step-dot active"><div class="step-dot-circle">3</div><div class="step-dot-label">Cadastro</div></div>
       <div class="step-line"></div>
-      <div class="step-dot">
-        <div class="step-dot-circle">4</div>
-        <div class="step-dot-label">Concluído</div>
-      </div>
+      <div class="step-dot"><div class="step-dot-circle">4</div><div class="step-dot-label">Concluído</div></div>
     </div>
 
     <div class="form-card">
@@ -257,23 +306,11 @@
       <form id="form-lar_temporario" class="form-type" style="display:none" autocomplete="off" onsubmit="submitForm(event,'lar_temporario')">
         <p class="section-title">Informações do Lar Temporário</p>
         <div class="form-row">
-          <div class="form-group">
-            <label>Seu nome <span class="req">*</span></label>
-            <input type="text" name="nome" placeholder="Nome completo" required />
-          </div>
-          <div class="form-group">
-            <label>Telefone / WhatsApp <span class="req">*</span></label>
-            <input type="tel" name="telefone" placeholder="(32) 99999-0000" required />
-          </div>
+          <div class="form-group"><label>Seu nome <span class="req">*</span></label><input type="text" name="nome" placeholder="Nome completo" required /></div>
+          <div class="form-group"><label>Telefone / WhatsApp <span class="req">*</span></label><input type="tel" name="telefone" placeholder="(32) 99999-0000" required /></div>
         </div>
-        <div class="form-group">
-          <label>Endereço / Bairro <span class="req">*</span></label>
-          <input type="text" name="endereco" placeholder="Bairro ou endereço aproximado" required />
-        </div>
-        <div class="form-group">
-          <label>Quantos animais pode acolher? <span class="req">*</span></label>
-          <input type="number" name="vagas" placeholder="Ex: 2" min="1" required />
-        </div>
+        <div class="form-group"><label>Endereço / Bairro <span class="req">*</span></label><input type="text" name="endereco" placeholder="Bairro ou endereço aproximado" required /></div>
+        <div class="form-group"><label>Quantos animais pode acolher? <span class="req">*</span></label><input type="number" name="vagas" placeholder="Ex: 2" min="1" required /></div>
         <div class="form-group">
           <label>Quais animais aceita? <span class="tip">(marque todos que se aplicam)</span></label>
           <div class="checkbox-group">
@@ -290,43 +327,25 @@
             <label class="radio-item"><input type="radio" name="experiencia" value="Não, mas quero ajudar" /><span>Não, mas quero ajudar</span></label>
           </div>
         </div>
-        <div class="form-group">
-          <label>Observações</label>
-          <textarea name="obs" placeholder="Tem outros pets em casa? Quintal? Alguma restrição?"></textarea>
-        </div>
+        <div class="form-group"><label>Observações</label><textarea name="obs" placeholder="Tem outros pets em casa? Quintal? Alguma restrição?"></textarea></div>
         <div class="btn-row">
           <button type="button" class="btn btn-secondary" onclick="goStep(2)">← Voltar</button>
           <button type="submit" class="btn btn-primary"><i data-lucide="home" class="icon-sm"></i> Cadastrar Lar Temporário →</button>
         </div>
       </form>
 
-      <!-- FORM: DOAÇÃO -->
+      <!-- FORM: DOAÇÃO PET -->
       <form id="form-doacao" class="form-type" style="display:none" autocomplete="off" onsubmit="submitForm(event,'doacao')">
         <p class="section-title">Ponto de Doação para Pets</p>
         <div class="form-row">
-          <div class="form-group">
-            <label>Nome do ponto <span class="req">*</span></label>
-            <input type="text" name="nome_local" placeholder="Ex: Pet Shop Amigo, Clínica Vet Central" required />
-          </div>
-          <div class="form-group">
-            <label>Responsável</label>
-            <input type="text" name="responsavel" placeholder="Nome do responsável" />
-          </div>
+          <div class="form-group"><label>Nome do ponto <span class="req">*</span></label><input type="text" name="nome_local" placeholder="Ex: Pet Shop Amigo, Clínica Vet Central" required /></div>
+          <div class="form-group"><label>Responsável</label><input type="text" name="responsavel" placeholder="Nome do responsável" /></div>
         </div>
         <div class="form-row">
-          <div class="form-group">
-            <label>Telefone / WhatsApp</label>
-            <input type="tel" name="telefone" placeholder="(32) 99999-0000" />
-          </div>
-          <div class="form-group">
-            <label>Horário de funcionamento</label>
-            <input type="text" name="horario" placeholder="Ex: Seg a Sex 8h-18h, Sáb 8h-12h" />
-          </div>
+          <div class="form-group"><label>Telefone / WhatsApp</label><input type="tel" name="telefone" placeholder="(32) 99999-0000" /></div>
+          <div class="form-group"><label>Horário de funcionamento</label><input type="text" name="horario" placeholder="Ex: Seg a Sex 8h-18h, Sáb 8h-12h" /></div>
         </div>
-        <div class="form-group">
-          <label>Endereço completo <span class="req">*</span></label>
-          <input type="text" name="endereco" placeholder="Rua, número, bairro, ponto de referência" required />
-        </div>
+        <div class="form-group"><label>Endereço completo <span class="req">*</span></label><input type="text" name="endereco" placeholder="Rua, número, bairro, ponto de referência" required /></div>
         <div class="form-group">
           <label>O que aceita <span class="tip">(marque todos que se aplicam)</span></label>
           <div class="checkbox-group">
@@ -341,81 +360,39 @@
         </div>
         <hr class="divider"/>
         <p class="section-title">Chave PIX para Doações Financeiras</p>
-        <div class="alert alert-info">
-          <span><i data-lucide="info" class="icon-sm"></i></span>
-          <span>Preencha somente se este ponto também recebe doações financeiras. A chave PIX será exibida publicamente.</span>
-        </div>
+        <div class="alert alert-info"><span><i data-lucide="info" class="icon-sm"></i></span><span>Preencha somente se este ponto também recebe doações financeiras. A chave PIX será exibida publicamente.</span></div>
         <div class="pix-box">
           <div class="pix-title">Dados da Chave PIX</div>
           <div class="form-row">
-            <div class="form-group">
-              <label>Tipo da chave PIX</label>
-              <select name="pix_tipo">
-                <option value="">— Não recebe PIX —</option>
-                <option value="CPF">CPF</option>
-                <option value="CNPJ">CNPJ</option>
-                <option value="E-mail">E-mail</option>
-                <option value="Telefone">Telefone</option>
-                <option value="Chave aleatória">Chave aleatória</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Chave PIX <span class="tip">(copie e cole exata)</span></label>
-              <input type="text" name="pix_chave" placeholder="Ex: (32) 99999-0000 ou CPF/CNPJ" />
-            </div>
+            <div class="form-group"><label>Tipo da chave PIX</label><select name="pix_tipo"><option value="">— Não recebe PIX —</option><option value="CPF">CPF</option><option value="CNPJ">CNPJ</option><option value="E-mail">E-mail</option><option value="Telefone">Telefone</option><option value="Chave aleatória">Chave aleatória</option></select></div>
+            <div class="form-group"><label>Chave PIX <span class="tip">(copie e cole exata)</span></label><input type="text" name="pix_chave" placeholder="Ex: (32) 99999-0000 ou CPF/CNPJ" /></div>
           </div>
-          <div class="form-group">
-            <label>Nome do titular da conta PIX</label>
-            <input type="text" name="pix_titular" placeholder="Nome completo ou razão social" />
-          </div>
+          <div class="form-group"><label>Nome do titular da conta PIX</label><input type="text" name="pix_titular" placeholder="Nome completo ou razão social" /></div>
           <div class="form-group">
             <label>QR Code PIX <span class="tip">(imagem do QR code — opcional se já informou a chave)</span></label>
             <div class="pix-upload-area">
               <input type="file" name="pix_qrcode" accept="image/png,image/jpeg,image/webp" class="pix-file-input" id="pix-file-doacao" />
-              <label for="pix-file-doacao" class="pix-upload-label">
-                <i data-lucide="camera" class="icon-sm"></i>
-                <span>Clique para enviar imagem do QR Code</span>
-                <span class="pix-upload-hint">PNG, JPG ou WEBP — Máximo 500KB</span>
-              </label>
-              <div class="pix-preview" id="pix-preview-doacao" style="display:none">
-                <img id="pix-preview-img-doacao" alt="Preview QR Code" />
-                <button type="button" class="pix-remove-btn" onclick="removePixImage('doacao')">
-                  <i data-lucide="x" class="icon-xs"></i> Remover
-                </button>
-              </div>
+              <label for="pix-file-doacao" class="pix-upload-label"><i data-lucide="camera" class="icon-sm"></i><span>Clique para enviar imagem do QR Code</span><span class="pix-upload-hint">PNG, JPG ou WEBP — Máximo 500KB</span></label>
+              <div class="pix-preview" id="pix-preview-doacao" style="display:none"><img id="pix-preview-img-doacao" alt="Preview QR Code" /><button type="button" class="pix-remove-btn" onclick="removePixImage('doacao')"><i data-lucide="x" class="icon-xs"></i> Remover</button></div>
             </div>
           </div>
         </div>
         <hr class="divider"/>
-        <div class="form-group">
-          <label>Observações</label>
-          <textarea name="obs" placeholder="Informações importantes para quem vai doar..."></textarea>
-        </div>
+        <div class="form-group"><label>Observações</label><textarea name="obs" placeholder="Informações importantes para quem vai doar..."></textarea></div>
         <div class="btn-row">
           <button type="button" class="btn btn-secondary" onclick="goStep(2)">← Voltar</button>
           <button type="submit" class="btn btn-primary">Enviar Cadastro →</button>
         </div>
       </form>
 
-      <!-- Forms de desaparecido, alimentação e comunidade removidos (foco Pet) -->
-
-      <!-- FORM: VOLUNTÁRIO -->
+      <!-- FORM: VOLUNTÁRIO PET -->
       <form id="form-voluntario" class="form-type" style="display:none" autocomplete="off" onsubmit="submitForm(event,'voluntario')">
         <p class="section-title">Seus Dados</p>
         <div class="form-row">
-          <div class="form-group">
-            <label>Seu nome <span class="req">*</span></label>
-            <input type="text" name="nome" placeholder="Nome completo" required />
-          </div>
-          <div class="form-group">
-            <label>Telefone / WhatsApp</label>
-            <input type="tel" name="telefone" placeholder="(32) 99999-0000" />
-          </div>
+          <div class="form-group"><label>Seu nome <span class="req">*</span></label><input type="text" name="nome" placeholder="Nome completo" required /></div>
+          <div class="form-group"><label>Telefone / WhatsApp</label><input type="tel" name="telefone" placeholder="(32) 99999-0000" /></div>
         </div>
-        <div class="form-group">
-          <label>Bairro / Localização</label>
-          <input type="text" name="bairro" placeholder="Ex: Centro, Cascatinha..." />
-        </div>
+        <div class="form-group"><label>Bairro / Localização</label><input type="text" name="bairro" placeholder="Ex: Centro, Cascatinha..." /></div>
         <div class="form-group">
           <label>Tem veículo disponível?</label>
           <div class="radio-group">
@@ -439,93 +416,41 @@
             <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Doação de ração / itens" /><span><i data-lucide="package" class="icon-xs"></i> Doação de ração / itens</span></label>
           </div>
         </div>
-        <div class="form-group">
-          <label>Disponibilidade de horário</label>
-          <input type="text" name="disponibilidade" placeholder="Ex: Manhãs e tarde, final de semana integral..." />
-        </div>
-        <div class="form-group">
-          <label>Observações</label>
-          <textarea name="obs" placeholder="Veterinário(a), experiência com resgate, tem caixas de transporte..."></textarea>
-        </div>
+        <div class="form-group"><label>Disponibilidade de horário</label><input type="text" name="disponibilidade" placeholder="Ex: Manhãs e tarde, final de semana integral..." /></div>
+        <div class="form-group"><label>Observações</label><textarea name="obs" placeholder="Veterinário(a), experiência com resgate, tem caixas de transporte..."></textarea></div>
         <div class="btn-row">
           <button type="button" class="btn btn-secondary" onclick="goStep(2)">← Voltar</button>
           <button type="submit" class="btn btn-green"><i data-lucide="hand-heart" class="icon-sm"></i> Me Cadastrar como Voluntário →</button>
         </div>
       </form>
 
-      <!-- FORM: VAQUINHA -->
+      <!-- FORM: VAQUINHA PET -->
       <form id="form-vaquinha" class="form-type" style="display:none" autocomplete="off" onsubmit="submitForm(event,'vaquinha')">
         <p class="section-title">Dados da Campanha</p>
-        <div class="alert alert-warning">
-          <span><i data-lucide="alert-triangle" class="icon-sm"></i></span>
-          <span>Vaquinhas passam por <strong>moderação</strong> antes de aparecerem no site. Os administradores serão notificados por e-mail para aprovação.</span>
-        </div>
+        <div class="alert alert-warning"><span><i data-lucide="alert-triangle" class="icon-sm"></i></span><span>Vaquinhas passam por <strong>moderação</strong> antes de aparecerem no site. Os administradores serão notificados por e-mail para aprovação.</span></div>
         <div class="form-row">
-          <div class="form-group">
-            <label>Nome da campanha <span class="req">*</span></label>
-            <input type="text" name="nome_campanha" placeholder="Ex: Cirurgia do Rex, Resgate de gatos abandonados" required />
-          </div>
-          <div class="form-group">
-            <label>Responsável</label>
-            <input type="text" name="responsavel" placeholder="Nome do responsável pela campanha" />
-          </div>
+          <div class="form-group"><label>Nome da campanha <span class="req">*</span></label><input type="text" name="nome_campanha" placeholder="Ex: Cirurgia do Rex, Resgate de gatos abandonados" required /></div>
+          <div class="form-group"><label>Responsável</label><input type="text" name="responsavel" placeholder="Nome do responsável pela campanha" /></div>
         </div>
-        <div class="form-group">
-          <label>Link da Vaquinha <span class="req">*</span></label>
-          <input type="url" name="link_vakinha" placeholder="https://www.vakinha.com.br/..." required />
-        </div>
-        <div class="form-group">
-          <label>Descrição da campanha <span class="req">*</span></label>
-          <textarea name="descricao" placeholder="Descreva o objetivo da vaquinha: tratamento veterinário, resgate, castração coletiva..." required></textarea>
-        </div>
-        <div class="form-group">
-          <label>Telefone / WhatsApp</label>
-          <input type="tel" name="telefone" placeholder="(32) 99999-0000" />
-        </div>
+        <div class="form-group"><label>Link da Vaquinha <span class="req">*</span></label><input type="url" name="link_vakinha" placeholder="https://www.vakinha.com.br/..." required /></div>
+        <div class="form-group"><label>Descrição da campanha <span class="req">*</span></label><textarea name="descricao" placeholder="Descreva o objetivo da vaquinha: tratamento veterinário, resgate, castração coletiva..." required></textarea></div>
+        <div class="form-group"><label>Telefone / WhatsApp</label><input type="tel" name="telefone" placeholder="(32) 99999-0000" /></div>
         <hr class="divider"/>
         <p class="section-title">Chave PIX (opcional)</p>
-        <div class="alert alert-info">
-          <span><i data-lucide="info" class="icon-sm"></i></span>
-          <span>Se a campanha também aceita PIX direto, informe aqui. Caso contrário, deixe em branco.</span>
-        </div>
+        <div class="alert alert-info"><span><i data-lucide="info" class="icon-sm"></i></span><span>Se a campanha também aceita PIX direto, informe aqui. Caso contrário, deixe em branco.</span></div>
         <div class="pix-box">
-          <div class="pix-title">💰 Dados da Chave PIX</div>
+          <div class="pix-title">Dados da Chave PIX</div>
           <div class="form-row">
-            <div class="form-group">
-              <label>Tipo da chave PIX</label>
-              <select name="pix_tipo">
-                <option value="">— Não informar PIX —</option>
-                <option value="CPF">CPF</option>
-                <option value="CNPJ">CNPJ</option>
-                <option value="E-mail">E-mail</option>
-                <option value="Telefone">Telefone</option>
-                <option value="Chave aleatória">Chave aleatória</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Chave PIX <span class="tip">(copie e cole exata)</span></label>
-              <input type="text" name="pix_chave" placeholder="Ex: (32) 99999-0000 ou CPF" />
-            </div>
+            <div class="form-group"><label>Tipo da chave PIX</label><select name="pix_tipo"><option value="">— Não informar PIX —</option><option value="CPF">CPF</option><option value="CNPJ">CNPJ</option><option value="E-mail">E-mail</option><option value="Telefone">Telefone</option><option value="Chave aleatória">Chave aleatória</option></select></div>
+            <div class="form-group"><label>Chave PIX <span class="tip">(copie e cole exata)</span></label><input type="text" name="pix_chave" placeholder="Ex: (32) 99999-0000 ou CPF" /></div>
           </div>
-          <div class="form-group">
-            <label>Nome do titular da conta PIX</label>
-            <input type="text" name="pix_titular" placeholder="Nome completo ou razão social" />
-          </div>
+          <div class="form-group"><label>Nome do titular da conta PIX</label><input type="text" name="pix_titular" placeholder="Nome completo ou razão social" /></div>
           <div class="form-group">
             <label>QR Code PIX <span class="tip">(imagem do QR code — opcional se já informou a chave)</span></label>
             <div class="pix-upload-area">
               <input type="file" name="pix_qrcode" accept="image/png,image/jpeg,image/webp" class="pix-file-input" id="pix-file-vaquinha" />
-              <label for="pix-file-vaquinha" class="pix-upload-label">
-                <i data-lucide="camera" class="icon-sm"></i>
-                <span>Clique para enviar imagem do QR Code</span>
-                <span class="pix-upload-hint">PNG, JPG ou WEBP — Máximo 500KB</span>
-              </label>
-              <div class="pix-preview" id="pix-preview-vaquinha" style="display:none">
-                <img id="pix-preview-img-vaquinha" alt="Preview QR Code" />
-                <button type="button" class="pix-remove-btn" onclick="removePixImage('vaquinha')">
-                  <i data-lucide="x" class="icon-xs"></i> Remover
-                </button>
-              </div>
+              <label for="pix-file-vaquinha" class="pix-upload-label"><i data-lucide="camera" class="icon-sm"></i><span>Clique para enviar imagem do QR Code</span><span class="pix-upload-hint">PNG, JPG ou WEBP — Máximo 500KB</span></label>
+              <div class="pix-preview" id="pix-preview-vaquinha" style="display:none"><img id="pix-preview-img-vaquinha" alt="Preview QR Code" /><button type="button" class="pix-remove-btn" onclick="removePixImage('vaquinha')"><i data-lucide="x" class="icon-xs"></i> Remover</button></div>
             </div>
           </div>
         </div>
@@ -535,16 +460,11 @@
         </div>
       </form>
 
-      <!-- Form de doador removido (foco Pet) -->
-
       <!-- FORM: ONG / PROTETOR -->
       <form id="form-ong_protetor" class="form-type" style="display:none" autocomplete="off" onsubmit="submitForm(event,'ong_protetor')">
         <p class="section-title">Dados da ONG / Protetor</p>
         <div class="form-row">
-          <div class="form-group">
-            <label>Nome <span class="req">*</span></label>
-            <input type="text" name="nome" placeholder="Nome da ONG ou do protetor" required />
-          </div>
+          <div class="form-group"><label>Nome <span class="req">*</span></label><input type="text" name="nome" placeholder="Nome da ONG ou do protetor" required /></div>
           <div class="form-group">
             <label>Tipo <span class="req">*</span></label>
             <div class="radio-group">
@@ -554,19 +474,10 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group">
-            <label>Telefone / WhatsApp</label>
-            <input type="tel" name="telefone" placeholder="(32) 99999-0000" />
-          </div>
-          <div class="form-group">
-            <label>Endereço</label>
-            <input type="text" name="endereco" placeholder="Rua, número, bairro" />
-          </div>
+          <div class="form-group"><label>Telefone / WhatsApp</label><input type="tel" name="telefone" placeholder="(32) 99999-0000" /></div>
+          <div class="form-group"><label>Endereço</label><input type="text" name="endereco" placeholder="Rua, número, bairro" /></div>
         </div>
-        <div class="form-group">
-          <label>Descrição / Sobre <span class="req">*</span></label>
-          <textarea name="descricao" placeholder="Descreva o trabalho realizado, missão, como ajudar..." required></textarea>
-        </div>
+        <div class="form-group"><label>Descrição / Sobre <span class="req">*</span></label><textarea name="descricao" placeholder="Descreva o trabalho realizado, missão, como ajudar..." required></textarea></div>
         <div class="form-group">
           <label>Animais que aceita <span class="tip">(marque todos que se aplicam)</span></label>
           <div class="checkbox-group">
@@ -577,14 +488,8 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group">
-            <label>Capacidade</label>
-            <input type="text" name="capacidade" placeholder="Ex: Até 30 animais" />
-          </div>
-          <div class="form-group">
-            <label>Necessidades atuais</label>
-            <input type="text" name="necessidades" placeholder="Ex: Ração, medicamentos, voluntários..." />
-          </div>
+          <div class="form-group"><label>Capacidade</label><input type="text" name="capacidade" placeholder="Ex: Até 30 animais" /></div>
+          <div class="form-group"><label>Necessidades atuais</label><input type="text" name="necessidades" placeholder="Ex: Ração, medicamentos, voluntários..." /></div>
         </div>
         <hr class="divider"/>
         <p class="section-title">Foto da ONG / Protetor</p>
@@ -592,24 +497,12 @@
           <label>Envie uma foto <span class="tip">(opcional — aparecerá na consulta pública)</span></label>
           <div class="foto-upload-area">
             <input type="file" name="foto" accept="image/png,image/jpeg,image/webp" class="foto-file-input" id="foto-file-ong_protetor" />
-            <label for="foto-file-ong_protetor" class="foto-upload-label">
-              <i data-lucide="camera" class="icon-sm"></i>
-              <span>Clique para enviar uma foto</span>
-              <span class="foto-upload-hint">PNG, JPG ou WEBP — Máximo 2MB</span>
-            </label>
-            <div class="foto-preview" id="foto-preview-ong_protetor" style="display:none">
-              <img id="foto-preview-img-ong_protetor" alt="Preview da foto" />
-              <button type="button" class="foto-remove-btn" onclick="removeFotoImage('ong_protetor')">
-                <i data-lucide="x" class="icon-xs"></i> Remover
-              </button>
-            </div>
+            <label for="foto-file-ong_protetor" class="foto-upload-label"><i data-lucide="camera" class="icon-sm"></i><span>Clique para enviar uma foto</span><span class="foto-upload-hint">PNG, JPG ou WEBP — Máximo 2MB</span></label>
+            <div class="foto-preview" id="foto-preview-ong_protetor" style="display:none"><img id="foto-preview-img-ong_protetor" alt="Preview da foto" /><button type="button" class="foto-remove-btn" onclick="removeFotoImage('ong_protetor')"><i data-lucide="x" class="icon-xs"></i> Remover</button></div>
           </div>
         </div>
         <hr class="divider"/>
-        <div class="form-group">
-          <label>Observações</label>
-          <textarea name="obs" placeholder="Informações adicionais sobre a ONG ou protetor..."></textarea>
-        </div>
+        <div class="form-group"><label>Observações</label><textarea name="obs" placeholder="Informações adicionais sobre a ONG ou protetor..."></textarea></div>
         <div class="btn-row">
           <button type="button" class="btn btn-secondary" onclick="goStep(2)">← Voltar</button>
           <button type="submit" class="btn btn-primary">Enviar Cadastro →</button>
@@ -620,10 +513,7 @@
       <form id="form-pet_perdido" class="form-type" style="display:none" autocomplete="off" onsubmit="submitForm(event,'pet_perdido')">
         <p class="section-title">Dados do Pet Perdido</p>
         <div class="form-row">
-          <div class="form-group">
-            <label>Nome do pet <span class="req">*</span></label>
-            <input type="text" name="nome_pet" placeholder="Ex: Rex, Mimi, Thor..." required />
-          </div>
+          <div class="form-group"><label>Nome do pet <span class="req">*</span></label><input type="text" name="nome_pet" placeholder="Ex: Rex, Mimi, Thor..." required /></div>
           <div class="form-group">
             <label>Espécie <span class="req">*</span></label>
             <div class="radio-group">
@@ -634,40 +524,19 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group">
-            <label>Raça</label>
-            <input type="text" name="raca" placeholder="Ex: Vira-lata, Labrador, Siamês..." />
-          </div>
-          <div class="form-group">
-            <label>Cor predominante <span class="req">*</span></label>
-            <input type="text" name="cor" placeholder="Ex: Caramelo, preto e branco..." required />
-          </div>
+          <div class="form-group"><label>Raça</label><input type="text" name="raca" placeholder="Ex: Vira-lata, Labrador, Siamês..." /></div>
+          <div class="form-group"><label>Cor predominante <span class="req">*</span></label><input type="text" name="cor" placeholder="Ex: Caramelo, preto e branco..." required /></div>
         </div>
-        <div class="form-group">
-          <label>Descrição / Características <span class="req">*</span></label>
-          <textarea name="descricao" placeholder="Porte, marcas especiais, coleira, comportamento, condições de saúde..." required></textarea>
-        </div>
+        <div class="form-group"><label>Descrição / Características <span class="req">*</span></label><textarea name="descricao" placeholder="Porte, marcas especiais, coleira, comportamento, condições de saúde..." required></textarea></div>
         <div class="form-row">
-          <div class="form-group">
-            <label>Última vez visto</label>
-            <input type="datetime-local" name="ultima_vez" />
-          </div>
-          <div class="form-group">
-            <label>Local onde foi visto <span class="req">*</span></label>
-            <input type="text" name="local_visto" placeholder="Bairro, rua, ponto de referência" required />
-          </div>
+          <div class="form-group"><label>Última vez visto</label><input type="datetime-local" name="ultima_vez" /></div>
+          <div class="form-group"><label>Local onde foi visto <span class="req">*</span></label><input type="text" name="local_visto" placeholder="Bairro, rua, ponto de referência" required /></div>
         </div>
         <hr class="divider"/>
         <p class="section-title">Contato</p>
         <div class="form-row">
-          <div class="form-group">
-            <label>Seu nome <span class="req">*</span></label>
-            <input type="text" name="contato_nome" placeholder="Nome completo" required />
-          </div>
-          <div class="form-group">
-            <label>Telefone / WhatsApp <span class="req">*</span></label>
-            <input type="tel" name="contato_tel" placeholder="(32) 99999-0000" required />
-          </div>
+          <div class="form-group"><label>Seu nome <span class="req">*</span></label><input type="text" name="contato_nome" placeholder="Nome completo" required /></div>
+          <div class="form-group"><label>Telefone / WhatsApp <span class="req">*</span></label><input type="tel" name="contato_tel" placeholder="(32) 99999-0000" required /></div>
         </div>
         <hr class="divider"/>
         <p class="section-title">Foto do Pet</p>
@@ -675,24 +544,12 @@
           <label>Envie uma foto do pet <span class="tip">(ajuda muito na identificação!)</span></label>
           <div class="foto-upload-area">
             <input type="file" name="foto" accept="image/png,image/jpeg,image/webp" class="foto-file-input" id="foto-file-pet_perdido" />
-            <label for="foto-file-pet_perdido" class="foto-upload-label">
-              <i data-lucide="camera" class="icon-sm"></i>
-              <span>Clique para enviar foto do pet</span>
-              <span class="foto-upload-hint">PNG, JPG ou WEBP — Máximo 2MB</span>
-            </label>
-            <div class="foto-preview" id="foto-preview-pet_perdido" style="display:none">
-              <img id="foto-preview-img-pet_perdido" alt="Preview da foto" />
-              <button type="button" class="foto-remove-btn" onclick="removeFotoImage('pet_perdido')">
-                <i data-lucide="x" class="icon-xs"></i> Remover
-              </button>
-            </div>
+            <label for="foto-file-pet_perdido" class="foto-upload-label"><i data-lucide="camera" class="icon-sm"></i><span>Clique para enviar foto do pet</span><span class="foto-upload-hint">PNG, JPG ou WEBP — Máximo 2MB</span></label>
+            <div class="foto-preview" id="foto-preview-pet_perdido" style="display:none"><img id="foto-preview-img-pet_perdido" alt="Preview da foto" /><button type="button" class="foto-remove-btn" onclick="removeFotoImage('pet_perdido')"><i data-lucide="x" class="icon-xs"></i> Remover</button></div>
           </div>
         </div>
         <hr class="divider"/>
-        <div class="form-group">
-          <label>Observações</label>
-          <textarea name="obs" placeholder="Informações adicionais que podem ajudar a encontrar o pet..."></textarea>
-        </div>
+        <div class="form-group"><label>Observações</label><textarea name="obs" placeholder="Informações adicionais que podem ajudar a encontrar o pet..."></textarea></div>
         <div class="btn-row">
           <button type="button" class="btn btn-secondary" onclick="goStep(2)">← Voltar</button>
           <button type="submit" class="btn btn-red"><i data-lucide="search" class="icon-sm"></i> Registrar Pet Perdido →</button>
@@ -702,9 +559,8 @@
     </div><!-- .form-card -->
   </div><!-- #step-3 -->
 
-  <!-- ═══════════════════════════════ STEP 4 — CONFIRMAÇÃO ═══════════════════════════════ -->
+  <!-- STEP 4 — CONFIRMAÇÃO PET -->
   <div class="step" id="step-4">
-
     <div class="step-indicator">
       <div class="step-dot done"><div class="step-dot-circle">✓</div><div class="step-dot-label">Cidade</div></div>
       <div class="step-line"></div>
@@ -714,32 +570,24 @@
       <div class="step-line"></div>
       <div class="step-dot active"><div class="step-dot-circle">4</div><div class="step-dot-label">Concluído</div></div>
     </div>
-
     <div class="success-card">
       <div class="success-icon"><i data-lucide="check-circle-2"></i></div>
       <h2 id="success-title">Cadastro registrado!</h2>
       <p id="success-desc">Seus dados foram salvos com sucesso. Compartilhe pelo WhatsApp para ampliar o alcance e facilitar a coordenação.</p>
-
       <div class="summary-box" id="summary-text">—</div>
-
       <div class="btn-row" style="justify-content:center; flex-wrap:wrap;">
-        <button class="btn btn-whatsapp" onclick="shareWhatsApp()">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.122.558 4.112 1.524 5.84L.057 23.273a.5.5 0 0 0 .67.67l5.433-1.467A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.95 0-3.78-.526-5.354-1.44l-.381-.228-3.954 1.068 1.068-3.954-.228-.381A9.96 9.96 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
-          Compartilhar no WhatsApp
-        </button>
+        <button class="btn btn-whatsapp" onclick="shareWhatsApp()"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.122.558 4.112 1.524 5.84L.057 23.273a.5.5 0 0 0 .67.67l5.433-1.467A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.95 0-3.78-.526-5.354-1.44l-.381-.228-3.954 1.068 1.068-3.954-.228-.381A9.96 9.96 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg> Compartilhar no WhatsApp</button>
         <button class="btn btn-secondary" onclick="copyText()"><i data-lucide="clipboard" class="icon-sm"></i> Copiar texto</button>
         <button class="btn btn-primary" onclick="newEntry()">+ Novo Cadastro</button>
       </div>
     </div>
-
   </div>
 
   </div><!-- #view-cadastrar -->
 
-  <!-- ─── CONSULTAR VIEW ─── -->
+  <!-- ─── CONSULTAR PET ─── -->
   <div id="view-consultar" class="view-section">
     <button class="btn-view-back" onclick="showView('home')">← Início</button>
-
     <div class="consulta-filters">
       <select id="filter-city" onchange="loadConsulta()">
         <option value="">Todas as cidades</option>
@@ -750,38 +598,480 @@
       </select>
       <select id="filter-type" onchange="loadConsulta()">
         <option value="">Todas as categorias</option>
-        <option value="pets_perdidos">🐕 Pets Perdidos</option>
-        <option value="ongs_protetores">🐾 ONGs / Protetores</option>
-        <option value="lares_temporarios">🏠 Lares Temporários</option>
-        <option value="pontos_doacao">📦 Pontos de Doação</option>
-        <option value="voluntarios">🙋 Voluntários</option>
-        <option value="vaquinhas">💛 Vaquinhas</option>
+        <option value="pets_perdidos">Pets Perdidos</option>
+        <option value="ongs_protetores">ONGs / Protetores</option>
+        <option value="lares_temporarios">Lares Temporários</option>
+        <option value="pontos_doacao">Pontos de Doação</option>
+        <option value="voluntarios">Voluntários</option>
+        <option value="vaquinhas">Vaquinhas</option>
       </select>
     </div>
-
-    <div id="consulta-loading" style="display:none" class="consulta-state">
-      <span>⏳</span><p>Carregando informações...</p>
-    </div>
-    <div id="consulta-empty" style="display:none" class="consulta-state">
-      <span>📭</span><p>Nenhum resultado encontrado para os filtros selecionados.</p>
-    </div>
-    <div id="consulta-error" style="display:none" class="consulta-state consulta-error-state">
-      <span><i data-lucide="alert-triangle" class="icon-sm"></i></span><p id="consulta-error-msg">Erro ao carregar dados.</p>
-    </div>
-
+    <div id="consulta-loading" style="display:none" class="consulta-state"><span>⏳</span><p>Carregando informações...</p></div>
+    <div id="consulta-empty" style="display:none" class="consulta-state"><span>📭</span><p>Nenhum resultado encontrado para os filtros selecionados.</p></div>
+    <div id="consulta-error" style="display:none" class="consulta-state consulta-error-state"><span><i data-lucide="alert-triangle" class="icon-sm"></i></span><p id="consulta-error-msg">Erro ao carregar dados.</p></div>
     <div id="consulta-results"></div>
   </div><!-- #view-consultar -->
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- CADASTRAR GERAL (wizard para ajuda a pessoas)          -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div id="view-cadastrar-geral" class="view-section">
+  <button class="btn-view-back" onclick="showView('home-geral')">← Início</button>
+
+  <!-- STEP 1 — CIDADE GERAL -->
+  <div class="step active" id="geral-step-1">
+    <div class="step-indicator">
+      <div class="step-dot active"><div class="step-dot-circle">1</div><div class="step-dot-label">Cidade</div></div>
+      <div class="step-line"></div>
+      <div class="step-dot"><div class="step-dot-circle">2</div><div class="step-dot-label">Tipo</div></div>
+      <div class="step-line"></div>
+      <div class="step-dot"><div class="step-dot-circle">3</div><div class="step-dot-label">Cadastro</div></div>
+      <div class="step-line"></div>
+      <div class="step-dot"><div class="step-dot-circle">4</div><div class="step-dot-label">Concluído</div></div>
+    </div>
+    <div class="alert alert-info">
+      <span><i data-lucide="info" class="icon-sm"></i></span>
+      <span>Em emergências ligue <strong>192</strong> (SAMU), <strong>193</strong> (Bombeiros) ou <strong>(32) 3690-8280</strong> (Defesa Civil JF).</span>
+    </div>
+    <div class="section-header">
+      <h2>Selecione a cidade</h2>
+      <p>Escolha a cidade à qual a informação se refere para iniciar o cadastro.</p>
+    </div>
+    <div class="cards-grid cities">
+      <button class="card-btn" onclick="selectCityGeral('Juiz de Fora')"><img src="flag-jf.png" alt="Bandeira de Juiz de Fora" class="card-flag" /><div class="card-label">Juiz de Fora</div><div class="card-desc">Cidade principal</div></button>
+      <button class="card-btn" onclick="selectCityGeral('Ubá')"><img src="flag-uba.jpg" alt="Bandeira de Ubá" class="card-flag" /><div class="card-label">Ubá</div><div class="card-desc">Zona da Mata</div></button>
+      <button class="card-btn" onclick="selectCityGeral('Senador Firmino')"><img src="flag-senador.jpg" alt="Bandeira de Senador Firmino" class="card-flag" /><div class="card-label">Senador Firmino</div><div class="card-desc">Zona da Mata</div></button>
+      <button class="card-btn" onclick="selectCityGeral('Matias Barbosa')"><img src="flag-matias.jpg" alt="Bandeira de Matias Barbosa" class="card-flag" /><div class="card-label">Matias Barbosa</div><div class="card-desc">Entorno de JF</div></button>
+    </div>
+  </div>
+
+  <!-- STEP 2 — TIPO GERAL -->
+  <div class="step" id="geral-step-2">
+    <div class="step-indicator">
+      <div class="step-dot done"><div class="step-dot-circle">✓</div><div class="step-dot-label">Cidade</div></div>
+      <div class="step-line"></div>
+      <div class="step-dot active"><div class="step-dot-circle">2</div><div class="step-dot-label">Tipo</div></div>
+      <div class="step-line"></div>
+      <div class="step-dot"><div class="step-dot-circle">3</div><div class="step-dot-label">Cadastro</div></div>
+      <div class="step-line"></div>
+      <div class="step-dot"><div class="step-dot-circle">4</div><div class="step-dot-label">Concluído</div></div>
+    </div>
+    <div class="section-header">
+      <h2>O que deseja cadastrar?</h2>
+      <p>Cidade selecionada: <strong id="geral-selected-city-label">—</strong> &nbsp;·&nbsp; <a href="#" onclick="goStepGeral(1);return false;" style="color:var(--blue-main)">Trocar cidade</a></p>
+    </div>
+    <div class="cards-grid" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));">
+      <button class="card-btn" onclick="selectTypeGeral('desaparecido')">
+        <span class="card-icon"><i data-lucide="search"></i></span>
+        <div class="card-label">Pessoa Desaparecida</div>
+        <div class="card-desc">Informar pessoa desaparecida ou encontrada</div>
+      </button>
+      <button class="card-btn" onclick="selectTypeGeral('abrigo')">
+        <span class="card-icon"><i data-lucide="building-2"></i></span>
+        <div class="card-label">Abrigo</div>
+        <div class="card-desc">Local que oferece abrigo para desabrigados</div>
+      </button>
+      <button class="card-btn" onclick="selectTypeGeral('alimentacao')">
+        <span class="card-icon"><i data-lucide="utensils"></i></span>
+        <div class="card-label">Ponto de Alimentação</div>
+        <div class="card-desc">Local que distribui refeições ou alimentos</div>
+      </button>
+      <button class="card-btn" onclick="selectTypeGeral('comunidade')">
+        <span class="card-icon"><i data-lucide="users"></i></span>
+        <div class="card-label">Comunidade</div>
+        <div class="card-desc">Bairro ou comunidade com necessidades urgentes</div>
+      </button>
+      <button class="card-btn" onclick="selectTypeGeral('doacao_geral')">
+        <span class="card-icon"><i data-lucide="package"></i></span>
+        <div class="card-label">Ponto de Doação</div>
+        <div class="card-desc">Local que aceita roupas, alimentos, itens de higiene</div>
+      </button>
+      <button class="card-btn" onclick="selectTypeGeral('voluntario_geral')">
+        <span class="card-icon"><i data-lucide="hand-heart"></i></span>
+        <div class="card-label">Voluntário</div>
+        <div class="card-desc">Me disponho a ajudar pessoas em situação de necessidade</div>
+      </button>
+      <button class="card-btn" onclick="selectTypeGeral('vaquinha_geral')">
+        <span class="card-icon"><i data-lucide="heart"></i></span>
+        <div class="card-label">Vaquinha</div>
+        <div class="card-desc">Campanha de arrecadação para ajudar pessoas</div>
+      </button>
+    </div>
+    <div class="btn-row"><button class="btn btn-secondary" onclick="goStepGeral(1)">← Voltar</button></div>
+  </div>
+
+  <!-- STEP 3 — FORMULÁRIOS GERAL -->
+  <div class="step" id="geral-step-3">
+    <div class="step-indicator">
+      <div class="step-dot done"><div class="step-dot-circle">✓</div><div class="step-dot-label">Cidade</div></div>
+      <div class="step-line"></div>
+      <div class="step-dot done"><div class="step-dot-circle">✓</div><div class="step-dot-label">Tipo</div></div>
+      <div class="step-line"></div>
+      <div class="step-dot active"><div class="step-dot-circle">3</div><div class="step-dot-label">Cadastro</div></div>
+      <div class="step-line"></div>
+      <div class="step-dot"><div class="step-dot-circle">4</div><div class="step-dot-label">Concluído</div></div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-context-bar">
+        <span>📍</span>
+        <span class="ctx-tag" id="geral-ctx-city">—</span>
+        <span>→</span>
+        <span class="ctx-tag" id="geral-ctx-type">—</span>
+        &nbsp;
+        <a href="#" onclick="goStepGeral(2);return false;" style="color:rgba(255,255,255,.7);font-size:12px;margin-left:auto;">Trocar tipo</a>
+      </div>
+
+      <!-- FORM: DESAPARECIDO -->
+      <form id="form-desaparecido" class="form-type-geral" style="display:none" autocomplete="off" onsubmit="submitFormGeral(event,'desaparecido')">
+        <p class="section-title">Dados da Pessoa Desaparecida</p>
+        <div class="form-row">
+          <div class="form-group"><label>Nome da pessoa <span class="req">*</span></label><input type="text" name="nome_pessoa" placeholder="Nome completo" required /></div>
+          <div class="form-group"><label>Idade</label><input type="number" name="idade" placeholder="Ex: 35" min="0" max="120" /></div>
+        </div>
+        <div class="form-group"><label>Descrição / Características <span class="req">*</span></label><textarea name="descricao" placeholder="Altura, peso, roupas que vestia, marcas/tatuagens, condição de saúde..." required></textarea></div>
+        <div class="form-row">
+          <div class="form-group"><label>Última vez vista</label><input type="datetime-local" name="ultima_vez" /></div>
+          <div class="form-group"><label>Local onde foi vista</label><input type="text" name="local_visto" placeholder="Bairro, rua, ponto de referência" /></div>
+        </div>
+        <div class="form-group"><label>Condição de saúde</label><input type="text" name="saude" placeholder="Ex: Diabético, tem Alzheimer, usa medicação controlada..." /></div>
+        <hr class="divider"/>
+        <p class="section-title">Dados do Informante</p>
+        <div class="form-row">
+          <div class="form-group"><label>Seu nome <span class="req">*</span></label><input type="text" name="informante_nome" placeholder="Nome completo" required /></div>
+          <div class="form-group"><label>Telefone / WhatsApp <span class="req">*</span></label><input type="tel" name="informante_tel" placeholder="(32) 99999-0000" required /></div>
+        </div>
+        <div class="form-group"><label>Relação com a pessoa</label><input type="text" name="relacao" placeholder="Ex: Familiar, vizinho, amigo..." /></div>
+        <div class="form-group"><label>Observações</label><textarea name="obs" placeholder="Informações adicionais que podem ajudar na busca..."></textarea></div>
+        <div class="btn-row">
+          <button type="button" class="btn btn-secondary" onclick="goStepGeral(2)">← Voltar</button>
+          <button type="submit" class="btn btn-red"><i data-lucide="search" class="icon-sm"></i> Registrar Desaparecido →</button>
+        </div>
+      </form>
+
+      <!-- FORM: ABRIGO -->
+      <form id="form-abrigo" class="form-type-geral" style="display:none" autocomplete="off" onsubmit="submitFormGeral(event,'abrigo')">
+        <p class="section-title">Dados do Abrigo</p>
+        <div class="form-row">
+          <div class="form-group"><label>Nome do local <span class="req">*</span></label><input type="text" name="nome_local" placeholder="Ex: Igreja São José, Escola Municipal..." required /></div>
+          <div class="form-group"><label>Responsável <span class="req">*</span></label><input type="text" name="responsavel" placeholder="Nome do responsável" required /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Telefone / WhatsApp <span class="req">*</span></label><input type="tel" name="telefone" placeholder="(32) 99999-0000" required /></div>
+          <div class="form-group"><label>Vagas disponíveis</label><input type="number" name="vagas" placeholder="Ex: 50" min="0" /></div>
+        </div>
+        <div class="form-group"><label>Endereço completo <span class="req">*</span></label><input type="text" name="endereco" placeholder="Rua, número, bairro, ponto de referência" required /></div>
+        <div class="form-group">
+          <label>Recursos disponíveis <span class="tip">(marque todos que se aplicam)</span></label>
+          <div class="checkbox-group">
+            <label class="checkbox-item"><input type="checkbox" name="recursos" value="Colchões / camas" /><span><i data-lucide="bed" class="icon-xs"></i> Colchões / camas</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="recursos" value="Água potável" /><span><i data-lucide="droplet" class="icon-xs"></i> Água potável</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="recursos" value="Alimentação" /><span><i data-lucide="utensils" class="icon-xs"></i> Alimentação</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="recursos" value="Banheiros" /><span><i data-lucide="droplets" class="icon-xs"></i> Banheiros</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="recursos" value="Chuveiros" /><span><i data-lucide="droplets" class="icon-xs"></i> Chuveiros</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="recursos" value="Atendimento médico" /><span><i data-lucide="stethoscope" class="icon-xs"></i> Atendimento médico</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="recursos" value="Roupas / cobertores" /><span><i data-lucide="shirt" class="icon-xs"></i> Roupas / cobertores</span></label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Aceita animais?</label>
+          <div class="radio-group">
+            <label class="radio-item"><input type="radio" name="aceita_animais" value="Sim" /><span>Sim</span></label>
+            <label class="radio-item"><input type="radio" name="aceita_animais" value="Não" /><span>Não</span></label>
+            <label class="radio-item"><input type="radio" name="aceita_animais" value="Consultar" /><span>Consultar</span></label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Prioridade <span class="req">*</span></label>
+          <div class="radio-group">
+            <label class="radio-item"><input type="radio" name="prioridade" value="Alta" required /><span>Alta</span></label>
+            <label class="radio-item"><input type="radio" name="prioridade" value="Média" /><span>Média</span></label>
+            <label class="radio-item"><input type="radio" name="prioridade" value="Baixa" /><span>Baixa</span></label>
+          </div>
+        </div>
+        <div class="form-group"><label>Necessidades AGORA</label><textarea name="necessidades" placeholder="O que o abrigo precisa com urgência..."></textarea></div>
+        <div class="form-group"><label>O que NÃO precisa</label><input type="text" name="nao_precisa" placeholder="Ex: Não precisa de água, já tem colchões suficientes..." /></div>
+        <div class="form-group"><label>Observações</label><textarea name="obs" placeholder="Informações adicionais sobre o abrigo..."></textarea></div>
+        <div class="btn-row">
+          <button type="button" class="btn btn-secondary" onclick="goStepGeral(2)">← Voltar</button>
+          <button type="submit" class="btn btn-primary"><i data-lucide="building-2" class="icon-sm"></i> Cadastrar Abrigo →</button>
+        </div>
+      </form>
+
+      <!-- FORM: PONTO DE ALIMENTAÇÃO -->
+      <form id="form-alimentacao" class="form-type-geral" style="display:none" autocomplete="off" onsubmit="submitFormGeral(event,'alimentacao')">
+        <p class="section-title">Ponto de Alimentação</p>
+        <div class="form-row">
+          <div class="form-group"><label>Nome do local <span class="req">*</span></label><input type="text" name="nome_local" placeholder="Ex: Cozinha Comunitária Centro" required /></div>
+          <div class="form-group"><label>Responsável <span class="req">*</span></label><input type="text" name="responsavel" placeholder="Nome do responsável" required /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Telefone / WhatsApp <span class="req">*</span></label><input type="tel" name="telefone" placeholder="(32) 99999-0000" required /></div>
+          <div class="form-group"><label>Horário de funcionamento</label><input type="text" name="horario" placeholder="Ex: Almoço 11h-14h, Jantar 17h-19h" /></div>
+        </div>
+        <div class="form-group"><label>Endereço completo <span class="req">*</span></label><input type="text" name="endereco" placeholder="Rua, número, bairro, ponto de referência" required /></div>
+        <div class="form-group"><label>Capacidade</label><input type="text" name="capacidade" placeholder="Ex: 200 refeições/dia" /></div>
+        <div class="form-group">
+          <label>Tipo de refeição <span class="tip">(marque todos que se aplicam)</span></label>
+          <div class="checkbox-group">
+            <label class="checkbox-item"><input type="checkbox" name="refeicao" value="Café da manhã" /><span><i data-lucide="coffee" class="icon-xs"></i> Café da manhã</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="refeicao" value="Almoço" /><span><i data-lucide="utensils" class="icon-xs"></i> Almoço</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="refeicao" value="Jantar" /><span><i data-lucide="moon" class="icon-xs"></i> Jantar</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="refeicao" value="Marmitex / quentinha" /><span><i data-lucide="package" class="icon-xs"></i> Marmitex / quentinha</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="refeicao" value="Cesta básica" /><span><i data-lucide="package" class="icon-xs"></i> Cesta básica</span></label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Precisa de voluntários?</label>
+          <div class="radio-group">
+            <label class="radio-item"><input type="radio" name="precisa_voluntarios" value="Sim, urgente" /><span>Sim, urgente</span></label>
+            <label class="radio-item"><input type="radio" name="precisa_voluntarios" value="Sim, mas não urgente" /><span>Sim, mas não urgente</span></label>
+            <label class="radio-item"><input type="radio" name="precisa_voluntarios" value="Não" /><span>Não</span></label>
+          </div>
+        </div>
+        <div class="form-group"><label>Necessidades AGORA</label><textarea name="necessidades" placeholder="O que o ponto de alimentação precisa com urgência..."></textarea></div>
+        <div class="form-group"><label>Observações</label><textarea name="obs" placeholder="Informações adicionais..."></textarea></div>
+        <div class="btn-row">
+          <button type="button" class="btn btn-secondary" onclick="goStepGeral(2)">← Voltar</button>
+          <button type="submit" class="btn btn-primary"><i data-lucide="utensils" class="icon-sm"></i> Cadastrar Ponto de Alimentação →</button>
+        </div>
+      </form>
+
+      <!-- FORM: COMUNIDADE -->
+      <form id="form-comunidade" class="form-type-geral" style="display:none" autocomplete="off" onsubmit="submitFormGeral(event,'comunidade')">
+        <p class="section-title">Comunidade / Bairro com Necessidades</p>
+        <div class="form-row">
+          <div class="form-group"><label>Nome do local / bairro <span class="req">*</span></label><input type="text" name="nome_local" placeholder="Ex: Bairro Industrial, Vila Ozanan" required /></div>
+          <div class="form-group"><label>Responsável / Líder comunitário <span class="req">*</span></label><input type="text" name="responsavel" placeholder="Nome do responsável" required /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Telefone / WhatsApp <span class="req">*</span></label><input type="tel" name="telefone" placeholder="(32) 99999-0000" required /></div>
+          <div class="form-group"><label>Famílias afetadas</label><input type="number" name="familias" placeholder="Ex: 50" min="0" /></div>
+        </div>
+        <div class="form-group"><label>Endereço / Localização <span class="req">*</span></label><input type="text" name="endereco" placeholder="Rua, ponto de referência" required /></div>
+        <div class="form-group">
+          <label>Necessidades <span class="tip">(marque todos que se aplicam)</span></label>
+          <div class="checkbox-group">
+            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Água potável" /><span><i data-lucide="droplet" class="icon-xs"></i> Água potável</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Alimentação" /><span><i data-lucide="utensils" class="icon-xs"></i> Alimentação</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Roupas / cobertores" /><span><i data-lucide="shirt" class="icon-xs"></i> Roupas / cobertores</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Colchões" /><span><i data-lucide="bed" class="icon-xs"></i> Colchões</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Produtos de higiene" /><span><i data-lucide="droplets" class="icon-xs"></i> Produtos de higiene</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Atendimento médico" /><span><i data-lucide="stethoscope" class="icon-xs"></i> Atendimento médico</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Transporte / remoção" /><span><i data-lucide="car" class="icon-xs"></i> Transporte / remoção</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="necessidades" value="Voluntários" /><span><i data-lucide="hand-heart" class="icon-xs"></i> Voluntários</span></label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Prioridade <span class="req">*</span></label>
+          <div class="radio-group">
+            <label class="radio-item"><input type="radio" name="prioridade" value="Alta" required /><span>Alta</span></label>
+            <label class="radio-item"><input type="radio" name="prioridade" value="Média" /><span>Média</span></label>
+            <label class="radio-item"><input type="radio" name="prioridade" value="Baixa" /><span>Baixa</span></label>
+          </div>
+        </div>
+        <div class="form-group"><label>O que NÃO precisa</label><input type="text" name="nao_precisa" placeholder="Para evitar envio desnecessário de itens..." /></div>
+        <div class="form-group"><label>Observações <span class="req">*</span></label><textarea name="obs" placeholder="Situação atual, urgências, acessos bloqueados..." required></textarea></div>
+        <div class="btn-row">
+          <button type="button" class="btn btn-secondary" onclick="goStepGeral(2)">← Voltar</button>
+          <button type="submit" class="btn btn-primary"><i data-lucide="users" class="icon-sm"></i> Cadastrar Comunidade →</button>
+        </div>
+      </form>
+
+      <!-- FORM: DOAÇÃO GERAL -->
+      <form id="form-doacao_geral" class="form-type-geral" style="display:none" autocomplete="off" onsubmit="submitFormGeral(event,'doacao_geral')">
+        <p class="section-title">Ponto de Doação</p>
+        <div class="form-row">
+          <div class="form-group"><label>Nome do ponto <span class="req">*</span></label><input type="text" name="nome_local" placeholder="Ex: Igreja São José, Associação de Moradores" required /></div>
+          <div class="form-group"><label>Responsável</label><input type="text" name="responsavel" placeholder="Nome do responsável" /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Telefone / WhatsApp</label><input type="tel" name="telefone" placeholder="(32) 99999-0000" /></div>
+          <div class="form-group"><label>Horário de funcionamento</label><input type="text" name="horario" placeholder="Ex: Seg a Sex 8h-18h" /></div>
+        </div>
+        <div class="form-group"><label>Endereço completo <span class="req">*</span></label><input type="text" name="endereco" placeholder="Rua, número, bairro, ponto de referência" required /></div>
+        <div class="form-group">
+          <label>O que aceita <span class="tip">(marque todos que se aplicam)</span></label>
+          <div class="checkbox-group">
+            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Roupas" /><span><i data-lucide="shirt" class="icon-xs"></i> Roupas</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Alimentos não perecíveis" /><span><i data-lucide="package" class="icon-xs"></i> Alimentos não perecíveis</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Produtos de higiene" /><span><i data-lucide="droplets" class="icon-xs"></i> Produtos de higiene</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Cobertores / colchões" /><span><i data-lucide="bed" class="icon-xs"></i> Cobertores / colchões</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Água" /><span><i data-lucide="droplet" class="icon-xs"></i> Água</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Móveis / utensílios" /><span><i data-lucide="home" class="icon-xs"></i> Móveis / utensílios</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="aceita" value="Dinheiro / PIX" /><span><i data-lucide="banknote" class="icon-xs"></i> Dinheiro / PIX</span></label>
+          </div>
+        </div>
+        <hr class="divider"/>
+        <p class="section-title">Chave PIX para Doações Financeiras</p>
+        <div class="alert alert-info"><span><i data-lucide="info" class="icon-sm"></i></span><span>Preencha somente se este ponto também recebe doações financeiras.</span></div>
+        <div class="pix-box">
+          <div class="pix-title">Dados da Chave PIX</div>
+          <div class="form-row">
+            <div class="form-group"><label>Tipo da chave PIX</label><select name="pix_tipo"><option value="">— Não recebe PIX —</option><option value="CPF">CPF</option><option value="CNPJ">CNPJ</option><option value="E-mail">E-mail</option><option value="Telefone">Telefone</option><option value="Chave aleatória">Chave aleatória</option></select></div>
+            <div class="form-group"><label>Chave PIX</label><input type="text" name="pix_chave" placeholder="Ex: (32) 99999-0000 ou CPF/CNPJ" /></div>
+          </div>
+          <div class="form-group"><label>Nome do titular</label><input type="text" name="pix_titular" placeholder="Nome completo ou razão social" /></div>
+          <div class="form-group">
+            <label>QR Code PIX <span class="tip">(opcional)</span></label>
+            <div class="pix-upload-area">
+              <input type="file" name="pix_qrcode" accept="image/png,image/jpeg,image/webp" class="pix-file-input" id="pix-file-doacao_geral" />
+              <label for="pix-file-doacao_geral" class="pix-upload-label"><i data-lucide="camera" class="icon-sm"></i><span>Clique para enviar imagem do QR Code</span><span class="pix-upload-hint">PNG, JPG ou WEBP — Máximo 500KB</span></label>
+              <div class="pix-preview" id="pix-preview-doacao_geral" style="display:none"><img id="pix-preview-img-doacao_geral" alt="Preview QR Code" /><button type="button" class="pix-remove-btn" onclick="removePixImage('doacao_geral')"><i data-lucide="x" class="icon-xs"></i> Remover</button></div>
+            </div>
+          </div>
+        </div>
+        <hr class="divider"/>
+        <div class="form-group"><label>Observações</label><textarea name="obs" placeholder="Informações importantes para quem vai doar..."></textarea></div>
+        <div class="btn-row">
+          <button type="button" class="btn btn-secondary" onclick="goStepGeral(2)">← Voltar</button>
+          <button type="submit" class="btn btn-primary">Enviar Cadastro →</button>
+        </div>
+      </form>
+
+      <!-- FORM: VOLUNTÁRIO GERAL -->
+      <form id="form-voluntario_geral" class="form-type-geral" style="display:none" autocomplete="off" onsubmit="submitFormGeral(event,'voluntario_geral')">
+        <p class="section-title">Seus Dados</p>
+        <div class="form-row">
+          <div class="form-group"><label>Seu nome <span class="req">*</span></label><input type="text" name="nome" placeholder="Nome completo" required /></div>
+          <div class="form-group"><label>Telefone / WhatsApp</label><input type="tel" name="telefone" placeholder="(32) 99999-0000" /></div>
+        </div>
+        <div class="form-group"><label>Bairro / Localização</label><input type="text" name="bairro" placeholder="Ex: Centro, Cascatinha..." /></div>
+        <div class="form-group">
+          <label>Tem veículo disponível?</label>
+          <div class="radio-group">
+            <label class="radio-item"><input type="radio" name="veiculo" value="Sim, carro" /><span>Sim, carro</span></label>
+            <label class="radio-item"><input type="radio" name="veiculo" value="Sim, moto" /><span>Sim, moto</span></label>
+            <label class="radio-item"><input type="radio" name="veiculo" value="Não" /><span>Não</span></label>
+          </div>
+        </div>
+        <hr class="divider"/>
+        <p class="section-title">Como Posso Ajudar</p>
+        <div class="form-group">
+          <label>Habilidades / disponibilidade <span class="tip">(marque tudo que puder)</span></label>
+          <div class="checkbox-group">
+            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Transporte de pessoas / itens" /><span><i data-lucide="car" class="icon-xs"></i> Transporte de pessoas / itens</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Limpeza / remoção de entulho" /><span><i data-lucide="brush" class="icon-xs"></i> Limpeza / remoção de entulho</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Cozinhar / preparar refeições" /><span><i data-lucide="chef-hat" class="icon-xs"></i> Cozinhar / preparar refeições</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Atendimento médico / enfermagem" /><span><i data-lucide="stethoscope" class="icon-xs"></i> Atendimento médico / enfermagem</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Apoio psicológico" /><span><i data-lucide="brain" class="icon-xs"></i> Apoio psicológico</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Divulgação / redes sociais" /><span><i data-lucide="smartphone" class="icon-xs"></i> Divulgação / redes sociais</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Doação de itens" /><span><i data-lucide="gift" class="icon-xs"></i> Doação de itens</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="habilidade" value="Força braçal / carregamento" /><span><i data-lucide="dumbbell" class="icon-xs"></i> Força braçal / carregamento</span></label>
+          </div>
+        </div>
+        <div class="form-group"><label>Disponibilidade de horário</label><input type="text" name="disponibilidade" placeholder="Ex: Manhãs e tarde, final de semana integral..." /></div>
+        <div class="form-group"><label>Observações</label><textarea name="obs" placeholder="Profissão, habilidades especiais, equipamentos disponíveis..."></textarea></div>
+        <div class="btn-row">
+          <button type="button" class="btn btn-secondary" onclick="goStepGeral(2)">← Voltar</button>
+          <button type="submit" class="btn btn-green"><i data-lucide="hand-heart" class="icon-sm"></i> Me Cadastrar como Voluntário →</button>
+        </div>
+      </form>
+
+      <!-- FORM: VAQUINHA GERAL -->
+      <form id="form-vaquinha_geral" class="form-type-geral" style="display:none" autocomplete="off" onsubmit="submitFormGeral(event,'vaquinha_geral')">
+        <p class="section-title">Dados da Campanha</p>
+        <div class="alert alert-warning"><span><i data-lucide="alert-triangle" class="icon-sm"></i></span><span>Vaquinhas passam por <strong>moderação</strong> antes de aparecerem no site.</span></div>
+        <div class="form-row">
+          <div class="form-group"><label>Nome da campanha <span class="req">*</span></label><input type="text" name="nome_campanha" placeholder="Ex: Reconstrução de casas, Ajuda para família desabrigada" required /></div>
+          <div class="form-group"><label>Responsável</label><input type="text" name="responsavel" placeholder="Nome do responsável" /></div>
+        </div>
+        <div class="form-group"><label>Link da Vaquinha <span class="req">*</span></label><input type="url" name="link_vakinha" placeholder="https://www.vakinha.com.br/..." required /></div>
+        <div class="form-group"><label>Descrição da campanha <span class="req">*</span></label><textarea name="descricao" placeholder="Descreva o objetivo: reconstrução, tratamento médico, ajuda emergencial..." required></textarea></div>
+        <div class="form-group"><label>Telefone / WhatsApp</label><input type="tel" name="telefone" placeholder="(32) 99999-0000" /></div>
+        <hr class="divider"/>
+        <p class="section-title">Chave PIX (opcional)</p>
+        <div class="pix-box">
+          <div class="pix-title">Dados da Chave PIX</div>
+          <div class="form-row">
+            <div class="form-group"><label>Tipo da chave PIX</label><select name="pix_tipo"><option value="">— Não informar PIX —</option><option value="CPF">CPF</option><option value="CNPJ">CNPJ</option><option value="E-mail">E-mail</option><option value="Telefone">Telefone</option><option value="Chave aleatória">Chave aleatória</option></select></div>
+            <div class="form-group"><label>Chave PIX</label><input type="text" name="pix_chave" placeholder="Ex: (32) 99999-0000 ou CPF" /></div>
+          </div>
+          <div class="form-group"><label>Nome do titular</label><input type="text" name="pix_titular" placeholder="Nome completo ou razão social" /></div>
+          <div class="form-group">
+            <label>QR Code PIX <span class="tip">(opcional)</span></label>
+            <div class="pix-upload-area">
+              <input type="file" name="pix_qrcode" accept="image/png,image/jpeg,image/webp" class="pix-file-input" id="pix-file-vaquinha_geral" />
+              <label for="pix-file-vaquinha_geral" class="pix-upload-label"><i data-lucide="camera" class="icon-sm"></i><span>Clique para enviar imagem do QR Code</span><span class="pix-upload-hint">PNG, JPG ou WEBP — Máximo 500KB</span></label>
+              <div class="pix-preview" id="pix-preview-vaquinha_geral" style="display:none"><img id="pix-preview-img-vaquinha_geral" alt="Preview QR Code" /><button type="button" class="pix-remove-btn" onclick="removePixImage('vaquinha_geral')"><i data-lucide="x" class="icon-xs"></i> Remover</button></div>
+            </div>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button type="button" class="btn btn-secondary" onclick="goStepGeral(2)">← Voltar</button>
+          <button type="submit" class="btn btn-primary">Enviar para Aprovação →</button>
+        </div>
+      </form>
+
+    </div><!-- .form-card -->
+  </div><!-- #geral-step-3 -->
+
+  <!-- STEP 4 — CONFIRMAÇÃO GERAL -->
+  <div class="step" id="geral-step-4">
+    <div class="step-indicator">
+      <div class="step-dot done"><div class="step-dot-circle">✓</div><div class="step-dot-label">Cidade</div></div>
+      <div class="step-line"></div>
+      <div class="step-dot done"><div class="step-dot-circle">✓</div><div class="step-dot-label">Tipo</div></div>
+      <div class="step-line"></div>
+      <div class="step-dot done"><div class="step-dot-circle">✓</div><div class="step-dot-label">Cadastro</div></div>
+      <div class="step-line"></div>
+      <div class="step-dot active"><div class="step-dot-circle">4</div><div class="step-dot-label">Concluído</div></div>
+    </div>
+    <div class="success-card">
+      <div class="success-icon"><i data-lucide="check-circle-2"></i></div>
+      <h2 id="geral-success-title">Cadastro registrado!</h2>
+      <p id="geral-success-desc">Seus dados foram salvos com sucesso. Compartilhe pelo WhatsApp para ampliar o alcance.</p>
+      <div class="summary-box" id="geral-summary-text">—</div>
+      <div class="btn-row" style="justify-content:center; flex-wrap:wrap;">
+        <button class="btn btn-whatsapp" onclick="shareWhatsAppGeral()"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.122.558 4.112 1.524 5.84L.057 23.273a.5.5 0 0 0 .67.67l5.433-1.467A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.95 0-3.78-.526-5.354-1.44l-.381-.228-3.954 1.068 1.068-3.954-.228-.381A9.96 9.96 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg> Compartilhar no WhatsApp</button>
+        <button class="btn btn-secondary" onclick="copyTextGeral()"><i data-lucide="clipboard" class="icon-sm"></i> Copiar texto</button>
+        <button class="btn btn-primary" onclick="newEntryGeral()">+ Novo Cadastro</button>
+      </div>
+    </div>
+  </div>
+
+  </div><!-- #view-cadastrar-geral -->
+
+  <!-- ─── CONSULTAR GERAL ─── -->
+  <div id="view-consultar-geral" class="view-section">
+    <button class="btn-view-back" onclick="showView('home-geral')">← Início</button>
+    <div class="consulta-filters">
+      <select id="filter-city-geral" onchange="loadConsultaGeral()">
+        <option value="">Todas as cidades</option>
+        <option value="Juiz de Fora">Juiz de Fora</option>
+        <option value="Ubá">Ubá</option>
+        <option value="Senador Firmino">Senador Firmino</option>
+        <option value="Matias Barbosa">Matias Barbosa</option>
+      </select>
+      <select id="filter-type-geral" onchange="loadConsultaGeral()">
+        <option value="">Todas as categorias</option>
+        <option value="desaparecidos">Pessoas Desaparecidas</option>
+        <option value="abrigos">Abrigos</option>
+        <option value="pontos_alimentacao">Pontos de Alimentação</option>
+        <option value="comunidades">Comunidades</option>
+        <option value="pontos_doacao">Pontos de Doação</option>
+        <option value="voluntarios">Voluntários</option>
+        <option value="vaquinhas">Vaquinhas</option>
+      </select>
+    </div>
+    <div id="consulta-loading-geral" style="display:none" class="consulta-state"><span>⏳</span><p>Carregando informações...</p></div>
+    <div id="consulta-empty-geral" style="display:none" class="consulta-state"><span>📭</span><p>Nenhum resultado encontrado para os filtros selecionados.</p></div>
+    <div id="consulta-error-geral" style="display:none" class="consulta-state consulta-error-state"><span><i data-lucide="alert-triangle" class="icon-sm"></i></span><p id="consulta-error-msg-geral">Erro ao carregar dados.</p></div>
+    <div id="consulta-results-geral"></div>
+  </div><!-- #view-consultar-geral -->
 
 </main>
 
 </div><!-- .page-layout -->
 
 <!-- FOOTER -->
-<footer>
-  <strong>Ajude JF</strong> — Central de Apoio Animal &nbsp;|&nbsp;
-  Denúncias: <strong>0800 61 8080</strong> (IBAMA) · <strong>153</strong> (Guarda Municipal) · <strong>(32) 3690-8450</strong> (Zoonoses)<br>
-  <small style="opacity:.6">Esta plataforma é uma iniciativa voluntária de apoio animal. Não substitui órgãos oficiais de proteção animal.</small>
+<footer id="app-footer">
+  <strong>Ajude JF</strong> — Central de Apoio &nbsp;|&nbsp;
+  <span id="footer-phones">Denúncias: <strong>0800 61 8080</strong> (IBAMA) · <strong>153</strong> (Guarda Municipal) · <strong>(32) 3690-8450</strong> (Zoonoses)</span><br>
+  <small style="opacity:.6">Esta plataforma é uma iniciativa voluntária de apoio. Não substitui órgãos oficiais.</small>
 </footer>
+
+</div><!-- #app-wrapper -->
 
   <script type="module" src="/src/main.js"></script>
 </body>
