@@ -1331,24 +1331,24 @@
       line-height: 1.5;
     }
 
-    /* Botão WhatsApp Groups na landing */
-    .landing-whatsapp-link {
+    /* Botão Painel/Dashboard na landing */
+    .landing-dashboard-link {
       display: inline-flex;
       align-items: center;
       gap: 8px;
       margin-top: 36px;
       padding: 12px 24px;
-      background: #25d366;
+      background: var(--blue-main);
       color: var(--white);
       font-size: 14px;
       font-weight: 700;
       border-radius: var(--radius);
       text-decoration: none;
       transition: background .2s, transform .2s;
-      box-shadow: 0 2px 8px rgba(37,211,102,.3);
+      box-shadow: 0 2px 8px rgba(46,109,164,.3);
     }
-    .landing-whatsapp-link:hover {
-      background: #1ebe5d;
+    .landing-dashboard-link:hover {
+      background: var(--blue-dark);
       transform: translateY(-1px);
     }
 
@@ -1375,24 +1375,24 @@
       color: var(--blue-dark);
     }
 
-    /* ── HOME WHATSAPP BUTTON ── */
-    .home-whatsapp-link {
+    /* ── HOME DASHBOARD BUTTON ── */
+    .home-dashboard-link {
       display: inline-flex;
       align-items: center;
       gap: 8px;
       margin-top: 28px;
       padding: 12px 24px;
-      background: #25d366;
+      background: var(--blue-main);
       color: var(--white);
       font-size: 14px;
       font-weight: 700;
       border-radius: var(--radius);
       text-decoration: none;
       transition: background .2s, transform .2s;
-      box-shadow: 0 2px 8px rgba(37,211,102,.3);
+      box-shadow: 0 2px 8px rgba(46,109,164,.3);
     }
-    .home-whatsapp-link:hover {
-      background: #1ebe5d;
+    .home-dashboard-link:hover {
+      background: var(--blue-dark);
       transform: translateY(-1px);
     }
 
