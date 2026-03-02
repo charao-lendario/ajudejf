@@ -110,8 +110,12 @@ function buildHtml (tipo, data, id, pixQrcodeUrl) {
 }
 
 module.exports = async function handler (req, res) {
-  // CORS para desenvolvimento local
-  res.setHeader('Access-Control-Allow-Origin', '*')
+  // CORS restrito ao dominio do site (F06)
+  const allowedOrigins = ['https://ajudejf.com.br', 'http://localhost:5173', 'http://localhost:4173']
+  const origin = req.headers.origin
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin)
+  }
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
 
@@ -125,7 +129,11 @@ module.exports = async function handler (req, res) {
       return res.status(400).json({ error: 'tipo e payload são obrigatórios' })
     }
 
-    const TIPOS_VALIDOS = ['vaquinha', 'doacao_pix', 'ong_protetor', 'pet_perdido']
+    const TIPOS_VALIDOS = [
+      'vaquinha', 'doacao_pix', 'ong_protetor', 'pet_perdido',
+      'voluntario', 'lar_temporario', 'desaparecido', 'abrigo',
+      'alimentacao', 'comunidade', 'doacao', 'doador'
+    ]
     if (!TIPOS_VALIDOS.includes(tipo)) {
       return res.status(400).json({ error: 'Tipo inválido' })
     }
@@ -145,6 +153,30 @@ module.exports = async function handler (req, res) {
       process.env.SUPABASE_URL,
       process.env.SUPABASE_SERVICE_ROLE_KEY
     )
+
+    // ── Fluxo de cadastro simples (sem moderacao, sem foto) ──
+    const TIPO_TABELA_SIMPLES = {
+      voluntario:     'voluntarios',
+      lar_temporario: 'lares_temporarios',
+      desaparecido:   'desaparecidos',
+      abrigo:         'abrigos',
+      alimentacao:    'pontos_alimentacao',
+      comunidade:     'comunidades',
+      doacao:         'pontos_doacao',
+      doador:         'doadores'
+    }
+
+    if (TIPO_TABELA_SIMPLES[tipo]) {
+      const tabela = TIPO_TABELA_SIMPLES[tipo]
+      const { data: inserted, error: dbErr } = await supabase
+        .from(tabela)
+        .insert(payload)
+        .select('id')
+        .single()
+
+      if (dbErr) throw new Error(`DB: ${dbErr.message}`)
+      return res.status(200).json({ ok: true, id: inserted.id })
+    }
 
     // ── Fluxo para ONG/Protetor e Pet Perdido (com foto, sem moderação) ──
     if (tipo === 'ong_protetor' || tipo === 'pet_perdido') {

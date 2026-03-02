@@ -550,9 +550,15 @@ window.submitForm = async function (event, tipo) {
       state.pendingModeration = false
     } else {
       const payload = buildPayload({ cidade_id })
-      const tabela = TIPO_TABELA[tipo]
-      const { error } = await supabase.from(tabela).insert(payload)
-      if (error) throw error
+      const resp = await fetch('/api/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tipo, payload })
+      })
+      if (!resp.ok) {
+        const errBody = await resp.json().catch(() => ({}))
+        throw new Error(errBody.error || `Erro ${resp.status} ao salvar`)
+      }
       state.pendingModeration = false
     }
 
@@ -641,9 +647,23 @@ window.submitFormGeral = async function (event, tipo) {
       stateGeral.pendingModeration = true
     } else {
       const payload = buildPayload({ cidade_id })
-      const tabela = TIPO_TABELA_GERAL[tipo]
-      const { error } = await supabase.from(tabela).insert(payload)
-      if (error) throw error
+      const apiTipo = {
+        desaparecido: 'desaparecido',
+        abrigo: 'abrigo',
+        alimentacao: 'alimentacao',
+        comunidade: 'comunidade',
+        doacao_geral: 'doacao',
+        voluntario_geral: 'voluntario'
+      }[tipo] || tipo
+      const resp = await fetch('/api/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tipo: apiTipo, payload })
+      })
+      if (!resp.ok) {
+        const errBody = await resp.json().catch(() => ({}))
+        throw new Error(errBody.error || `Erro ${resp.status} ao salvar`)
+      }
       stateGeral.pendingModeration = false
     }
 
@@ -855,15 +875,15 @@ function wppBtn (tel, label = 'WhatsApp') {
 function cardLarTemporario (item, cidade) {
   return `
     <div class="result-card result-card-voluntario">
-      <div class="rc-header"><div class="rc-title">${esc(item.nome)}</div><span class="badge badge-green">Lar Temporário</span></div>
-      <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)}${item.endereco ? ` — ${esc(item.endereco)}` : ''}</div>
+      <div class="rc-header"><div class="rc-title">Lar Temporário</div><span class="badge badge-green">Disponível</span></div>
+      <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)}</div>
       <div class="rc-body">
         ${item.vagas ? `<div class="rc-row"><i data-lucide="home" class="icon-xs"></i> Pode acolher <strong>${item.vagas}</strong> animal(is)</div>` : ''}
         ${chips(item.animais_aceitos)}
         ${item.experiencia ? `<div class="rc-row"><i data-lucide="heart" class="icon-xs"></i> Experiência: ${esc(item.experiencia)}</div>` : ''}
         ${item.obs ? `<div class="rc-row">${esc(item.obs)}</div>` : ''}
       </div>
-      ${wppBtn(item.telefone)}
+      <div class="rc-footer-info" style="font-size:12px;color:#888;padding:8px 0 0">Contato via administração da plataforma</div>
     </div>`
 }
 
@@ -885,13 +905,13 @@ function cardDoacao (item, cidade) {
 function cardVoluntario (item, cidade) {
   return `
     <div class="result-card result-card-voluntario">
-      <div class="rc-header"><div class="rc-title">${esc(item.nome)}</div>${item.veiculo && item.veiculo !== 'Não' ? `<span class="badge badge-blue">${esc(item.veiculo)}</span>` : ''}</div>
-      <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)}${item.bairro ? ` — ${esc(item.bairro)}` : ''}</div>
+      <div class="rc-header"><div class="rc-title">Voluntário</div>${item.veiculo && item.veiculo !== 'Não' ? `<span class="badge badge-blue">${esc(item.veiculo)}</span>` : ''}</div>
+      <div class="rc-city"><i data-lucide="map-pin" class="icon-xs"></i> ${esc(cidade)}</div>
       <div class="rc-body">
         ${chips(item.habilidades)}
         ${item.disponibilidade ? `<div class="rc-row"><i data-lucide="clock" class="icon-xs"></i> ${esc(item.disponibilidade)}</div>` : ''}
       </div>
-      ${wppBtn(item.telefone)}
+      <div class="rc-footer-info" style="font-size:12px;color:#888;padding:8px 0 0">Contato via administração da plataforma</div>
     </div>`
 }
 
@@ -947,17 +967,17 @@ function cardPetPerdido (item, cidade) {
         <div class="rc-row"><i data-lucide="file-text" class="icon-xs"></i> ${esc(item.descricao)}</div>
         ${item.ultima_vez_visto ? `<div class="rc-row"><i data-lucide="clock" class="icon-xs"></i> Última vez: ${formatDate(item.ultima_vez_visto)}</div>` : ''}
       </div>
-      <div class="rc-footer-info">Contato: ${esc(item.tutor_nome)}</div>
+      <div class="rc-footer-info" style="font-size:12px;color:#888">Reconheceu? Contate a administração da plataforma</div>
     </div>`
 }
 
 const TABELA_CONFIG = {
-  pets_perdidos:      { icon: 'search',      label: 'Pets Perdidos',     card: cardPetPerdido },
-  ongs_protetores:    { icon: 'paw-print',   label: 'ONGs / Protetores', card: cardOngProtetor },
-  lares_temporarios:  { icon: 'home',        label: 'Lares Temporários', card: cardLarTemporario },
-  pontos_doacao:      { icon: 'package',     label: 'Pontos de Doação',  card: cardDoacao },
-  voluntarios:        { icon: 'hand-heart',  label: 'Voluntários',       card: cardVoluntario },
-  vaquinhas:          { icon: 'heart',       label: 'Vaquinhas',         card: cardVaquinha },
+  pets_perdidos_public: { icon: 'search',      label: 'Pets Perdidos',     card: cardPetPerdido },
+  ongs_protetores:      { icon: 'paw-print',   label: 'ONGs / Protetores', card: cardOngProtetor },
+  lares_temporarios_public: { icon: 'home',    label: 'Lares Temporários', card: cardLarTemporario },
+  pontos_doacao:        { icon: 'package',     label: 'Pontos de Doação',  card: cardDoacao },
+  voluntarios_public:   { icon: 'hand-heart',  label: 'Voluntários',       card: cardVoluntario },
+  vaquinhas:            { icon: 'heart',       label: 'Vaquinhas',         card: cardVaquinha },
 }
 
 // ═══════════════════════════════════════════════════════
@@ -978,8 +998,7 @@ function cardDesaparecido (item, cidade) {
         ${item.ultima_vez_visto ? `<div class="rc-row"><i data-lucide="clock" class="icon-xs"></i> Última vez: ${formatDate(item.ultima_vez_visto)}</div>` : ''}
         ${item.condicao_saude ? `<div class="rc-row"><i data-lucide="heart-pulse" class="icon-xs"></i> Saúde: ${esc(item.condicao_saude)}</div>` : ''}
       </div>
-      <div class="rc-footer-info">Informante: ${esc(item.informante_nome)}</div>
-      ${wppBtn(item.informante_tel, 'Contatar informante')}
+      <div class="rc-footer-info" style="font-size:12px;color:#888">Se reconhecer esta pessoa, entre em contato com a Defesa Civil ou administração da plataforma</div>
     </div>`
 }
 
@@ -1030,12 +1049,12 @@ function cardComunidade (item, cidade) {
 }
 
 const TABELA_CONFIG_GERAL = {
-  desaparecidos:      { icon: 'search',      label: 'Pessoas Desaparecidas', card: cardDesaparecido },
+  desaparecidos_public: { icon: 'search',    label: 'Pessoas Desaparecidas', card: cardDesaparecido },
   abrigos:            { icon: 'building-2',  label: 'Abrigos',               card: cardAbrigo },
   pontos_alimentacao: { icon: 'utensils',    label: 'Pontos de Alimentação', card: cardAlimentacao },
   comunidades:        { icon: 'users',       label: 'Comunidades',           card: cardComunidade },
   pontos_doacao:      { icon: 'package',     label: 'Pontos de Doação',      card: cardDoacao },
-  voluntarios:        { icon: 'hand-heart',  label: 'Voluntários',           card: cardVoluntario },
+  voluntarios_public: { icon: 'hand-heart',  label: 'Voluntários',           card: cardVoluntario },
   vaquinhas:          { icon: 'heart',       label: 'Vaquinhas',             card: cardVaquinha },
 }
 
