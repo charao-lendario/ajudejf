@@ -429,10 +429,8 @@ const TIPO_TABELA = {
 }
 
 const TIPO_TABELA_GERAL = {
-  desaparecido:     'desaparecidos',
   abrigo:           'abrigos',
   alimentacao:      'pontos_alimentacao',
-  comunidade:       'comunidades',
   doacao_geral:     'pontos_doacao',
   voluntario_geral: 'voluntarios',
   vaquinha_geral:   'vaquinhas'
@@ -648,10 +646,8 @@ window.submitFormGeral = async function (event, tipo) {
     } else {
       const payload = buildPayload({ cidade_id })
       const apiTipo = {
-        desaparecido: 'desaparecido',
         abrigo: 'abrigo',
         alimentacao: 'alimentacao',
-        comunidade: 'comunidade',
         doacao_geral: 'doacao',
         voluntario_geral: 'voluntario'
       }[tipo] || tipo
@@ -1049,10 +1045,8 @@ function cardComunidade (item, cidade) {
 }
 
 const TABELA_CONFIG_GERAL = {
-  desaparecidos_public: { icon: 'search',    label: 'Pessoas Desaparecidas', card: cardDesaparecido },
   abrigos:            { icon: 'building-2',  label: 'Abrigos',               card: cardAbrigo },
   pontos_alimentacao: { icon: 'utensils',    label: 'Pontos de Alimentação', card: cardAlimentacao },
-  comunidades:        { icon: 'users',       label: 'Comunidades',           card: cardComunidade },
   pontos_doacao:      { icon: 'package',     label: 'Pontos de Doação',      card: cardDoacao },
   voluntarios_public: { icon: 'hand-heart',  label: 'Voluntários',           card: cardVoluntario },
   vaquinhas:          { icon: 'heart',       label: 'Vaquinhas',             card: cardVaquinha },

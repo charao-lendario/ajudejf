@@ -131,8 +131,8 @@ module.exports = async function handler (req, res) {
 
     const TIPOS_VALIDOS = [
       'vaquinha', 'doacao_pix', 'ong_protetor', 'pet_perdido',
-      'voluntario', 'lar_temporario', 'desaparecido', 'abrigo',
-      'alimentacao', 'comunidade', 'doacao', 'doador'
+      'voluntario', 'lar_temporario', 'abrigo',
+      'alimentacao', 'doacao', 'doador'
     ]
     if (!TIPOS_VALIDOS.includes(tipo)) {
       return res.status(400).json({ error: 'Tipo inválido' })
@@ -158,10 +158,8 @@ module.exports = async function handler (req, res) {
     const TIPO_TABELA_SIMPLES = {
       voluntario:     'voluntarios',
       lar_temporario: 'lares_temporarios',
-      desaparecido:   'desaparecidos',
       abrigo:         'abrigos',
       alimentacao:    'pontos_alimentacao',
-      comunidade:     'comunidades',
       doacao:         'pontos_doacao',
       doador:         'doadores'
     }
